@@ -3,10 +3,11 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 ## Dependencies 
 
 ``npm install sequelize postgresql expressjs``
-Hence run the folllowing commands in the terminal : 
-``createdb mydb`` to create the database
-``psql mydb`` to interacte with the db
-``CREATE USER admin WITH PASSWORD "admin";`` create the user to connect to the db when your run server.js
+
+Hence run the folllowing commands in the terminal :   
+``createdb mydb`` to create the database  
+``psql mydb`` to interacte with the db  
+``CREATE USER admin WITH PASSWORD "admin";`` create the user to connect to the db when your run server.js  
 
 ## Getting Started
 
