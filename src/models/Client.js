@@ -5,8 +5,9 @@ class Client extends Model {}
 
 Client.init({
   ClientID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  Nom: { type: DataTypes.STRING },
-  Email: { type: DataTypes.STRING },
+  Username: { type: DataTypes.STRING, allowNull: false,unique: true},
+  Email: { type: DataTypes.STRING, allowNull: false, unique: true },
+  Password: { type: DataTypes.STRING, allowNull: false},
   Téléphone: { type: DataTypes.STRING },
   Adresse: { type: DataTypes.STRING }
 }, { sequelize, modelName: 'Client' });

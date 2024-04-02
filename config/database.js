@@ -9,4 +9,4 @@ const sequelize = new Sequelize('mydb', 'admin', 'admin', {
 
 module.exports = sequelize;
 
-
+  

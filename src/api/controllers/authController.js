@@ -1,16 +1,26 @@
-router.post('/connexion', async (req, res) => {
+// api/controller/authController.js
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+// Assume db is your database connection module
+const db = require('../your-database-connection-module');
+
+exports.login = async (req, res) => {
+    const { email, password } = req.body;
     try {
-      const { email, motDePasse } = req.body;
-      const client = await Client.findOne({ where: { Email: email } });
-  
-      if (!client || !await bcrypt.compare(motDePasse, client.MotDePasse)) {
-        return res.status(401).json({ message: 'Email ou mot de passe incorrect' });
-      }
-  
-      // Connecter le client (vous pouvez utiliser des sessions ou des tokens JWT ici)
-      res.status(200).json({ message: 'Connexion réussie' });
+        const user = await db.findUserByEmail(email);
+        if (!user) {
+            return res.status(401).send({ message: 'Login failed' });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).send({ message: 'Invalid credentials' });
+        }
+
+        // Generate JWT token
+        const token = jwt.sign({ userId: user.id }, 'your_secret_key', { expiresIn: '1h' });
+        res.send({ token });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+        res.status(500).send({ message: 'Internal server error' });
     }
-  });
-  
+};

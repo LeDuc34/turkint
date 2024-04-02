@@ -1,12 +1,12 @@
 const Article = require('../../models/Article');
 
-async function ajouterArticle() {
+async function ajouterArticle(nom, description,prix,categorie) {
   try {
     const nouvelArticle = await Article.create({
-      Nom: 'Kebab',
-      Description: "stm; pain maison; ",
-      Prix : 10 ,
-      Catégorie : "Plat principal",
+      Nom: nom,
+      Description: description,
+      Prix : prix,
+      Catégorie : categorie,
     });
 
     console.log('Article ajouté:', nouvelArticle.toJSON());

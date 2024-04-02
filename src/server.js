@@ -33,7 +33,8 @@ const DetailsCommande = require('./models/DetailsCommande.js');
   }
 })();
 
-ajouterArticle();
+//initialisation des articles disponibles
+  ajouterArticle("Kebab","Kebab+Frites",1000,"Plat Principal");
 
   // Définir des routes API personnalisées
   server.get('/api/hello', (req, res) => {
