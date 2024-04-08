@@ -1,23 +1,25 @@
-const express = require('express');
-const bcrypt = require('bcrypt');
-const Client = require('../models/Client');
-const router = express.Router();
-
-router.post('/inscription', async (req, res) => {
+// src/api/controllers/usersController.js
+const User = require('../../models/Client'); // Adjust the path as necessary
+const bcrypt = require('bcryptjs');
+const registerUser = async (req, res) => {
   try {
-    const { nom, email, motDePasse } = req.body;
-    const motDePasseHache = await bcrypt.hash(motDePasse, 10);
-
-    const client = await Client.create({
-      Nom: nom,
-      Email: email,
-      MotDePasse: motDePasseHache
-    });
-
-    res.status(201).json(client);
+    const { email, password } = req.body;
+    const hashedPassword = bcrypt.hashSync(password, 8);
+    const newUser = await User.create({ Email: email, Password: hashedPassword });
+    res.status(201).send({ Client: newUser });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+  console.error(error); // Log the full error for server-side debugging
+  if (error.name === 'ValidationError') {
+    return res.status(400).send({ message: 'Validation error', errors: error.errors });
   }
-});
+  res.status(500).send({ message: 'An unexpected error occurred' });
+}
 
-module.exports = router;
+};
+
+module.exports = {
+  registerUser,
+};
+
+
+

@@ -1,23 +1,30 @@
 "use client";
-import { useState, FormEvent } from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 
-const Register = () => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    // Here you would typically send a POST request to your API endpoint
-    console.log('Register with:', email, password);
-    // Remember to handle the request and response appropriately.
+const SignupForm = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (event: { preventDefault: () => void; }) => {
+    event.preventDefault(); // Prevent the default form submission behavior
+    try {
+      console.log('email:', email,'password',password);
+      const response = await axios.post('/api/users/register', { email, password });
+      console.log(response.data); // Handle response according to your needs
+      // Redirect or give a success message
+    } catch (error: any) {
+      setError(error.response.data.message || 'Something went wrong');
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label htmlFor="email">Email:</label>
+        <label>Email:</label>
         <input
-          id="email"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -25,19 +32,18 @@ const Register = () => {
         />
       </div>
       <div>
-        <label htmlFor="password">Password:</label>
+        <label>Password:</label>
         <input
-          id="password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
       </div>
-      <button type="submit">Register</button>
+      <button type="submit">Sign Up</button>
+      {error && <p>{error}</p>}
     </form>
   );
 };
 
-export default Register;
-
+export default SignupForm;
