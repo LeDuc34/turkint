@@ -11,7 +11,6 @@ const SignupForm = () => {
   const handleSubmit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault(); // Prevent the default form submission behavior
     try {
-      console.log('email:', email,'password',password);
       const response = await axios.post('/api/users/register', { email, password });
       console.log(response.data); // Handle response according to your needs
       // Redirect or give a success message

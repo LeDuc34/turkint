@@ -1,35 +1,19 @@
-// components/LoginForm.tsx
 "use client";
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const LoginForm = () => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    // Your fetch request starts here
-    const response = await fetch('/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    });
-    const data = await response.json();
-    if (response.ok) {
-      console.log('Login successful', data);
-      // Redirect user or update UI accordingly
-      // For example, using Next.js router to redirect
-      // router.push('/dashboard'); // Assuming you have a dashboard page
-    } else {
-      console.error('Login failed', data);
-      // Show error message or handle error
-      // Here, you can set an error message in state and display it in your form
+  const handleSubmit = async (event: { preventDefault: () => void; }) => {
+    event.preventDefault(); // Prevent the default form submission behavior
+    try{
+    const response = await axios.post('/api/users/login', { email, password });
+    console.log(response.data); // Handle response according to your needs
+    // Redirect or give a success message
+    } catch (error: any) {
+      console.log(error.response.data.message || 'Something went wrong');
     }
   };
 

@@ -20,7 +20,7 @@ async function initializeDatabase() {
 
         // Consider using .sync({ force: false }) cautiously in development
         // and avoiding it in production environments.
-        await sequelize.sync({ force: true }); // This synchronizes all models at once
+        await sequelize.sync({ force: false }); // This synchronizes all models at once
 
         console.log('All models were synchronized successfully.');
     } catch (error) {

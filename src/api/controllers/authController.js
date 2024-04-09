@@ -1,20 +1,19 @@
-// api/controller/authController.js
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-// Assume db is your database connection module
-const db = require('../your-database-connection-module');
+const Client = require('../../models/Client');
 
-exports.login = async (req, res) => {
+const loginUser = async (req, res) => {
+    console.log(req.body); // This should include the 'password' field
     const { email, password } = req.body;
     try {
-        const user = await db.findUserByEmail(email);
+        const user = await Client.findOne({where:{Email: email}});
         if (!user) {
-            return res.status(401).send({ message: 'Login failed' });
+            return res.status(401).send({ message: 'User not found !' });
         }
 
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = await bcrypt.compare(password, user.Password);
         if (!isMatch) {
-            return res.status(401).send({ message: 'Invalid credentials' });
+            return res.status(401).send({ message: 'Invalid password' });
         }
 
         // Generate JWT token
@@ -22,5 +21,8 @@ exports.login = async (req, res) => {
         res.send({ token });
     } catch (error) {
         res.status(500).send({ message: 'Internal server error' });
+        console.error(error);
     }
 };
+
+exports.loginUser = loginUser;
