@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+
+
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -10,6 +12,7 @@ const LoginForm = () => {
     event.preventDefault(); // Prevent the default form submission behavior
     try{
     const response = await axios.post('/api/users/login', { email, password });
+    localStorage.setItem('token', response.data.token); 
     console.log(response.data); // Handle response according to your needs
     // Redirect or give a success message
     } catch (error: any) {

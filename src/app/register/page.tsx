@@ -10,6 +10,7 @@ const SignupForm = () => {
 
   const handleSubmit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault(); // Prevent the default form submission behavior
+    localStorage.clear(); // clear the previous tokens
     try {
       const response = await axios.post('/api/users/register', { email, password });
       console.log(response.data); // Handle response according to your needs

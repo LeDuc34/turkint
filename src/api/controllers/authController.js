@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const Client = require('../../models/Client');
 
 const loginUser = async (req, res) => {
-    console.log(req.body); // This should include the 'password' field
+    //console.log(req.body); 
     const { email, password } = req.body;
     try {
         const user = await Client.findOne({where:{Email: email}});
@@ -19,6 +19,7 @@ const loginUser = async (req, res) => {
         // Generate JWT token
         const token = jwt.sign({ userId: user.id }, 'your_secret_key', { expiresIn: '1h' });
         res.send({ token });
+        
     } catch (error) {
         res.status(500).send({ message: 'Internal server error' });
         console.error(error);
