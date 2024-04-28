@@ -6,7 +6,7 @@ const registerUser = async (req, res) => {
     const { email, password } = req.body;
     const hashedPassword = bcrypt.hashSync(password, 8);
     const newUser = await User.create({ Email: email, Password: hashedPassword });
-    res.status(201).send({ Client: newUser });
+    res.status(201).send({ Client: newUser});
   } catch (error) {
   console.error(error); // Log the full error for server-side debugging
   if (error.name === 'ValidationError') {

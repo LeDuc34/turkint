@@ -1,9 +1,9 @@
 "use client";
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { redirect } from 'next/navigation'; // Use useRouter for Next.js redirects
+import { redirect } from 'next/navigation'; 
 
-// Modified verifyToken to use in React components
+
 const verifyToken = (): Promise<boolean> => {
   return new Promise(async (resolve) => {
     const token = localStorage.getItem('token');
@@ -17,8 +17,7 @@ const verifyToken = (): Promise<boolean> => {
             Authorization: `Bearer ${token}`
           }
         });
-        // Make sure to resolve as boolean
-        resolve(response.data.valid as boolean); // Assert that valid is a boolean
+        resolve(response.data.valid as boolean);
       } catch (error) {
         console.error('Error verifying token:', error);
         resolve(false);
@@ -41,12 +40,11 @@ const withAuth = (WrappedComponent: React.ComponentType<any>) => {
     }, []);
 
     if (isLoading) {
-      return <div>Loading...</div>; // Or any other loading indicator
+      return <div>Loading...</div>; 
     }
 
     if (!isAuthorized) {
-      redirect('/login') // Use Next.js router to redirect
-      return null; // Return null to comply with React rendering rules
+      redirect('/login') 
     }
     return <WrappedComponent {...props} />;
   };

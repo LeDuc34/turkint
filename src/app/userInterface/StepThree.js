@@ -1,4 +1,4 @@
-export default function StepOne({ formData, setFormData, prevStep }) {
+export default function StepThree({ formData, setFormData, prevStep,addToBasket }) {
     const handleChangeSalade = (event) => {
         const { checked } = event.target;
         setFormData(prevformData => {
@@ -47,6 +47,7 @@ export default function StepOne({ formData, setFormData, prevStep }) {
                 <label>Onion</label>
             </div>
             <button onClick={prevStep}>Prev</button>
+            <button onClick={addToBasket}>Add to Basket</button>
         </div>
         
     );

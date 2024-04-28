@@ -1,5 +1,5 @@
 "use client";
-
+import Logout from '../logout/page';
 import { useState } from 'react';
 import StepOne from '../userInterface/StepOne';
 import StepTwo from '../userInterface/StepTwo';
@@ -7,7 +7,7 @@ import StepThree from '../userInterface/StepThree';
 import axios from 'axios';
 import { withAuth } from '../authContext/page';
 
-function Home() {
+function Form() {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     pain: 'Pain Maison',
@@ -20,13 +20,13 @@ function Home() {
   const nextStep = () => setCurrentStep((prev) => prev + 1);
   const prevStep = () => setCurrentStep((prev) => prev - 1);
 
-  const handleSubmit = async (event: { preventDefault: () => void; }) => {
+  const addToBakset = async (event: { preventDefault: () => void; }) => {
     event.preventDefault(); // Prevent the default form submission behavior
     try {
       console.log(formData);
-      const response = await axios.post('/api/users/commande', formData);
-      console.log(response.data); // Handle response according to your needs
-      // Redirect or give a success message
+      const response = await axios.post('/api/users/addToBasket', {ClientID:localStorage.getItem('ClientID'),Article:"kebab",Options:formData, ArticlePrice:10});
+      console.log(response.data); 
+      setCurrentStep(4);
     } catch (error: any) {
       console.log(error.response.data.message || 'Something went wrong');
     }
@@ -40,10 +40,20 @@ function Home() {
     case 2:
       return <StepTwo formData={formData} setFormData={setFormData} nextStep={nextStep} prevStep={prevStep} />;
     case 3:
-      return <StepThree formData={formData} setFormData={setFormData} prevStep={prevStep} />;
-    default:
-      return <div>Form Completed</div>;
+      return <StepThree formData={formData} setFormData={setFormData} prevStep={prevStep} addToBasket={addToBakset} />;
+    case 4:
+      return <div>Article(s) ajouté(s) au panier</div>;
   }
 }
+
+const Home = () => {
+  return(
+    <div>
+      <Form/>
+      <Logout/>
+    </div>
+  )
+}
+
 
 export default withAuth(Home);

@@ -1,5 +1,5 @@
 export default function StepOne({ formData={}, setFormData, nextStep }) {
-  // This function updates the formData state with the selected option
+
   const handleSelectionChange = (event) => {
     const { value } = event.target;
     setFormData(prevformData => {
@@ -26,7 +26,6 @@ export default function StepOne({ formData={}, setFormData, nextStep }) {
       </select>
       <br /><br/>
       <button onClick={nextStep}>Next</button>
-      {/* Optionally, call submitFormData here or from the parent component */}
     </div>
   );
 }

@@ -13,15 +13,11 @@ async function initializeDatabase() {
         await sequelize.authenticate();
         console.log('Connection to the PostgreSQL database successful.');
 
-        const Client = require('./models/Client.js');
-        const Article = require('./models/Article.js');
-        const Commande = require('./models/Commande.js');
-        const DetailsCommande = require('./models/DetailsCommande.js');
+     
 
         // Consider using .sync({ force: false }) cautiously in development
         // and avoiding it in production environments.
         await sequelize.sync({ force: true }); // This synchronizes all models at once
-
         console.log('All models were synchronized successfully.');
     } catch (error) {
         console.error('Unable to connect to the database or synchronize models:', error);

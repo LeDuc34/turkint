@@ -1,20 +1,22 @@
 "use client";
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 
 const SignupForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const router = useRouter();
 
   const handleSubmit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault(); // Prevent the default form submission behavior
-    localStorage.clear(); // clear the previous tokens
+    localStorage.clear(); 
     try {
       const response = await axios.post('/api/users/register', { email, password });
-      console.log(response.data); // Handle response according to your needs
-      // Redirect or give a success message
+      console.log(response.data); 
+      router.push('/login');
     } catch (error: any) {
       setError(error.response.data.message || 'Something went wrong');
     }

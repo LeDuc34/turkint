@@ -8,8 +8,9 @@ Client.init({
   Username: { type: DataTypes.STRING, allowNull: true,unique: true},
   Email: { type: DataTypes.STRING, allowNull: false, unique: true },
   Password: { type: DataTypes.STRING, allowNull: false},
-  Téléphone: { type: DataTypes.STRING },
-  Adresse: { type: DataTypes.STRING }
+  Phone: { type: DataTypes.STRING },
+  Adress: { type: DataTypes.STRING },
+  Basket: { type: DataTypes.ARRAY(DataTypes.JSON) }
 }, { sequelize, modelName: 'Client' });
 
 module.exports = Client;
