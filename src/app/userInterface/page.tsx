@@ -1,11 +1,14 @@
 "use client";
 import Logout from '../logout/page';
+import ClearBasket from '../basket/clearBasket'
+import DisplayBasket from '../basket/displayBasket'
 import { useState } from 'react';
 import StepOne from '../userInterface/StepOne';
 import StepTwo from '../userInterface/StepTwo';
 import StepThree from '../userInterface/StepThree';
 import axios from 'axios';
 import { withAuth } from '../authContext/page';
+
 
 function Form() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -24,7 +27,7 @@ function Form() {
     event.preventDefault(); // Prevent the default form submission behavior
     try {
       console.log(formData);
-      const response = await axios.post('/api/users/addToBasket', {ClientID:localStorage.getItem('ClientID'),Article:"kebab",Options:formData, ArticlePrice:10});
+      const response = await axios.post('/api/baskets/add', {ClientID:localStorage.getItem('ClientID'),Article:"kebab",Options:formData, ArticlePrice:10});
       console.log(response.data); 
       setCurrentStep(4);
     } catch (error: any) {
@@ -51,6 +54,9 @@ const Home = () => {
     <div>
       <Form/>
       <Logout/>
+      <ClearBasket/>
+      <DisplayBasket/>
+      
     </div>
   )
 }

@@ -31,4 +31,35 @@ const addToBasket = async (req, res) => {
     }
 };
 
-exports.addToBasket = addToBasket;
+const displayBasket = async (req, res) => {
+    try {
+        const { ClientID } = req.query;
+        const basket = await Basket.findOne({ where: { ClientID } });
+        if (!basket) {
+            return res.status(404).send({ message: 'Basket not found' });
+        }
+        return res.status(200).send({ Basket: basket });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: 'An error occurred while fetching the basket' });
+    }
+};
+const clearBasket = async (req,res)=>{
+    try{
+        const { ClientID } = req.query;
+        const basket = await Basket.findOne({ where: { ClientID } });
+        if (!basket) {
+            return res.status(400).send({ message: 'Basket not found' });
+        }
+        await basket.destroy();
+        res.status(200).send({ message: 'Basket cleared successfully' }); //does not appear
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: 'An error occurred while clearing the basket' });
+    }
+}
+module.exports = {
+    addToBasket,
+    displayBasket,
+    clearBasket
+};

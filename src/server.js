@@ -34,8 +34,9 @@ nextApp.prepare().then(async () => {
 
     // Define custom API routes
     const usersRoutes = require('./api/routes/usersRoutes.js');
+    const basketsRoutes = require('./api/routes/basketsRoutes');
     server.use('/api/users', usersRoutes);
-
+    server.use('/api/baskets',basketsRoutes)
     // Handling all other requests with Next.js
     server.get('*', (req, res) => {
         return handle(req, res);
