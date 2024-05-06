@@ -15,12 +15,14 @@ function Form() {
   const [formData, setFormData] = useState({
     pain: 'Pain Maison',
     sauce:'Algerienne',
-    salade: 'Oui',
-    tomate: 'Oui',
-    tignon : 'Oui',
+    salade: 'Non',
+    tomate: 'Non',
+    oignon : 'Non',
   });
 
   const nextStep = () => setCurrentStep((prev) => prev + 1);
+
+
   const prevStep = () => setCurrentStep((prev) => prev - 1);
 
   const addToBakset = async (event: { preventDefault: () => void; }) => {
@@ -56,7 +58,7 @@ const Home = () => {
       <Logout/>
       <ClearBasket/>
       <DisplayBasket/>
-      
+
     </div>
   )
 }

@@ -3,7 +3,6 @@
 
 import axios from 'axios'
 
-
 const clearButton = () =>{
     const HandleSubmit = () => {
         axios.get('/api/baskets/clear?ClientID='+localStorage.getItem('ClientID'))

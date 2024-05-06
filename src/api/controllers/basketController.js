@@ -3,7 +3,7 @@ const Basket = require( '../../models/Basket');
 const addToBasket = async (req, res) => {
     try {
         const { ClientID, Article, Options, ArticlePrice } = req.body;
-
+        console.log(Options);
         // Find existing basket or create a new one if it doesn't exist
         let basket = await Basket.findOne({ where: { ClientID } });
 
@@ -18,6 +18,8 @@ const addToBasket = async (req, res) => {
             // If a basket exists, add the new article to the Articles array
             basket.Articles.push({ Article, Options, ArticlePrice });
             basket.TotalPrice += ArticlePrice; // Update the total price of the basket
+             // Mark the Articles field as changed
+             basket.changed('Articles', true);
             await basket.save(); // Save the updated basket
         }
 

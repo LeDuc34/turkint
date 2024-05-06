@@ -26,7 +26,7 @@ export default function StepThree({ formData, setFormData, prevStep,addToBasket 
         setFormData(prevformData => {
             const updatedFormData = {
                 ...prevformData,
-                onion: checked
+                oignon: checked
             };
             console.log(updatedFormData);
             return updatedFormData;
