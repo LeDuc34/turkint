@@ -2,6 +2,7 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { withAuth } from '../authContext/page'
+import { useRouter } from 'next/navigation';
 
 
 interface Article {
@@ -22,8 +23,10 @@ interface BasketResponse {
 }
 
 const BasketPage = () => {
+    const router = useRouter();
     const [basket, setBasket] = useState<Basket | null>(null);
     const [error, setError] = useState<string>('');
+    const [orderPlaced, setOrderPlaced] = useState<boolean>(false); 
 
     useEffect(() => {
         const fetchBasket = async () => {
@@ -36,8 +39,8 @@ const BasketPage = () => {
                 setBasket(response.data.Basket);
                 console.log(basket);
             } catch (err) {
-                console.error('Failed to fetch basket', err);
-                setError('Failed to fetch basket');
+                console.error('Empty Basket', err);
+                setError('Empty Basket');
             }
         };
 
@@ -52,11 +55,23 @@ const BasketPage = () => {
             // Make a POST request to the backend endpoint with the basket data
             const response = await axios.post('/api/orders/send', {
                 clientID: clientID,
-                basket: basket
+                basket: basket,
+                date: new Date().toISOString(),
+                Statut: "wating",
+                TotalPrice: basket?.TotalPrice
+
             });
 
             // Handle the response as needed
             console.log('Order sent successfully:', response.data);
+            setOrderPlaced(true); 
+            axios.get('/api/baskets/clear?ClientID='+localStorage.getItem('ClientID')) //clear Bakset
+            setTimeout(() => {
+                router.push('/userInterface');
+              }, 2000); 
+           
+
+
         } catch (err) {
             console.error('Failed to send order', err);
             setError('Failed to send order');
@@ -74,6 +89,7 @@ const BasketPage = () => {
     return (
         <div>
             <h1>Your Basket</h1>
+            {orderPlaced && <p>Commande passée avec succès</p>} 
             <div>
                 <strong>Total Price:</strong> ${basket?.TotalPrice.toFixed(2)}
             </div>
