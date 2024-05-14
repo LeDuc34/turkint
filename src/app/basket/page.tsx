@@ -1,13 +1,18 @@
 "use client"
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { withAuth } from '../authContext/page'
+import { withAuth } from '../authContext/page';
 import { useRouter } from 'next/navigation';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+import CheckoutForm from '../stripeElement/page';
+import '../../../styles/globals.css';
 
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "");
 
 interface Article {
     Article: string;
-    Options: string[];  // Updated to reflect potential data issues
+    Options: string[];
     ArticlePrice: number;
 }
 
@@ -25,8 +30,9 @@ interface BasketResponse {
 const BasketPage = () => {
     const router = useRouter();
     const [basket, setBasket] = useState<Basket | null>(null);
+    const [clientSecret, setClientSecret] = useState<string | null>(null);
+    const [orderPlaced, setOrderPlaced] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
-    const [orderPlaced, setOrderPlaced] = useState<boolean>(false); 
 
     useEffect(() => {
         const fetchBasket = async () => {
@@ -37,7 +43,6 @@ const BasketPage = () => {
                     params: { ClientID: clientID }
                 });
                 setBasket(response.data.Basket);
-                console.log(basket);
             } catch (err) {
                 console.error('Empty Basket', err);
                 setError('Empty Basket');
@@ -52,26 +57,38 @@ const BasketPage = () => {
             const clientID = localStorage.getItem('ClientID');
             if (!clientID) throw new Error("Client ID is not set in localStorage.");
             
-            // Make a POST request to the backend endpoint with the basket data
-            const response = await axios.post('/api/orders/send', {
+            const response = await axios.post('/api/payments/paymentIntent', {
                 clientID: clientID,
-                basket: basket,
-                date: new Date().toISOString(),
-                Statut: "wating",
-                TotalPrice: basket?.TotalPrice
-
+                amount: basket?.TotalPrice,
             });
 
-            // Handle the response as needed
+            setClientSecret(response.data.clientSecret);
+        } catch (err) {
+            console.error('Failed to initiate payment', err);
+            setError('Failed to initiate payment');
+        }
+    };
+
+    const handleOrderPlaced = async () => {
+        try {
+            const clientID = localStorage.getItem('ClientID');
+            if (!clientID) throw new Error("Client ID is not set in localStorage.");
+
+            const response = await axios.post('/api/orders/send', {
+                clientID: clientID,
+                DateHeureCommande: new Date().toISOString(),
+                Statut: "waiting",
+                TotalCommande: basket?.TotalPrice,
+                Details: basket?.Articles,
+            });
+
             console.log('Order sent successfully:', response.data);
-            setOrderPlaced(true); 
-            axios.get('/api/baskets/clear?ClientID='+localStorage.getItem('ClientID')) //clear Bakset
+            setOrderPlaced(true);
+            axios.get('/api/baskets/clear?ClientID=' + clientID); // Clear basket
+
             setTimeout(() => {
                 router.push('/userInterface');
-              }, 2000); 
-           
-
-
+            }, 2000);
         } catch (err) {
             console.error('Failed to send order', err);
             setError('Failed to send order');
@@ -85,11 +102,11 @@ const BasketPage = () => {
     if (!basket) {
         return <p>Loading...</p>;
     }
-    
+
     return (
         <div>
             <h1>Your Basket</h1>
-            {orderPlaced && <p>Commande passée avec succès</p>} 
+            {orderPlaced && <p>Commande passée avec succès</p>}
             <div>
                 <strong>Total Price:</strong> ${basket?.TotalPrice.toFixed(2)}
             </div>
@@ -97,11 +114,12 @@ const BasketPage = () => {
                 {basket.Articles.map((article, index) => (
                     <li key={index}>
                         <strong>Price:</strong> ${article.ArticlePrice.toFixed(2)} -
-                        <strong>Options:</strong> <ul>
+                        <strong>Options:</strong>
+                        <ul>
                             {article.Options && typeof article.Options === 'object' && Object.keys(article.Options).length > 0 ? (
                                 Object.entries(article.Options).map(([key, value]) => (
                                     <li key={key}>
-                                        {key.charAt(0).toUpperCase() + key.slice(1)}:{value}
+                                        {key.charAt(0).toUpperCase() + key.slice(1)}: {value}
                                     </li>
                                 ))
                             ) : (
@@ -111,7 +129,13 @@ const BasketPage = () => {
                     </li>
                 ))}
             </ul>
-            <button onClick={handleSendOrder}>Send Order</button>
+            {!clientSecret ? (
+                <button onClick={handleSendOrder}>Send Order</button>
+            ) : (
+                <Elements stripe={stripePromise}>
+                    <CheckoutForm clientSecret={clientSecret} handleOrderPlaced={handleOrderPlaced} />
+                </Elements>
+            )}
         </div>
     );
 };

@@ -1,6 +1,5 @@
 const { Sequelize } = require('sequelize');
 
-// Remplacez les placeholders par vos propres informations de connexion
 const sequelize = new Sequelize('mydb', 'admin', 'admin', {
   host: 'localhost',
   dialect: 'postgres',

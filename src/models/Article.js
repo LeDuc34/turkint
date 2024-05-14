@@ -11,4 +11,4 @@ Article.init({
   Catégorie: { type: DataTypes.STRING }
 }, { sequelize, modelName: 'Article' });
 
-module.exports = Article;
+module. exports = Article;

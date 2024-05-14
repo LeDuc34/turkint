@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom CSS Variables for Dark Mode */
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -16,16 +17,19 @@
   }
 }
 
+/* Global Styles */
 body {
-  color: rgb(var(--foreground-rgb));
+  @apply text-base leading-relaxed text-gray-900 dark:text-gray-100;
   background: linear-gradient(
       to bottom,
       transparent,
       rgb(var(--background-end-rgb))
-    )
+    ),
     rgb(var(--background-start-rgb));
+  @apply bg-no-repeat bg-fixed;
 }
 
+/* Custom Utilities Layer */
 @layer utilities {
   .text-balance {
     text-wrap: balance;
