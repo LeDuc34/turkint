@@ -14,7 +14,8 @@ const LoginForm = () => {
     try{
     const response = await axios.post('/api/users/login', { email, password });
     localStorage.setItem('token', response.data.token);
-    localStorage.setItem('ClientID', response.data.ClientID);   
+    localStorage.setItem('ClientID', response.data.ClientID);
+    axios.get('/api/baskets/clear?ClientID='+localStorage.getItem('ClientID'))
     router.push('/userInterface');
     console.log(response.data);
     

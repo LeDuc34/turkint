@@ -13,7 +13,7 @@ const takeOrder = async (req, res) => {
       Details,
     });
 
-    res.status(201).send({ Commande: newCommande });
+    res.status(201).send({ CommandeID: newCommande.CommandeID });
   } catch (error) {
     console.error(error); // Log the full error for server-side debugging
     if (error.name === 'SequelizeValidationError') {
@@ -76,5 +76,35 @@ const updateStatus = async (req, res) => {
     }
 }
 
+const getOrderInfos = async (req, res) => {
+    const { CommandeID } = req.query;
+    try {
+        const order = await Commande.findByPk(CommandeID);
+        if (!order) {
+            return res.status(404).send({ message: 'Order not found' });
+        }
+        res.send(order);
+    } catch (error) {
+        res.status(500).send({ message: 'An error occurred', error });
+    }
+}
+const updateOrderStatus = async (req, res) => {
+    const { CommandeID, Statut, ProcessingStartTime } = req.body;
+    try {
+        const order = await Commande.findByPk(CommandeID);
+        if (!order) {
+            return res.status(404).send({ message: 'Order not found' });
+        }
+        order.Statut = Statut;
+        if (Statut === 'processing') {
+            order.ProcessingStartTime = ProcessingStartTime || new Date().toISOString();
+        }
+        await order.save();
+        res.send({ message: 'Order status updated successfully', order });
+    } catch (error) {
+        res.status(500).send({ message: 'An error occurred', error });
+    }
+};
 
-module.exports = { takeOrder,displayOrdersWaiting,displayOrdersProcessing,updateStatus,displayOrdersReady };
+
+module.exports = { updateOrderStatus,getOrderInfos,takeOrder,displayOrdersWaiting,displayOrdersProcessing,updateStatus,displayOrdersReady };

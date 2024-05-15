@@ -67,6 +67,7 @@ const BasketPage = () => {
             console.error('Failed to initiate payment', err);
             setError('Failed to initiate payment');
         }
+       handleOrderPlaced(); // here for test remove for the final version
     };
 
     const handleOrderPlaced = async () => {
@@ -85,10 +86,10 @@ const BasketPage = () => {
             console.log('Order sent successfully:', response.data);
             setOrderPlaced(true);
             axios.get('/api/baskets/clear?ClientID=' + clientID); // Clear basket
-
-            setTimeout(() => {
-                router.push('/userInterface');
-            }, 2000);
+            
+            // Redirect to order tracking page
+            console.log('Order ID:', response.data.CommandeID);
+            router.push(`/orderTracking?orderID=${response.data.CommandeID}`);
         } catch (err) {
             console.error('Failed to send order', err);
             setError('Failed to send order');

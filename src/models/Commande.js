@@ -27,6 +27,9 @@ Commande.init({
   },
   Details: {
     type: DataTypes.ARRAY(DataTypes.JSON)
+  },
+  Attente:{
+    type: DataTypes.INTEGER
   }
 }, {
   sequelize,
