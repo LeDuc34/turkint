@@ -102,10 +102,8 @@ const updateTimer = async (req, res) => {
         await order.save();
         res.send({ message: 'Order timer updated successfully', order });
     } catch (error) {
-        console.error('Error updating timer:', error);  // Log the error details
         res.status(500).send({ message: 'An error occurred', error });
     }
-}
-
+};
 
 module.exports = { updateTimer,getOrderInfos,takeOrder,displayOrdersWaiting,displayOrdersProcessing,updateStatus,displayOrdersReady };

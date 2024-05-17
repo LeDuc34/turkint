@@ -28,14 +28,9 @@ const Home = () => {
     const fetchOrders = async (endpoint: string, setter: React.Dispatch<React.SetStateAction<Order[]>>) => {
         try {
             const response = await axios.get<Order[]>(`/api/orders/${endpoint}`);
-            console.log(`Fetched ${endpoint} orders: `, response.data);
             setter(response.data);
         } catch (error: any) {
-            if (axios.isAxiosError(error)) {
-                console.error('Axios error:', error.response?.data.message || 'An unknown error occurred');
-            } else {
-                console.error('Unexpected error:', error);
-            }
+            console.error('Failed to fetch orders:', error);
         }
     };
 
@@ -48,7 +43,7 @@ const Home = () => {
             fetchOrders('waiting', setWaitingOrders);
             fetchOrders('processing', setCurrentOrders);
             fetchOrders('ready', setReadyOrders);
-        }, 10000);
+        }, 60000); // Fetch orders every minute
 
         return () => clearInterval(intervalId);
     }, []);
@@ -58,7 +53,23 @@ const Home = () => {
             setCurrentOrders((orders) => 
                 orders.map(order => {
                     if (order.Attente && order.Attente > 0) {
-                        return { ...order, Attente: order.Attente - 1 };
+                        const newAttente = order.Attente - 1;
+
+                        if (newAttente <= 0) {
+                            // Move order to "ready" section and update status
+                            handleStatusUpdate(order.CommandeID, 'ready');
+                            return { ...order, Attente: 0, Statut: 'ready' };
+                        }
+
+                        // Update the server with the new remaining time
+                        axios.post('/api/orders/updateTimer', {
+                            CommandeID: order.CommandeID,
+                            Attente: newAttente,
+                        }).catch(error => {
+                            console.error('Failed to update timer:', error);
+                        });
+
+                        return { ...order, Attente: newAttente };
                     }
                     return order;
                 })
@@ -77,22 +88,17 @@ const Home = () => {
             await axios.post('/api/orders/update', {
                 CommandeID: orderId,
                 Statut: newStatus,
-                Attente: newStatus === 'processing' ? timerDurations[orderId] || 0 : null,
+                Attente: newStatus === 'processing' ? timerDurations[orderId] * 60 || 0 : null,
             });
             fetchOrders('waiting', setWaitingOrders);
             fetchOrders('processing', setCurrentOrders);
             fetchOrders('ready', setReadyOrders);
         } catch (error: any) {
-            if (axios.isAxiosError(error)) {
-                console.error('Axios error:', error.response?.data.message || 'An unknown error occurred');
-            } else {
-                console.error('Unexpected error:', error);
-            }
+            console.error('Failed to update status:', error);
         }
     };
 
     const handleSetTimer = async (orderId: number) => {
-        console.log(orderId);
         const duration = timerDurations[orderId];
         if (duration && duration > 0) {
             try {

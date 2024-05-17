@@ -17,7 +17,7 @@ interface Order {
     Statut: string;
     TotalCommande: number;
     Details: Article[];
-    Attente: string;
+    Attente: number; // Change Attente to be a number representing remaining time in seconds
 }
 
 const OrderTrackingPage = () => {
@@ -45,6 +45,31 @@ const OrderTrackingPage = () => {
         return () => clearInterval(interval); // Cleanup interval on component unmount
     }, [orderID]);
 
+    useEffect(() => {
+        if (order && order.Attente <= 0 && order.Statut !== 'ready') {
+            const updateOrderStatus = async () => {
+                try {
+                    await axios.post('/api/orders/update', {
+                        CommandeID: order.CommandeID,
+                        Statut: 'ready',
+                        Attente: 0
+                    });
+                    setOrder((prevOrder) => prevOrder ? { ...prevOrder, Statut: 'ready', Attente: 0 } : null);
+                } catch (err) {
+                    console.error('Failed to update order status', err);
+                }
+            };
+
+            updateOrderStatus();
+        }
+    }, [order]);
+
+    const formatTime = (seconds: number) => {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return `${minutes}m ${remainingSeconds}s`;
+    };
+
     if (error) {
         return <p>{error}</p>;
     }
@@ -60,10 +85,10 @@ const OrderTrackingPage = () => {
                 <strong>Order ID:</strong> {order.CommandeID}
             </div>
             <div>
-                <strong>Status:</strong> {order.Statut}
+                <strong>Status:</strong> {order.Statut === 'ready' ? 'Order is ready' : order.Statut}
             </div>
             <div>
-                <strong>Remaining Time:</strong> {order.Attente}
+                <strong>Remaining Time:</strong> {order.Attente > 0 ? formatTime(order.Attente) : 'Time is up!'}
             </div>
             <div>
                 <strong>Total Price:</strong> ${order.TotalCommande.toFixed(2)}

@@ -8,7 +8,7 @@ const handle = nextApp.getRequestHandler();
 const Commande = require('../src/models/Commande.js');
 const Client = require('../src/models/Client'); 
 const Article = require('../src/models/Commande.js');
-const Basket = require('../src/models/Client'); 
+const Basket = require('../src/models/Basket.js'); 
 async function initializeDatabase() {
   try {
     await sequelize.authenticate();
