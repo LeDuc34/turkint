@@ -53,7 +53,7 @@ function Form() {
 
 const Home = () => {
   return(
-    <div>
+    <div class="flex items-center justify-center flex-col h-screen">
       <Form/>
       <Logout/>
       <ClearBasket/>

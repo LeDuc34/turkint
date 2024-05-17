@@ -105,7 +105,7 @@ const BasketPage = () => {
     }
 
     return (
-        <div>
+        <div class="flex items-center justify-center">
             <h1>Your Basket</h1>
             {orderPlaced && <p>Commande passée avec succès</p>}
             <div>
