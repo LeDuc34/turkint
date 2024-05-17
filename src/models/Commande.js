@@ -29,7 +29,7 @@ Commande.init({
     type: DataTypes.ARRAY(DataTypes.JSON)
   },
   Attente:{
-    type: DataTypes.INTEGER
+    type: DataTypes.FLOAT
   }
 }, {
   sequelize,

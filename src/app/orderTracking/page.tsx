@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -17,29 +17,32 @@ interface Order {
     Statut: string;
     TotalCommande: number;
     Details: Article[];
+    Attente: string;
 }
 
 const OrderTrackingPage = () => {
     const searchParams = useSearchParams();
     const orderID = searchParams.get('orderID');
-    console.log(orderID);
     const [order, setOrder] = useState<Order | null>(null);
     const [error, setError] = useState<string>('');
 
+    const fetchOrder = async () => {
+        if (!orderID) return;
+
+        try {
+            const response = await axios.get<Order>(`/api/orders/getInfos?CommandeID=${orderID}`);
+            setOrder(response.data);
+        } catch (err) {
+            console.error('Failed to fetch order', err);
+            setError('Failed to fetch order');
+        }
+    };
+
     useEffect(() => {
-        const fetchOrder = async () => {
-            if (!orderID) return;
-
-            try {
-                const response = await axios.get<Order>(`/api/orders/getInfos?CommandeID=${orderID}`);
-                setOrder(response.data);
-            } catch (err) {
-                console.error('Failed to fetch order', err);
-                setError('Failed to fetch order');
-            }
-        };
-
         fetchOrder();
+        const interval = setInterval(fetchOrder, 10000); // Fetch order details every 10 seconds
+
+        return () => clearInterval(interval); // Cleanup interval on component unmount
     }, [orderID]);
 
     if (error) {
@@ -58,6 +61,9 @@ const OrderTrackingPage = () => {
             </div>
             <div>
                 <strong>Status:</strong> {order.Statut}
+            </div>
+            <div>
+                <strong>Remaining Time:</strong> {order.Attente}
             </div>
             <div>
                 <strong>Total Price:</strong> ${order.TotalCommande.toFixed(2)}

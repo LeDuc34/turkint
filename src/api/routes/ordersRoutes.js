@@ -1,7 +1,7 @@
 // routes/userRoutes.js
 const express = require('express');
 const router = express.Router();
-const { updateOrderStatus,getOrderInfos,takeOrder, displayOrdersProcessing,displayOrdersWaiting,updateStatus,displayOrdersReady } = require('../controllers/orderController');
+const { updateTimer,getOrderInfos,takeOrder, displayOrdersProcessing,displayOrdersWaiting,updateStatus,displayOrdersReady } = require('../controllers/orderController');
 
 
 router.post('/send',takeOrder)
@@ -10,6 +10,6 @@ router.get('/waiting',displayOrdersWaiting)
 router.post('/update',updateStatus)
 router.get('/ready',displayOrdersReady)
 router.get('/getInfos',getOrderInfos)
-router.post('/updateStatus',updateOrderStatus)
+router.post('/updateTimer',updateTimer)
 
 module.exports  = router;

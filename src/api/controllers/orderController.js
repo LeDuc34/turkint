@@ -88,23 +88,24 @@ const getOrderInfos = async (req, res) => {
         res.status(500).send({ message: 'An error occurred', error });
     }
 }
-const updateOrderStatus = async (req, res) => {
-    const { CommandeID, Statut, ProcessingStartTime } = req.body;
+// backend/controllers/orderController.js
+
+
+const updateTimer = async (req, res) => {
+    const { CommandeID, Attente } = req.body;
     try {
         const order = await Commande.findByPk(CommandeID);
         if (!order) {
             return res.status(404).send({ message: 'Order not found' });
         }
-        order.Statut = Statut;
-        if (Statut === 'processing') {
-            order.ProcessingStartTime = ProcessingStartTime || new Date().toISOString();
-        }
+        order.Attente = Attente;
         await order.save();
-        res.send({ message: 'Order status updated successfully', order });
+        res.send({ message: 'Order timer updated successfully', order });
     } catch (error) {
+        console.error('Error updating timer:', error);  // Log the error details
         res.status(500).send({ message: 'An error occurred', error });
     }
-};
+}
 
 
-module.exports = { updateOrderStatus,getOrderInfos,takeOrder,displayOrdersWaiting,displayOrdersProcessing,updateStatus,displayOrdersReady };
+module.exports = { updateTimer,getOrderInfos,takeOrder,displayOrdersWaiting,displayOrdersProcessing,updateStatus,displayOrdersReady };

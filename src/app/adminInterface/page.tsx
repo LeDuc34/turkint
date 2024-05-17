@@ -14,7 +14,8 @@ interface Order {
     DateHeureCommande: string;
     Statut: string;
     TotalCommande: number;
-    Details: Article[]; // Array of Articles
+    Details: Article[];
+    Attente?: number; // Change Attente to be a number representing remaining time in seconds
 }
 
 const Home = () => {
@@ -22,11 +23,12 @@ const Home = () => {
     const [currentOrders, setCurrentOrders] = useState<Order[]>([]);
     const [readyOrders, setReadyOrders] = useState<Order[]>([]);
     const [visibleOrder, setVisibleOrder] = useState<number | null>(null);
+    const [timerDurations, setTimerDurations] = useState<{ [key: number]: number }>({});
 
     const fetchOrders = async (endpoint: string, setter: React.Dispatch<React.SetStateAction<Order[]>>) => {
         try {
             const response = await axios.get<Order[]>(`/api/orders/${endpoint}`);
-            console.log(`Fetched ${endpoint} orders: `, response.data); // Debugging statement
+            console.log(`Fetched ${endpoint} orders: `, response.data);
             setter(response.data);
         } catch (error: any) {
             if (axios.isAxiosError(error)) {
@@ -51,6 +53,21 @@ const Home = () => {
         return () => clearInterval(intervalId);
     }, []);
 
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setCurrentOrders((orders) => 
+                orders.map(order => {
+                    if (order.Attente && order.Attente > 0) {
+                        return { ...order, Attente: order.Attente - 1 };
+                    }
+                    return order;
+                })
+            );
+        }, 1000); // Decrement every second
+
+        return () => clearInterval(intervalId);
+    }, [currentOrders]);
+
     const toggleOrderDetails = (orderId: number) => {
         setVisibleOrder(visibleOrder === orderId ? null : orderId);
     };
@@ -59,9 +76,9 @@ const Home = () => {
         try {
             await axios.post('/api/orders/update', {
                 CommandeID: orderId,
-                Statut: newStatus
+                Statut: newStatus,
+                Attente: newStatus === 'processing' ? timerDurations[orderId] || 0 : null,
             });
-            // Fetch updated orders
             fetchOrders('waiting', setWaitingOrders);
             fetchOrders('processing', setCurrentOrders);
             fetchOrders('ready', setReadyOrders);
@@ -72,6 +89,33 @@ const Home = () => {
                 console.error('Unexpected error:', error);
             }
         }
+    };
+
+    const handleSetTimer = async (orderId: number) => {
+        console.log(orderId);
+        const duration = timerDurations[orderId];
+        if (duration && duration > 0) {
+            try {
+                await axios.post('/api/orders/updateTimer', {
+                    CommandeID: orderId,
+                    Attente: duration * 60, // Store the remaining time directly in seconds
+                });
+                fetchOrders('waiting', setWaitingOrders);
+                fetchOrders('processing', setCurrentOrders);
+                fetchOrders('ready', setReadyOrders);
+            } catch (error: any) {
+                console.error('Failed to set timer:', error);
+            }
+        }
+    };
+
+    const getRemainingTime = (duration: number) => {
+        const minutes = Math.floor(duration / 60);
+        const seconds = duration % 60;
+        if (duration <= 0) {
+            return "Time's up!";
+        }
+        return `${minutes}m ${seconds}s`;
     };
 
     const renderOrderDetails = (order: Order) => {
@@ -116,7 +160,7 @@ const Home = () => {
                     ))}
                 </ul>
             </div>
-                
+
             <div>
                 <h2>Commande en cours :</h2>
                 <ul>
@@ -129,6 +173,19 @@ const Home = () => {
                             {visibleOrder === order.CommandeID && renderOrderDetails(order)}
                             <button onClick={() => handleStatusUpdate(order.CommandeID, 'waiting')}>Mark as Waiting</button>
                             <button onClick={() => handleStatusUpdate(order.CommandeID, 'ready')}>Mark as Ready</button>
+                            <div>
+                                <input
+                                    type="number"
+                                    placeholder="Set timer (minutes)"
+                                    value={timerDurations[order.CommandeID] || ''}
+                                    onChange={(e) => setTimerDurations({ ...timerDurations, [order.CommandeID]: parseInt(e.target.value) })}
+                                    className="p-2 border rounded"
+                                />
+                                <button onClick={() => handleSetTimer(order.CommandeID)} className="ml-2 p-2 bg-blue-500 text-white rounded">Set Timer</button>
+                            </div>
+                            {order.Attente !== undefined && (
+                                <p>Remaining Time: {getRemainingTime(order.Attente)}</p>
+                            )}
                         </li>
                     ))}
                 </ul>
