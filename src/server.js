@@ -5,10 +5,12 @@ const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== 'production';
 const nextApp = next({ dev });
 const handle = nextApp.getRequestHandler();
+
 const Commande = require('../src/models/Commande.js');
 const Client = require('../src/models/Client'); 
 const Article = require('../src/models/Commande.js');
-const Basket = require('../src/models/Client'); 
+const Basket = require('../src/models/Basket.js'); 
+
 async function initializeDatabase() {
   try {
     await sequelize.authenticate();
