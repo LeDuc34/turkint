@@ -7,6 +7,7 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --font-color-light: 0, 0, 0; /* Light mode font color */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -14,12 +15,14 @@
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
+    --font-color-dark: 255, 255, 255; /* Dark mode font color */
   }
 }
 
 /* Global Styles */
 body {
-  @apply text-base leading-relaxed text-gray-900 dark:text-gray-100;
+  @apply text-base leading-relaxed;
+  color: rgb(var(--font-color-light)); /* Use the light mode font color variable */
   background: linear-gradient(
       to bottom,
       transparent,
@@ -27,6 +30,12 @@ body {
     ),
     rgb(var(--background-start-rgb));
   @apply bg-no-repeat bg-fixed;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    color: rgb(var(--font-color-dark)); /* Use the dark mode font color variable */
+  }
 }
 
 /* Custom Utilities Layer */

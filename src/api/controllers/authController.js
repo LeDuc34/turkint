@@ -3,12 +3,11 @@ const jwt = require('jsonwebtoken');
 const Client = require('../../models/Client');
 
 const loginUser = async (req, res) => {
-    //console.log(req.body); 
     const { email, password } = req.body;
     try {
-        const user = await Client.findOne({where:{Email: email}});
+        const user = await Client.findOne({ where: { Email: email } });
         if (!user) {
-            return res.status(401).send({ message: 'User not found !' });
+            return res.status(401).send({ message: 'User not found!' });
         }
 
         const isMatch = await bcrypt.compare(password, user.Password);
@@ -16,10 +15,14 @@ const loginUser = async (req, res) => {
             return res.status(401).send({ message: 'Invalid password' });
         }
 
-        // Generate JWT token
-        const token = jwt.sign({ userId: user.id }, 'your_secret_key', { expiresIn: '1h' });
-        res.send({ token, ClientID : user.ClientID});
-        
+        // Generate JWT token with user role
+        const token = jwt.sign(
+            { userId: user.ClientID, role: user.Role }, // Include role in the payload
+            'your_secret_key', // Replace with process.env.JWT_SECRET in production
+            { expiresIn: '1h' }
+        );
+
+        res.send({ token, ClientID: user.ClientID });
     } catch (error) {
         res.status(500).send({ message: 'Internal server error' });
         console.error(error);

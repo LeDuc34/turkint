@@ -10,7 +10,8 @@ Client.init({
   Password: { type: DataTypes.STRING, allowNull: false},
   Phone: { type: DataTypes.STRING },
   Adress: { type: DataTypes.STRING },
-  Basket: { type: DataTypes.ARRAY(DataTypes.JSON) }
+  Basket: { type: DataTypes.ARRAY(DataTypes.JSON) },
+  Role : { type: DataTypes.STRING,allowNull: false, defaultValue: 'user' }
 }, { sequelize, modelName: 'Client' });
 
 module.exports = Client;

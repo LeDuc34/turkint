@@ -67,7 +67,7 @@ const BasketPage = () => {
             console.error('Failed to initiate payment', err);
             setError('Failed to initiate payment');
         }
-       handleOrderPlaced(); // here for test remove for the final version
+      // handleOrderPlaced(); // here for test remove for the final version
     };
 
     const handleOrderPlaced = async () => {
@@ -80,7 +80,8 @@ const BasketPage = () => {
                 DateHeureCommande: new Date().toISOString(),
                 Statut: "waiting",
                 TotalCommande: basket?.TotalPrice,
-                Details: basket?.Articles,
+                Details: basket?.Articles,    
+                Attente: 100000000,
             });
 
             console.log('Order sent successfully:', response.data);

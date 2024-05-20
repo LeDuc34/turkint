@@ -40,7 +40,7 @@ const OrderTrackingPage = () => {
 
     useEffect(() => {
         fetchOrder();
-        const interval = setInterval(fetchOrder, 10000); // Fetch order details every 10 seconds
+        const interval = setInterval(fetchOrder, 1000); // Fetch order details every 10 seconds
 
         return () => clearInterval(interval); // Cleanup interval on component unmount
     }, [orderID]);
@@ -78,34 +78,37 @@ const OrderTrackingPage = () => {
         return <p>Loading...</p>;
     }
 
+    const showRemainingTime = order.Attente <= 10000; // Show remaining time if it is less than or equal to 15 minutes
+
     return (
-        <div>
-            <h1>Order Tracking</h1>
-            <div>
+        <div className="p-6">
+            <h1 className="text-2xl font-bold mb-4">Order Tracking</h1>
+            <div className="mb-2">
                 <strong>Order ID:</strong> {order.CommandeID}
             </div>
-            <div>
+            <div className="mb-2">
                 <strong>Status:</strong> {order.Statut === 'ready' ? 'Order is ready' : order.Statut}
             </div>
-            <div>
-                <strong>Remaining Time:</strong> {order.Attente > 0 ? formatTime(order.Attente) : 'Time is up!'}
-            </div>
-            <div>
+            {showRemainingTime && (
+                <div className="mb-2">
+                    <strong>Remaining Time:</strong> {order.Attente > 0 ? formatTime(order.Attente) : 'Time is up!'}
+                </div>
+            )}
+            <div className="mb-2">
                 <strong>Total Price:</strong> ${order.TotalCommande.toFixed(2)}
             </div>
-            <div>
+            <div className="mb-2">
                 <strong>Ordered At:</strong> {new Date(order.DateHeureCommande).toLocaleString()}
             </div>
-            <ul>
+            <ul className="list-disc pl-6">
                 {order.Details.map((article, index) => (
                     <li key={index}>
-                        <strong>Price:</strong> ${article.ArticlePrice.toFixed(2)} -
-                        <strong>Options:</strong>
-                        <ul>
-                            {article.Options && typeof article.Options === 'object' && Object.keys(article.Options).length > 0 ? (
-                                Object.entries(article.Options).map(([key, value]) => (
-                                    <li key={key}>
-                                        {key.charAt(0).toUpperCase() + key.slice(1)}: {value}
+                        <strong>{article.Article}:</strong> ${article.ArticlePrice.toFixed(2)}
+                        <ul className="list-disc pl-6">
+                            {article.Options && article.Options.length > 0 ? (
+                                article.Options.map((option, idx) => (
+                                    <li key={idx}>
+                                        {option}
                                     </li>
                                 ))
                             ) : (

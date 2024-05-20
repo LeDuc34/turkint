@@ -1,6 +1,7 @@
 "use client";
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import '../../../styles/globals.css'; 
 
 interface Article {
     Article: string;
@@ -15,7 +16,7 @@ interface Order {
     Statut: string;
     TotalCommande: number;
     Details: Article[];
-    Attente?: number; // Change Attente to be a number representing remaining time in seconds
+    Attente: number; // Change Attente to be a number representing remaining time in seconds
 }
 
 const Home = () => {
@@ -43,16 +44,16 @@ const Home = () => {
             fetchOrders('waiting', setWaitingOrders);
             fetchOrders('processing', setCurrentOrders);
             fetchOrders('ready', setReadyOrders);
-        }, 60000); // Fetch orders every minute
+        }, 2000); // Fetch orders every 20 seconds
 
         return () => clearInterval(intervalId);
     }, []);
 
     useEffect(() => {
         const intervalId = setInterval(() => {
-            setCurrentOrders((orders) => 
+            setCurrentOrders((orders) =>
                 orders.map(order => {
-                    if (order.Attente && order.Attente > 0) {
+                    if (order.Attente > 0) {
                         const newAttente = order.Attente - 1;
 
                         if (newAttente <= 0) {
@@ -85,10 +86,12 @@ const Home = () => {
 
     const handleStatusUpdate = async (orderId: number, newStatus: string) => {
         try {
+            const duration = timerDurations[orderId] || 60; // Default to 5 minutes if no duration is set
+            const attente = duration * 60;
             await axios.post('/api/orders/update', {
                 CommandeID: orderId,
                 Statut: newStatus,
-                Attente: newStatus === 'processing' ? timerDurations[orderId] * 60 || 0 : null,
+                Attente: attente,
             });
             fetchOrders('waiting', setWaitingOrders);
             fetchOrders('processing', setCurrentOrders);
@@ -115,6 +118,15 @@ const Home = () => {
         }
     };
 
+    const handleDeleteOrder = async (orderId: number) => {
+        try {
+            await axios.post('/api/orders/delete',{CommandeID : orderId});
+            setReadyOrders(readyOrders.filter(order => order.CommandeID !== orderId));
+        } catch (error: any) {
+            console.error('Failed to delete order:', error);
+        }
+    };
+
     const getRemainingTime = (duration: number) => {
         const minutes = Math.floor(duration / 60);
         const seconds = duration % 60;
@@ -124,22 +136,28 @@ const Home = () => {
         return `${minutes}m ${seconds}s`;
     };
 
+    const formatOptions = (options: any) => {
+        return Object.entries(options)
+            .map(([key, value]) => `${key.charAt(0).toUpperCase() + key.slice(1)}: ${value}`)
+            .join(', ');
+    };
+
     const renderOrderDetails = (order: Order) => {
         return (
-            <div>
-                <p>Client ID: {order.ClientID}</p>
-                <p>Date/Time: {order.DateHeureCommande}</p>
-                <p>Status: {order.Statut}</p>
-                <p>Total: ${order.TotalCommande.toFixed(2)}</p>
+            <div className="p-4 bg-gray-100 rounded-md shadow-md text-black">
+                <p><strong>Client ID:</strong> {order.ClientID}</p>
+                <p><strong>Date/Time:</strong> {order.DateHeureCommande}</p>
+                <p><strong>Status:</strong> {order.Statut}</p>
+                <p><strong>Total:</strong> ${order.TotalCommande.toFixed(2)}</p>
                 <div>
-                    <h4>Articles:</h4>
-                    <ul>
+                    <h4 className="font-bold">Articles:</h4>
+                    <ul className="list-disc pl-6">
                         {order.Details.length === 0 ? (
                             <li>No articles available</li>
                         ) : (
                             order.Details.map((article, index) => (
                                 <li key={index}>
-                                    <strong>{article.Article}</strong> - Options: {JSON.stringify(article.Options)}, ${article.ArticlePrice.toFixed(2)}
+                                    <strong>{article.Article}</strong> - Options: {formatOptions(article.Options)}, ${article.ArticlePrice.toFixed(2)}
                                 </li>
                             ))
                         )}
@@ -150,47 +168,85 @@ const Home = () => {
     };
 
     return (
-        <div>
-            <div>
-                <h2>Commande en attente :</h2>
-                <ul>
+        <div className="p-6">
+            <div className="mb-8">
+                <h2 className="text-2xl font-bold mb-4">Commande en attente :</h2>
+                <ul className="space-y-4">
                     {waitingOrders.map((order) => (
-                        <li key={order.CommandeID}>
-                            {`Order #${order.CommandeID}`}
-                            <button onClick={() => toggleOrderDetails(order.CommandeID)}>
-                                {visibleOrder === order.CommandeID ? 'Hide Details' : 'Show Details'}
-                            </button>
+                        <li key={order.CommandeID} className="bg-white p-4 rounded-md shadow-md text-black">
+                            <div className="flex justify-between items-center">
+                                <span>{`Order #${order.CommandeID}`}</span>
+                                <div className="flex space-x-2">
+                                    <button 
+                                        onClick={() => toggleOrderDetails(order.CommandeID)}
+                                        className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                                    >
+                                        {visibleOrder === order.CommandeID ? 'Hide Details' : 'Show Details'}
+                                    </button>
+                                    <button 
+                                        onClick={() => handleStatusUpdate(order.CommandeID, 'processing')}
+                                        className="px-4 py-2 bg-green-500 text-white rounded-md"
+                                    >
+                                        Mark as Processing
+                                    </button>
+                                </div>
+                            </div>
                             {visibleOrder === order.CommandeID && renderOrderDetails(order)}
-                            <button onClick={() => handleStatusUpdate(order.CommandeID, 'processing')}>Mark as Processing</button>
                         </li>
                     ))}
                 </ul>
             </div>
 
-            <div>
-                <h2>Commande en cours :</h2>
-                <ul>
+            <div className="mb-8">
+                <h2 className="text-2xl font-bold mb-4">Commande en cours :</h2>
+                <ul className="space-y-4">
                     {currentOrders.map((order) => (
-                        <li key={order.CommandeID}>
-                            {`Order #${order.CommandeID}`}
-                            <button onClick={() => toggleOrderDetails(order.CommandeID)}>
-                                {visibleOrder === order.CommandeID ? 'Hide Details' : 'Show Details'}
-                            </button>
-                            {visibleOrder === order.CommandeID && renderOrderDetails(order)}
-                            <button onClick={() => handleStatusUpdate(order.CommandeID, 'waiting')}>Mark as Waiting</button>
-                            <button onClick={() => handleStatusUpdate(order.CommandeID, 'ready')}>Mark as Ready</button>
-                            <div>
-                                <input
-                                    type="number"
-                                    placeholder="Set timer (minutes)"
-                                    value={timerDurations[order.CommandeID] || ''}
-                                    onChange={(e) => setTimerDurations({ ...timerDurations, [order.CommandeID]: parseInt(e.target.value) })}
-                                    className="p-2 border rounded"
-                                />
-                                <button onClick={() => handleSetTimer(order.CommandeID)} className="ml-2 p-2 bg-blue-500 text-white rounded">Set Timer</button>
+                        <li key={order.CommandeID} className="bg-white p-4 rounded-md shadow-md text-black">
+                            <div className="flex justify-between items-center">
+                                <span>{`Order #${order.CommandeID}`}</span>
+                                <div className="flex space-x-2">
+                                    <button 
+                                        onClick={() => toggleOrderDetails(order.CommandeID)}
+                                        className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                                    >
+                                        {visibleOrder === order.CommandeID ? 'Hide Details' : 'Show Details'}
+                                    </button>
+                                    <button 
+                                        onClick={() => handleStatusUpdate(order.CommandeID, 'waiting')}
+                                        className="px-4 py-2 bg-yellow-500 text-white rounded-md"
+                                    >
+                                        Mark as Waiting
+                                    </button>
+                                    <button 
+                                        onClick={() => handleStatusUpdate(order.CommandeID, 'ready')}
+                                        className="px-4 py-2 bg-green-500 text-white rounded-md"
+                                    >
+                                        Mark as Ready
+                                    </button>
+                                </div>
                             </div>
-                            {order.Attente !== undefined && (
-                                <p>Remaining Time: {getRemainingTime(order.Attente)}</p>
+                            {visibleOrder === order.CommandeID && (
+                                <div className="mt-4">
+                                    {renderOrderDetails(order)}
+                                    <div className="mt-4">
+                                        <input
+                                            type="number"
+                                            placeholder="Set timer (minutes)"
+                                            value={timerDurations[order.CommandeID] || ''}
+                                            onChange={(e) => setTimerDurations({ ...timerDurations, [order.CommandeID]: parseInt(e.target.value) })}
+                                            className="p-2 border rounded w-full"
+                                        />
+                                        <button 
+                                            onClick={() => handleSetTimer(order.CommandeID)} 
+                                            className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+                                        >
+                                            Set Timer
+                                        </button>
+                                    </div>
+                                    {order.Statut === 'processing' && order.Attente < 10000 && order.Attente > 0 && (
+                                        <p className="mt-2 text-red-500">Remaining Time: {getRemainingTime(order.Attente)}</p>
+                                    )}
+                                </div>
                             )}
                         </li>
                     ))}
@@ -198,16 +254,34 @@ const Home = () => {
             </div>
 
             <div>
-                <h2>Commande prête :</h2>
-                <ul>
+                <h2 className="text-2xl font-bold mb-4">Commande prête :</h2>
+                <ul className="space-y-4">
                     {readyOrders.map((order) => (
-                        <li key={order.CommandeID}>
-                            {`Order #${order.CommandeID}`}
-                            <button onClick={() => toggleOrderDetails(order.CommandeID)}>
-                                {visibleOrder === order.CommandeID ? 'Hide Details' : 'Show Details'}
-                            </button>
+                        <li key={order.CommandeID} className="bg-white p-4 rounded-md shadow-md text-black">
+                            <div className="flex justify-between items-center">
+                                <span>{`Order #${order.CommandeID}`}</span>
+                                <div className="flex space-x-2">
+                                    <button 
+                                        onClick={() => toggleOrderDetails(order.CommandeID)}
+                                        className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                                    >
+                                        {visibleOrder === order.CommandeID ? 'Hide Details' : 'Show Details'}
+                                    </button>
+                                    <button 
+                                        onClick={() => handleStatusUpdate(order.CommandeID, 'processing')}
+                                        className="px-4 py-2 bg-yellow-500 text-white rounded-md"
+                                    >
+                                        Mark as Processing
+                                    </button>
+                                    <button 
+                                        onClick={() => handleDeleteOrder(order.CommandeID)}
+                                        className="px-4 py-2 bg-red-500 text-white rounded-md"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
                             {visibleOrder === order.CommandeID && renderOrderDetails(order)}
-                            <button onClick={() => handleStatusUpdate(order.CommandeID, 'processing')}>Mark as Processing</button>
                         </li>
                     ))}
                 </ul>

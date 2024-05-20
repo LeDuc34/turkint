@@ -3,7 +3,7 @@ const Commande = require("../../models/Commande");
 
 const takeOrder = async (req, res) => {
   try {
-    const { ClientID, DateHeureCommande, Statut, TotalCommande, Details } = req.body;
+    const { ClientID, DateHeureCommande, Statut, TotalCommande, Details,Attente } = req.body;
 
     const newCommande = await Commande.create({
       ClientID,
@@ -11,6 +11,7 @@ const takeOrder = async (req, res) => {
       Statut,
       TotalCommande,
       Details,
+      Attente
     });
 
     res.status(201).send({ CommandeID: newCommande.CommandeID });
@@ -106,4 +107,18 @@ const updateTimer = async (req, res) => {
     }
 };
 
-module.exports = { updateTimer,getOrderInfos,takeOrder,displayOrdersWaiting,displayOrdersProcessing,updateStatus,displayOrdersReady };
+const deleteOrder = async (req, res) => {
+    const { CommandeID } = req.body;
+    try {
+        const order = await Commande.findByPk(CommandeID);
+        if (!order) {
+            return res.status(404).send({ message: 'Order not found' });
+        }
+        await order.destroy();
+        res.send({ message: 'Order deleted successfully' });
+    } catch (error) {
+        res.status(500).send({ message: 'An error occurred', error });
+    }
+}
+
+module.exports = {deleteOrder,updateTimer,getOrderInfos,takeOrder,displayOrdersWaiting,displayOrdersProcessing,updateStatus,displayOrdersReady };

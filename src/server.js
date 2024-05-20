@@ -5,15 +5,17 @@ const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== 'production';
 const nextApp = next({ dev });
 const handle = nextApp.getRequestHandler();
+
 const Commande = require('../src/models/Commande.js');
 const Client = require('../src/models/Client'); 
 const Article = require('../src/models/Commande.js');
 const Basket = require('../src/models/Basket.js'); 
+
 async function initializeDatabase() {
   try {
     await sequelize.authenticate();
     console.log('Connection to the PostgreSQL database successful.');
-    await sequelize.sync({force: true});
+    await sequelize.sync({force:true});
     console.log('All models were synchronized successfully.');
   } catch (error) {
     console.error('Unable to connect to the database or synchronize models:', error);
