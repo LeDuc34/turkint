@@ -11,7 +11,18 @@ Client.init({
   Phone: { type: DataTypes.STRING },
   Adress: { type: DataTypes.STRING },
   Basket: { type: DataTypes.ARRAY(DataTypes.JSON) },
-  Role : { type: DataTypes.STRING,allowNull: false, defaultValue: 'user' }
+  Role : { type: DataTypes.STRING,allowNull: false, defaultValue: 'user' },
+  totalOrders: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+},
+totalAmountSpent: {
+    type: DataTypes.FLOAT,
+    defaultValue: 0.0,
+},
+lastOrderDate: {
+    type: DataTypes.DATE,
+},
 }, { sequelize, modelName: 'Client' });
 
 module.exports = Client;

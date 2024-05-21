@@ -1,8 +1,9 @@
 "use client";
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import '../../../styles/globals.css'; 
-import { withAdminAuth } from '../authContextAdmin/page';
+import { useRouter } from 'next/navigation';
+import '../../../../styles/globals.css'; 
+import { withAdminAuth } from '../../authContextAdmin/page';
 
 interface Article {
     Article: string;
@@ -26,6 +27,7 @@ const Home = () => {
     const [readyOrders, setReadyOrders] = useState<Order[]>([]);
     const [visibleOrder, setVisibleOrder] = useState<number | null>(null);
     const [timerDurations, setTimerDurations] = useState<{ [key: number]: number }>({});
+    const router = useRouter();
 
     const fetchOrders = async (endpoint: string, setter: React.Dispatch<React.SetStateAction<Order[]>>) => {
         try {
@@ -45,7 +47,7 @@ const Home = () => {
             fetchOrders('waiting', setWaitingOrders);
             fetchOrders('processing', setCurrentOrders);
             fetchOrders('ready', setReadyOrders);
-        }, 2000); // Fetch orders every 20 seconds
+        }, 20000); // Fetch orders every 20 seconds
 
         return () => clearInterval(intervalId);
     }, []);
@@ -87,7 +89,7 @@ const Home = () => {
 
     const handleStatusUpdate = async (orderId: number, newStatus: string) => {
         try {
-            const duration = timerDurations[orderId] || 60; // Default to 5 minutes if no duration is set
+            const duration = timerDurations[orderId] || 60; // Default to 60 minutes if no duration is set
             const attente = duration * 60;
             await axios.post('/api/orders/update', {
                 CommandeID: orderId,
@@ -287,6 +289,13 @@ const Home = () => {
                     ))}
                 </ul>
             </div>
+
+            <button 
+                onClick={() => router.push('/dashboard/usersList')} 
+                className="mt-8 px-4 py-2 bg-purple-500 text-white rounded-md"
+            >
+                user list page
+            </button>
         </div>
     );
 };

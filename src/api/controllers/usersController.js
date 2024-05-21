@@ -75,13 +75,27 @@ const getRole = async (req, res) => {
   }
 };
 
+const getUser = async (req, res) => {
+  try {
+    const { ClientID } = req.body;
+    const user = await User.findByPk(ClientID);
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+    res.status(200).send({ Client: user });
+  } catch (error) {
+    console.error('Failed to fetch user:', error);
+    res.status(500).send({ message: 'An unexpected error occurred' });
+  }
+}
 
 module.exports = {
   registerUser,
   displayUsers,
   updateRole,
   deleteUser,
-  getRole
+  getRole,
+  getUser
 };
 
 

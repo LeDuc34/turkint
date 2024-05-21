@@ -1,7 +1,7 @@
 // routes/userRoutes.js
 const express = require('express');
 const router = express.Router();
-const { registerUser, displayUsers,updateRole,deleteUser,getRole } = require('../controllers/usersController');
+const {getUser,registerUser, displayUsers,updateRole,deleteUser,getRole } = require('../controllers/usersController');
 const {loginUser} = require('../controllers/authController');
 const {tokenVerification} = require('../controllers/verifyToken');
 
@@ -13,6 +13,7 @@ router.get('/display',displayUsers)
 router.post('/updateRole',updateRole)
 router.get('/delete',deleteUser)
 router.post('/getRole',getRole)
+router.get('/getUser',getUser)
 
 
 module.exports  = router;

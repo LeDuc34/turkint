@@ -1,5 +1,5 @@
 const Commande = require("../../models/Commande");
-
+const User = require("../../models/Client");
 
 const takeOrder = async (req, res) => {
   try {
@@ -13,7 +13,11 @@ const takeOrder = async (req, res) => {
       Details,
       Attente
     });
-
+    const user = await User.findByPk(ClientID);
+    user.totalOrders += 1;
+    user.totalAmountSpent += TotalCommande;
+    user.lastOrderDate = DateHeureCommande;
+    await user.save(); 
     res.status(201).send({ CommandeID: newCommande.CommandeID });
   } catch (error) {
     console.error(error); // Log the full error for server-side debugging
