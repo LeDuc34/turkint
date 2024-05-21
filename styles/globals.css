@@ -3,21 +3,21 @@
 @tailwind utilities;
 
 /* Custom CSS Variables for Dark Mode */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* Custom CSS Variables for Dark Mode */
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-  --font-color-light: 0, 0, 0; /* Light mode font color */
+  background-image: url("../public/background.webp");
+  background-size: cover;
+  background-position: center;
+  font-family: "Poppins", sans-serif;
+  width: 100vw;
+  height: 100vh;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-    --font-color-dark: 255, 255, 255; /* Dark mode font color */
-  }
-}
+
+
 
 /* Global Styles */
 body {
