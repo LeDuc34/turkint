@@ -2,6 +2,7 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import '../../../styles/globals.css'; 
+import { withAdminAuth } from '../authContextAdmin/page';
 
 interface Article {
     Article: string;
@@ -290,4 +291,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default withAdminAuth(Home);

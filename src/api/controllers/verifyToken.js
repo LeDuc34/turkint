@@ -10,7 +10,7 @@ const tokenVerification = (req, res) => {
   try {
     // Replace 'YOUR_SECRET_KEY' with your actual secret key stored securely
     const decoded = jwt.verify(token,'your_secret_key'); //process.env.JWT_SECRET
-    res.status(200).json({ valid: true, decoded });
+    res.status(200).json({ valid: true, decoded});
   } catch (error) {
     res.status(401).json({ valid: false, message: 'Invalid token' });
   }

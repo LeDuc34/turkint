@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 
 const SignupForm = () => {
   const [email, setEmail] = useState('');
+  const [username,setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
@@ -14,7 +15,7 @@ const SignupForm = () => {
     event.preventDefault(); // Prevent the default form submission behavior
     localStorage.clear(); 
     try {
-      const response = await axios.post('/api/users/register', { email, password });
+      const response = await axios.post('/api/users/register', { email, password, username });
       console.log(response.data); 
       router.push('/login');
     } catch (error: any) {
@@ -24,6 +25,15 @@ const SignupForm = () => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <div>
+        <label>Username:</label>
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+        />
+      </div>
       <div>
         <label>Email:</label>
         <input
