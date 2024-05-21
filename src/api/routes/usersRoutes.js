@@ -11,7 +11,7 @@ router.post('/login', loginUser);
 router.post('/verifyToken',tokenVerification)
 router.get('/display',displayUsers)
 router.post('/updateRole',updateRole)
-router.get('/delete',deleteUser)
+router.post('/delete',deleteUser)
 router.post('/getRole',getRole)
 router.get('/getUser',getUser)
 

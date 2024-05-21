@@ -1,10 +1,12 @@
 const Commande = require("../../models/Commande");
 const User = require("../../models/Client");
+const { Client } = require("pg");
 
 const takeOrder = async (req, res) => {
   try {
-    const { ClientID, DateHeureCommande, Statut, TotalCommande, Details,Attente } = req.body;
-
+    const { ClientID, DateHeureCommande, Statut, TotalCommande, Details, Attente } = req.body;
+   console.log(req.body);
+    // Create a new order
     const newCommande = await Commande.create({
       ClientID,
       DateHeureCommande,
@@ -13,11 +15,24 @@ const takeOrder = async (req, res) => {
       Details,
       Attente
     });
+    // Find the user by primary key (ClientID)
     const user = await User.findByPk(ClientID);
+
+    // Check if the user exists
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+
+    // Update user details
     user.totalOrders += 1;
     user.totalAmountSpent += TotalCommande;
     user.lastOrderDate = DateHeureCommande;
-    await user.save(); 
+    console.log(user.totalOrders, user.totalAmountSpent, user.lastOrderDate);
+
+    // Save the updated user details
+    await user.save();
+
+    // Send a response with the new order ID
     res.status(201).send({ CommandeID: newCommande.CommandeID });
   } catch (error) {
     console.error(error); // Log the full error for server-side debugging
@@ -27,6 +42,7 @@ const takeOrder = async (req, res) => {
     res.status(500).send({ message: 'An unexpected error occurred' });
   }
 };
+
 
 const displayOrdersWaiting = async (req, res) => {
     try {

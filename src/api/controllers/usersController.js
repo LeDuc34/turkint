@@ -48,6 +48,7 @@ const updateRole = async (req, res) => {
 const deleteUser = async (req, res) => {
   try {
     const { ClientID } = req.body;
+    console.log(ClientID);
     const user = await User.findByPk(ClientID);
     if (!user) {
       return res.status(404).send({ message: 'User not found' });

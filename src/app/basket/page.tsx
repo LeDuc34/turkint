@@ -72,21 +72,29 @@ const BasketPage = () => {
 
     const handleOrderPlaced = async () => {
         try {
+            // Retrieve clientID from localStorage
             const clientID = localStorage.getItem('ClientID');
             if (!clientID) throw new Error("Client ID is not set in localStorage.");
-
+            
+            // Debugging output
+            console.log('Client ID:', clientID);
+            
+            // Send order details to the backend
             const response = await axios.post('/api/orders/send', {
-                clientID: clientID,
+                ClientID: clientID,  // Ensure the key matches what your backend expects
                 DateHeureCommande: new Date().toISOString(),
                 Statut: "waiting",
                 TotalCommande: basket?.TotalPrice,
-                Details: basket?.Articles,    
+                Details: basket?.Articles,
                 Attente: 100000000,
             });
-
+    
+            // Log response and update UI
             console.log('Order sent successfully:', response.data);
             setOrderPlaced(true);
-            axios.get('/api/baskets/clear?ClientID=' + clientID); // Clear basket
+            
+            // Clear the basket
+            await axios.get(`/api/baskets/clear?ClientID=${clientID}`);
             
             // Redirect to order tracking page
             console.log('Order ID:', response.data.CommandeID);
@@ -96,6 +104,7 @@ const BasketPage = () => {
             setError('Failed to send order');
         }
     };
+    
 
     if (error) {
         return <p>{error}</p>;
