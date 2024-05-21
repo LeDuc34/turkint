@@ -26,14 +26,14 @@ const LoginForm = () => {
   };
 
   return (
-    <div class="flex flex-col items-center justify-center h-screen">
-        <div class="w-80">
+    <div className="flex flex-col items-center justify-center h-screen">
+        <div className="w-80">
       <img src="logo.png"></img>
     </div>
-    <form class="bg-opacity-80 bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">Courriel:</label>
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+    <form className="bg-opacity-80 bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">Courriel:</label>
+        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           id="email"
           type="email"
           placeholder="daniel@ranc.tsp"
@@ -42,9 +42,9 @@ const LoginForm = () => {
           required
         />
       </div>
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">Mot de passe:</label>
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">Mot de passe:</label>
+        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           id="password"
           type="password"
           placeholder="ranc123"
@@ -53,11 +53,11 @@ const LoginForm = () => {
           required
         />
       </div>
-      <div class="flex items-center justify-between">
-        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Se connecter</button>
+      <div className="flex items-center justify-between">
+        <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Se connecter</button>
         {error && <p>{error}</p>}
         
-        <a class="inline-block align-baseline font-bold text-sm text-red-500 hover:text-red-800" href="/register">
+        <a className="inline-block align-baseline font-bold text-sm text-red-500 hover:text-red-800" href="/register">
         S'enregistrer?
         </a>
       </div>
