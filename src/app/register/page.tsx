@@ -36,7 +36,7 @@ return (
         type="text"
         placeholder="Danou"
         value={username}
-        onChange={(e) => username(e.target.value)}
+        onChange={(e) => setUsername(e.target.value)}
         required
       />
     </div>
