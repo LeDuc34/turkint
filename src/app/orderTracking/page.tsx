@@ -9,7 +9,6 @@ interface Article {
     Options: string[];
     ArticlePrice: number;
 }
-
 interface Order {
     CommandeID: number;
     ClientID: number;

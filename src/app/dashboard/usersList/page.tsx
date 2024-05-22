@@ -163,4 +163,4 @@ const Users = () => {
     );
 };
 
-export default Users;
+export default withAdminAuth(Users);
