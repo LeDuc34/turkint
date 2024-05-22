@@ -1,55 +1,91 @@
-export default function StepThree({ formData, setFormData, prevStep,addToBasket }) {
+export default function StepThree({ formData, setFormData, prevStep, addToBasket }) {
     const handleChangeSalade = (event) => {
-        const { checked } = event.target;
-        setFormData(prevformData => {
-            const updatedFormData = {
-                ...prevformData,
-                salade: checked
-            };
-            console.log(updatedFormData);
-            return updatedFormData;
-        });
+      const { checked } = event.target;
+      setFormData((prevFormData) => {
+        const updatedFormData = {
+          ...prevFormData,
+          salade: checked,
+        };
+        console.log(updatedFormData);
+        return updatedFormData;
+      });
     };
+  
     const handleChangeTomate = (event) => {
-        const { checked } = event.target;
-        setFormData(prevformData => {
-            const updatedFormData = {
-                ...prevformData,
-                tomate: checked
-            };
-            console.log(updatedFormData);
-            return updatedFormData;
-        });
+      const { checked } = event.target;
+      setFormData((prevFormData) => {
+        const updatedFormData = {
+          ...prevFormData,
+          tomate: checked,
+        };
+        console.log(updatedFormData);
+        return updatedFormData;
+      });
     };
+  
     const handleChangeOnion = (event) => {
-        const { checked } = event.target;
-        setFormData(prevformData => {
-            const updatedFormData = {
-                ...prevformData,
-                oignon: checked
-            };
-            console.log(updatedFormData);
-            return updatedFormData;
-        });
+      const { checked } = event.target;
+      setFormData((prevFormData) => {
+        const updatedFormData = {
+          ...prevFormData,
+          oignon: checked,
+        };
+        console.log(updatedFormData);
+        return updatedFormData;
+      });
     };
+  
     return (
-        <div>
-            <div>
-                <input type="checkbox" onChange={handleChangeSalade} />
-                <label>Salade</label>
-            </div>
-            <div>
-                <input type="checkbox" onChange={handleChangeTomate}/>
-                <label>Tomate</label>
-            </div>
-            <div>
-                <input type="checkbox" onChange={handleChangeOnion}/>
-                <label>Onion</label>
-            </div>
-            <button onClick={prevStep}>Prev</button>
-            <button onClick={addToBasket}>Add to Basket</button>
+      <div className="p-4">
+        <h2 className="text-xl font-bold mb-4">Step 3</h2>
+        <div className="mb-4">
+          <input
+            type="checkbox"
+            onChange={handleChangeSalade}
+            id="salade"
+            className="mr-2"
+          />
+          <label htmlFor="salade" className="text-sm font-medium text-gray-700">
+            Salade
+          </label>
         </div>
-        
+        <div className="mb-4">
+          <input
+            type="checkbox"
+            onChange={handleChangeTomate}
+            id="tomate"
+            className="mr-2"
+          />
+          <label htmlFor="tomate" className="text-sm font-medium text-gray-700">
+            Tomate
+          </label>
+        </div>
+        <div className="mb-4">
+          <input
+            type="checkbox"
+            onChange={handleChangeOnion}
+            id="oignon"
+            className="mr-2"
+          />
+          <label htmlFor="oignon" className="text-sm font-medium text-gray-700">
+            Onion
+          </label>
+        </div>
+        <div className="flex justify-between">
+          <button
+            onClick={prevStep}
+            className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+          >
+            Prev
+          </button>
+          <button
+            onClick={addToBasket}
+            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          >
+            Add to Basket
+          </button>
+        </div>
+      </div>
     );
-}
+  }
   

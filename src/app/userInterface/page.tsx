@@ -1,7 +1,7 @@
 "use client";
 import Logout from '../logout/page';
-import ClearBasket from '../basket/clearBasket'
-import DisplayBasket from '../basket/displayBasket'
+import ClearBasket from '../basket/clearBasket';
+import DisplayBasket from '../basket/displayBasket';
 import { useState } from 'react';
 import StepOne from '../userInterface/StepOne';
 import StepTwo from '../userInterface/StepTwo';
@@ -9,23 +9,21 @@ import StepThree from '../userInterface/StepThree';
 import axios from 'axios';
 import { withAuth } from '../authContext/page';
 
-
 function Form() {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     pain: 'Pain Maison',
-    sauce:'Algerienne',
+    sauce: 'Algerienne',
     salade: 'Non',
     tomate: 'Non',
-    oignon : 'Non',
+    oignon: 'Non',
   });
 
   const nextStep = () => setCurrentStep((prev) => prev + 1);
 
-
   const prevStep = () => setCurrentStep((prev) => prev - 1);
 
-  const addToBakset = async (event: { preventDefault: () => void; }) => {
+  const addToBasket = async (event: { preventDefault: () => void; }) => {
     event.preventDefault(); // Prevent the default form submission behavior
     try {
       console.log(formData);
@@ -37,31 +35,32 @@ function Form() {
     }
   }
 
-
-
-  switch(currentStep) {
+  switch (currentStep) {
     case 1:
       return <StepOne formData={formData} setFormData={setFormData} nextStep={nextStep} />;
     case 2:
       return <StepTwo formData={formData} setFormData={setFormData} nextStep={nextStep} prevStep={prevStep} />;
     case 3:
-      return <StepThree formData={formData} setFormData={setFormData} prevStep={prevStep} addToBasket={addToBakset} />;
+      return <StepThree formData={formData} setFormData={setFormData} prevStep={prevStep} addToBasket={addToBasket} />;
     case 4:
-      return <div>Article(s) ajouté(s) au panier</div>;
+      return <div className="text-green-500 text-center mt-4">Article(s) ajouté(s) au panier</div>;
+    default:
+      return null;
   }
 }
 
 const Home = () => {
-  return(
-    <div>
-      <Form/>
-      <Logout/>
-      <ClearBasket/>
-      <DisplayBasket/>
-
+  return (
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold text-center mb-4">Welcome to the Kebab Shop</h1>
+      <Form />
+      <div className="mt-6 flex justify-around">
+        <Logout />
+        <ClearBasket />
+        <DisplayBasket />
+      </div>
     </div>
-  )
+  );
 }
-
 
 export default withAuth(Home);
