@@ -17,6 +17,8 @@ Hence run the folllowing commands in the terminal :
 
 First, run the development server:
 
+s
+
 ```bash
 npm run dev
 # or
