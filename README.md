@@ -2,7 +2,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Dependencies 
 
-``npm install sequelize postgresql expressjs``
+``npm install  postgresql expressj ``
+`` brew install stripe/stripe-cli/stripe``
+``brew install postgresql@14``
 
 ## Troubleshooting
 
