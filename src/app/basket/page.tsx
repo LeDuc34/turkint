@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { withAuth } from '../authContext/page';
@@ -12,7 +12,7 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY 
 
 interface Article {
     Article: string;
-    Options: string[];
+    Options: { [key: string]: string }; // Change Options to be an object with key-value pairs
     ArticlePrice: number;
 }
 
@@ -52,7 +52,38 @@ const BasketPage = () => {
         fetchBasket();
     }, []);
 
+    const handleDeleteArticle = async (articleIndex: number) => {
+        try {
+            const clientID = localStorage.getItem('ClientID');
+            if (!clientID) throw new Error("Client ID is not set in localStorage.");
+            const updatedArticles = basket?.Articles.filter((_, index) => index !== articleIndex) || [];
+            const updatedTotalPrice = updatedArticles.reduce((total, article) => total + article.ArticlePrice, 0);
+            
+            // Update the basket on the backend
+            await axios.post('/api/baskets/update', {
+                ClientID: clientID,
+                Articles: updatedArticles,
+                TotalPrice: updatedTotalPrice,
+            });
+
+            // Update the basket state
+            setBasket((prevBasket) => prevBasket ? { 
+                ...prevBasket, 
+                Articles: updatedArticles, 
+                TotalPrice: updatedTotalPrice 
+            } : null);
+        } catch (err) {
+            console.error('Failed to delete article', err);
+            setError('Failed to delete article');
+        }
+    };
+
     const handleSendOrder = async () => {
+        if (!basket || basket.Articles.length === 0) {
+            setError('Cannot send order: Basket is empty.');
+            return;
+        }
+
         try {
             const clientID = localStorage.getItem('ClientID');
             if (!clientID) throw new Error("Client ID is not set in localStorage.");
@@ -67,7 +98,6 @@ const BasketPage = () => {
             console.error('Failed to initiate payment', err);
             setError('Failed to initiate payment');
         }
-      // handleOrderPlaced(); // here for test remove for the final version
     };
 
     const handleOrderPlaced = async () => {
@@ -104,10 +134,13 @@ const BasketPage = () => {
             setError('Failed to send order');
         }
     };
-    
+
+    const handleReturnToOrderPage = () => {
+        router.push('/userInterface');
+    };
 
     if (error) {
-        return <p>{error}</p>;
+        return <p className="text-red-500">{error}</p>;
     }
 
     if (!basket) {
@@ -115,38 +148,62 @@ const BasketPage = () => {
     }
 
     return (
-        <div>
-            <h1>Your Basket</h1>
-            {orderPlaced && <p>Commande passée avec succès</p>}
-            <div>
+        <div className="container mx-auto p-4">
+            <h1 className="text-3xl font-bold mb-4">Your Basket</h1>
+            {orderPlaced && <p className="text-green-500">Order placed successfully</p>}
+            <div className="mb-4 p-4 border rounded shadow-sm">
                 <strong>Total Price:</strong> ${basket?.TotalPrice.toFixed(2)}
             </div>
-            <ul>
+            <ul className="space-y-4">
                 {basket.Articles.map((article, index) => (
-                    <li key={index}>
-                        <strong>Price:</strong> ${article.ArticlePrice.toFixed(2)} -
-                        <strong>Options:</strong>
-                        <ul>
-                            {article.Options && typeof article.Options === 'object' && Object.keys(article.Options).length > 0 ? (
-                                Object.entries(article.Options).map(([key, value]) => (
-                                    <li key={key}>
-                                        {key.charAt(0).toUpperCase() + key.slice(1)}: {value}
-                                    </li>
-                                ))
-                            ) : (
-                                <li>No options available</li>
-                            )}
-                        </ul>
+                    <li key={index} className="p-4 border rounded shadow-sm">
+                        <div className="flex justify-between items-center">
+                            <div>
+                                <p><strong>Article:</strong> {article.Article}</p>
+                                <p><strong>Price:</strong> ${article.ArticlePrice.toFixed(2)}</p>
+                                <p><strong>Options:</strong></p>
+                                <ul className="list-disc pl-5">
+                                    {article.Options && Object.keys(article.Options).length > 0 ? (
+                                        Object.entries(article.Options).map(([key, value]) => (
+                                            <li key={key}>
+                                                {key.charAt(0).toUpperCase() + key.slice(1)}: {value}
+                                            </li>
+                                        ))
+                                    ) : (
+                                        <li>No options available</li>
+                                    )}
+                                </ul>
+                            </div>
+                            <button
+                                className="bg-red-500 text-white px-4 py-2 rounded"
+                                onClick={() => handleDeleteArticle(index)}
+                            >
+                                Delete
+                            </button>
+                        </div>
                     </li>
                 ))}
             </ul>
-            {!clientSecret ? (
-                <button onClick={handleSendOrder}>Send Order</button>
-            ) : (
-                <Elements stripe={stripePromise}>
-                    <CheckoutForm clientSecret={clientSecret} handleOrderPlaced={handleOrderPlaced} />
-                </Elements>
-            )}
+            <div className="mt-4">
+                {!clientSecret ? (
+                    <button
+                        className="bg-blue-500 text-white px-4 py-2 rounded"
+                        onClick={handleSendOrder}
+                    >
+                        Send Order
+                    </button>
+                ) : (
+                    <Elements stripe={stripePromise}>
+                        <CheckoutForm clientSecret={clientSecret} handleOrderPlaced={handleOrderPlaced} />
+                    </Elements>
+                )}
+                <button
+                    className="ml-4 bg-gray-500 text-white px-4 py-2 rounded"
+                    onClick={handleReturnToOrderPage}
+                >
+                    Return to Order Page
+                </button>
+            </div>
         </div>
     );
 };
