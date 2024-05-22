@@ -6,7 +6,7 @@ import { withAuth } from '../authContext/page';
 
 interface Article {
     Article: string;
-    Options: string[];
+    Options: { [key: string]: string }; // Change Options to be an object with key-value pairs
     ArticlePrice: number;
 }
 interface Order {
@@ -30,6 +30,7 @@ const OrderTrackingPage = () => {
 
         try {
             const response = await axios.get<Order>(`/api/orders/getInfos?CommandeID=${orderID}`);
+            console.log('Order data:', response.data); // Log the fetched order data
             setOrder(response.data);
         } catch (err) {
             console.error('Failed to fetch order', err);
@@ -39,7 +40,7 @@ const OrderTrackingPage = () => {
 
     useEffect(() => {
         fetchOrder();
-        const interval = setInterval(fetchOrder, 1000); // Fetch order details every 10 seconds
+        const interval = setInterval(fetchOrder, 10000); // Fetch order details every 10 seconds
 
         return () => clearInterval(interval); // Cleanup interval on component unmount
     }, [orderID]);
@@ -103,17 +104,17 @@ const OrderTrackingPage = () => {
                 {order.Details.map((article, index) => (
                     <li key={index}>
                         <strong>{article.Article}:</strong> ${article.ArticlePrice.toFixed(2)}
-                        <ul className="list-disc pl-6">
-                            {article.Options && article.Options.length > 0 ? (
-                                article.Options.map((option, idx) => (
+                        {article.Options && Object.keys(article.Options).length > 0 ? (
+                            <ul className="list-disc pl-6">
+                                {Object.entries(article.Options).map(([key, value], idx) => (
                                     <li key={idx}>
-                                        {option}
+                                        <strong>{key}:</strong> {value}
                                     </li>
-                                ))
-                            ) : (
-                                <li>No options available</li>
-                            )}
-                        </ul>
+                                ))}
+                            </ul>
+                        ) : (
+                            <div>No options available</div>
+                        )}
                     </li>
                 ))}
             </ul>
