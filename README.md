@@ -4,6 +4,10 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ``npm install sequelize postgresql expressjs``
 
+## Troubleshooting
+
+``sudo systemctl status postgresql``
+
 Hence run the folllowing commands in the terminal :   
 ``createdb mydb`` to create the database  
 ``psql mydb`` to interacte with the db  
