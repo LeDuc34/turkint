@@ -22,7 +22,7 @@ const loginUser = async (req, res) => {
             { expiresIn: '1h' }
         );
 
-        res.send({ token, ClientID: user.ClientID });
+        res.send({ token, ClientID: user.ClientID, Role: user.Role});
     } catch (error) {
         res.status(500).send({ message: 'Internal server error' });
         console.error(error);
