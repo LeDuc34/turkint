@@ -21,17 +21,21 @@ const withAdminAuth = (WrappedComponent: React.ComponentType<any>) => {
   return (props: any) => {
     const [isLoading, setIsLoading] = useState(true);
     const [isAuthorized, setIsAuthorized] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const router = useRouter();
 
     useEffect(() => {
       const checkAdmin = async () => {
         const isAdmin = await verifyAdmin();
         if (!isAdmin) {
+          setErrorMessage("vous n'êtes pas autorisé à accéder à cette page");
+          setIsLoading(false); // Stop loading to show the message
+          await new Promise(resolve => setTimeout(resolve, 3000)); // Add a 3-second delay
           router.push('/login');
         } else {
           setIsAuthorized(true);
+          setIsLoading(false);
         }
-        setIsLoading(false);
       };
 
       checkAdmin();
@@ -41,8 +45,8 @@ const withAdminAuth = (WrappedComponent: React.ComponentType<any>) => {
       return <div>Loading...</div>;
     }
 
-    if (!isAuthorized) {
-      return null; // or a fallback UI
+    if (errorMessage) {
+      return <div>{errorMessage}</div>; // Display the error message if not authorized
     }
 
     return <WrappedComponent {...props} />;

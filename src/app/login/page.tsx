@@ -17,7 +17,11 @@ const LoginForm = () => {
     localStorage.setItem('token', response.data.token);
     localStorage.setItem('ClientID', response.data.ClientID);
     //axios.get('/api/baskets/clear?ClientID='+localStorage.getItem('ClientID'))
-    router.push('/userInterface');
+    if(response.data.Role !== "admin"){
+      router.push('/userInterface');
+    }else{
+      router.push('/dashboard/adminInterface');
+    }
     console.log(response.data);
     
     }catch (error: any) {

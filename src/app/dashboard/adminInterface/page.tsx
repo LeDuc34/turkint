@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import '../../../../styles/globals.css'; 
+import '../../../../styles/globals.css';
 import { withAdminAuth } from '../../authContextAdmin/page';
 
 interface Article {
@@ -19,6 +19,7 @@ interface Order {
     TotalCommande: number;
     Details: Article[];
     Attente: number; // Change Attente to be a number representing remaining time in seconds
+    Payed: boolean;
 }
 
 const Home = () => {
@@ -34,7 +35,7 @@ const Home = () => {
             const response = await axios.get<Order[]>(`/api/orders/${endpoint}`);
             setter(response.data);
         } catch (error: any) {
-            console.error('Failed to fetch orders:', error);
+            console.error('Échec de la récupération des commandes:', error);
         }
     };
 
@@ -70,7 +71,7 @@ const Home = () => {
                             CommandeID: order.CommandeID,
                             Attente: newAttente,
                         }).catch(error => {
-                            console.error('Failed to update timer:', error);
+                            console.error('Échec de la mise à jour du minuteur:', error);
                         });
 
                         return { ...order, Attente: newAttente };
@@ -100,7 +101,7 @@ const Home = () => {
             fetchOrders('processing', setCurrentOrders);
             fetchOrders('ready', setReadyOrders);
         } catch (error: any) {
-            console.error('Failed to update status:', error);
+            console.error('Échec de la mise à jour du statut:', error);
         }
     };
 
@@ -116,17 +117,17 @@ const Home = () => {
                 fetchOrders('processing', setCurrentOrders);
                 fetchOrders('ready', setReadyOrders);
             } catch (error: any) {
-                console.error('Failed to set timer:', error);
+                console.error('Échec de la définition du minuteur:', error);
             }
         }
     };
 
     const handleDeleteOrder = async (orderId: number) => {
         try {
-            await axios.post('/api/orders/delete',{CommandeID : orderId});
+            await axios.post('/api/orders/delete', { CommandeID: orderId });
             setReadyOrders(readyOrders.filter(order => order.CommandeID !== orderId));
         } catch (error: any) {
-            console.error('Failed to delete order:', error);
+            console.error('Échec de la suppression de la commande:', error);
         }
     };
 
@@ -134,7 +135,7 @@ const Home = () => {
         const minutes = Math.floor(duration / 60);
         const seconds = duration % 60;
         if (duration <= 0) {
-            return "Time's up!";
+            return "Le temps est écoulé!";
         }
         return `${minutes}m ${seconds}s`;
     };
@@ -148,19 +149,20 @@ const Home = () => {
     const renderOrderDetails = (order: Order) => {
         return (
             <div className="p-4 bg-gray-100 rounded-md shadow-md text-black">
-                <p><strong>Client ID:</strong> {order.ClientID}</p>
-                <p><strong>Date/Time:</strong> {order.DateHeureCommande}</p>
-                <p><strong>Status:</strong> {order.Statut}</p>
-                <p><strong>Total:</strong> ${order.TotalCommande.toFixed(2)}</p>
+                <p><strong>ID Client:</strong> {order.ClientID}</p>
+                <p><strong>Date/Heure:</strong> {order.DateHeureCommande}</p>
+                <p><strong>Statut:</strong> {order.Statut}</p>
+                <p><strong>Total:</strong> {order.TotalCommande.toFixed(2)}€</p>
+                <p><strong>Payé:</strong> {order.Payed ? 'Oui' : 'Non'}</p> 
                 <div>
                     <h4 className="font-bold">Articles:</h4>
                     <ul className="list-disc pl-6">
                         {order.Details.length === 0 ? (
-                            <li>No articles available</li>
+                            <li>Aucun article disponible</li>
                         ) : (
                             order.Details.map((article, index) => (
                                 <li key={index}>
-                                    <strong>{article.Article}</strong> - Options: {formatOptions(article.Options)}, ${article.ArticlePrice.toFixed(2)}
+                                    <strong>{article.Article}</strong> - Options: {formatOptions(article.Options)}, {article.ArticlePrice.toFixed(2)}€
                                 </li>
                             ))
                         )}
@@ -173,24 +175,24 @@ const Home = () => {
     return (
         <div className="p-6">
             <div className="mb-8">
-                <h2 className="text-2xl font-bold mb-4">Commande en attente :</h2>
+                <h2 className="text-2xl font-bold mb-4">Commandes en attente :</h2>
                 <ul className="space-y-4">
                     {waitingOrders.map((order) => (
                         <li key={order.CommandeID} className="bg-white p-4 rounded-md shadow-md text-black">
                             <div className="flex justify-between items-center">
-                                <span>{`Order #${order.CommandeID}`}</span>
+                                <span>{`Commande #${order.CommandeID}`}</span>
                                 <div className="flex space-x-2">
                                     <button 
                                         onClick={() => toggleOrderDetails(order.CommandeID)}
                                         className="px-4 py-2 bg-blue-500 text-white rounded-md"
                                     >
-                                        {visibleOrder === order.CommandeID ? 'Hide Details' : 'Show Details'}
+                                        {visibleOrder === order.CommandeID ? 'Masquer les détails' : 'Afficher les détails'}
                                     </button>
                                     <button 
                                         onClick={() => handleStatusUpdate(order.CommandeID, 'processing')}
                                         className="px-4 py-2 bg-green-500 text-white rounded-md"
                                     >
-                                        Mark as Processing
+                                        Marquer comme en cours
                                     </button>
                                 </div>
                             </div>
@@ -201,30 +203,30 @@ const Home = () => {
             </div>
 
             <div className="mb-8">
-                <h2 className="text-2xl font-bold mb-4">Commande en cours :</h2>
+                <h2 className="text-2xl font-bold mb-4">Commandes en cours :</h2>
                 <ul className="space-y-4">
                     {currentOrders.map((order) => (
                         <li key={order.CommandeID} className="bg-white p-4 rounded-md shadow-md text-black">
                             <div className="flex justify-between items-center">
-                                <span>{`Order #${order.CommandeID}`}</span>
+                                <span>{`Commande #${order.CommandeID}`}</span>
                                 <div className="flex space-x-2">
                                     <button 
                                         onClick={() => toggleOrderDetails(order.CommandeID)}
                                         className="px-4 py-2 bg-blue-500 text-white rounded-md"
                                     >
-                                        {visibleOrder === order.CommandeID ? 'Hide Details' : 'Show Details'}
+                                        {visibleOrder === order.CommandeID ? 'Masquer les détails' : 'Afficher les détails'}
                                     </button>
                                     <button 
                                         onClick={() => handleStatusUpdate(order.CommandeID, 'waiting')}
                                         className="px-4 py-2 bg-yellow-500 text-white rounded-md"
                                     >
-                                        Mark as Waiting
+                                        Marquer comme en attente
                                     </button>
                                     <button 
                                         onClick={() => handleStatusUpdate(order.CommandeID, 'ready')}
                                         className="px-4 py-2 bg-green-500 text-white rounded-md"
                                     >
-                                        Mark as Ready
+                                        Marquer comme prêt
                                     </button>
                                 </div>
                             </div>
@@ -234,7 +236,7 @@ const Home = () => {
                                     <div className="mt-4">
                                         <input
                                             type="number"
-                                            placeholder="Set timer (minutes)"
+                                            placeholder="Définir le minuteur (minutes)"
                                             value={timerDurations[order.CommandeID] || ''}
                                             onChange={(e) => setTimerDurations({ ...timerDurations, [order.CommandeID]: parseInt(e.target.value) })}
                                             className="p-2 border rounded w-full"
@@ -243,11 +245,11 @@ const Home = () => {
                                             onClick={() => handleSetTimer(order.CommandeID)} 
                                             className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
                                         >
-                                            Set Timer
+                                            Définir le minuteur
                                         </button>
                                     </div>
                                     {order.Statut === 'processing' && order.Attente < 10000 && order.Attente > 0 && (
-                                        <p className="mt-2 text-red-500">Remaining Time: {getRemainingTime(order.Attente)}</p>
+                                        <p className="mt-2 text-red-500">Temps restant: {getRemainingTime(order.Attente)}</p>
                                     )}
                                 </div>
                             )}
@@ -257,30 +259,30 @@ const Home = () => {
             </div>
 
             <div>
-                <h2 className="text-2xl font-bold mb-4">Commande prête :</h2>
+                <h2 className="text-2xl font-bold mb-4">Commandes prêtes :</h2>
                 <ul className="space-y-4">
                     {readyOrders.map((order) => (
                         <li key={order.CommandeID} className="bg-white p-4 rounded-md shadow-md text-black">
                             <div className="flex justify-between items-center">
-                                <span>{`Order #${order.CommandeID}`}</span>
+                                <span>{`Commande #${order.CommandeID}`}</span>
                                 <div className="flex space-x-2">
                                     <button 
                                         onClick={() => toggleOrderDetails(order.CommandeID)}
                                         className="px-4 py-2 bg-blue-500 text-white rounded-md"
                                     >
-                                        {visibleOrder === order.CommandeID ? 'Hide Details' : 'Show Details'}
+                                        {visibleOrder === order.CommandeID ? 'Masquer les détails' : 'Afficher les détails'}
                                     </button>
                                     <button 
                                         onClick={() => handleStatusUpdate(order.CommandeID, 'processing')}
                                         className="px-4 py-2 bg-yellow-500 text-white rounded-md"
                                     >
-                                        Mark as Processing
+                                        Marquer comme en cours
                                     </button>
                                     <button 
                                         onClick={() => handleDeleteOrder(order.CommandeID)}
                                         className="px-4 py-2 bg-red-500 text-white rounded-md"
                                     >
-                                        Delete
+                                        Supprimer
                                     </button>
                                 </div>
                             </div>
@@ -294,7 +296,7 @@ const Home = () => {
                 onClick={() => router.push('/dashboard/usersList')} 
                 className="mt-8 px-4 py-2 bg-purple-500 text-white rounded-md"
             >
-                user list page
+                Page de la liste des utilisateurs
             </button>
         </div>
     );

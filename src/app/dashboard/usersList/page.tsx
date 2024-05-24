@@ -28,7 +28,7 @@ const Users = () => {
             const response = await axios.get<User[]>('/api/users/display');
             setUsers(response.data);
         } catch (error: any) {
-            console.error('Failed to fetch users:', error);
+            console.error('Échec de la récupération des utilisateurs:', error);
         }
     };
 
@@ -45,7 +45,7 @@ const Users = () => {
             await axios.post('/api/users/updateRole', { ClientID: userId, Role: newRole });
             fetchUsers(); // Refresh the list of users to reflect the change
         } catch (error: any) {
-            console.error('Failed to update user role:', error);
+            console.error('Échec de la mise à jour du rôle de l\'utilisateur:', error);
         }
     };
 
@@ -54,7 +54,7 @@ const Users = () => {
             await axios.post('/api/users/delete', { ClientID: userId });
             fetchUsers(); // Refresh the list of users after deletion
         } catch (error: any) {
-            console.error('Failed to delete user:', error);
+            console.error('Échec de la suppression de l\'utilisateur:', error);
         }
     };
 
@@ -76,36 +76,36 @@ const Users = () => {
     const renderUserDetails = (user: User) => {
         return (
             <div className="p-4 bg-gray-100 rounded-md shadow-md text-black">
-                <p><strong>Client ID:</strong> {user.ClientID}</p>
-                <p><strong>Username:</strong> {user.Username}</p>
+                <p><strong>ID Client:</strong> {user.ClientID}</p>
+                <p><strong>Nom d'utilisateur:</strong> {user.Username}</p>
                 <p><strong>Email:</strong> {user.Email}</p>
-                {user.Phone && <p><strong>Phone:</strong> {user.Phone}</p>}
-                {user.Adress && <p><strong>Address:</strong> {user.Adress}</p>}
-                <p><strong>Role:</strong> {user.Role}</p>
-                <p><strong>Total Orders:</strong> {user.totalOrders}</p>
-                <p><strong>Total Amount Spent:</strong> ${user.totalAmountSpent.toFixed(2)}</p>
-                <p><strong>Last Order Date:</strong> {new Date(user.lastOrderDate).toLocaleString()}</p>
+                {user.Phone && <p><strong>Téléphone:</strong> {user.Phone}</p>}
+                {user.Adress && <p><strong>Adresse:</strong> {user.Adress}</p>}
+                <p><strong>Rôle:</strong> {user.Role}</p>
+                <p><strong>Nombre total de commandes:</strong> {user.totalOrders}</p>
+                <p><strong>Montant total dépensé:</strong> {user.totalAmountSpent.toFixed(2)}€</p>
+                <p><strong>Date de la dernière commande:</strong> {new Date(user.lastOrderDate).toLocaleString()}</p>
                 <div className="flex space-x-2 mt-2">
                     {user.Role !== 'admin' ? (
                         <button 
                             onClick={() => handleRoleChange(user.ClientID, 'admin')}
                             className="px-4 py-2 bg-green-500 text-white rounded-md"
                         >
-                            Grant Admin Role
+                            Accorder le rôle d'admin
                         </button>
                     ) : (
                         <button 
                             onClick={() => handleRoleChange(user.ClientID, 'user')}
                             className="px-4 py-2 bg-red-500 text-white rounded-md"
                         >
-                            Revoke Admin Role
+                            Révoquer le rôle d'admin
                         </button>
                     )}
                     <button 
                         onClick={() => handleDeleteUser(user.ClientID)}
                         className="px-4 py-2 bg-red-500 text-white rounded-md"
                     >
-                        Delete User
+                        Supprimer l'utilisateur
                     </button>
                 </div>
             </div>
@@ -115,37 +115,37 @@ const Users = () => {
     return (
         <div>
             <div className="p-6">
-                <h2 className="text-2xl font-bold mb-4">Users:</h2>
+                <h2 className="text-2xl font-bold mb-4">Utilisateurs:</h2>
                 <div className="flex space-x-4 mb-4">
                     <button 
                         onClick={sortByMostOrders} 
                         className="px-4 py-2 bg-blue-500 text-white rounded-md"
                     >
-                        Sort by Most Orders
+                        Trier par nombre de commandes
                     </button>
                     <button 
                         onClick={sortByMostMoneySpent} 
                         className="px-4 py-2 bg-blue-500 text-white rounded-md"
                     >
-                        Sort by Most Money Spent
+                        Trier par montant dépensé
                     </button>
                     <button 
                         onClick={sortByLastOrder} 
                         className="px-4 py-2 bg-blue-500 text-white rounded-md"
                     >
-                        Sort by Last Order
+                        Trier par date de la dernière commande
                     </button>
                 </div>
                 <ul className="space-y-4">
                     {users.map((user) => (
                         <li key={user.ClientID} className="bg-white p-4 rounded-md shadow-md text-black">
                             <div className="flex justify-between items-center">
-                                <span>{`User #${user.ClientID}`}</span>
+                                <span>{`Utilisateur #${user.ClientID}`}</span>
                                 <button 
                                     onClick={() => toggleUserDetails(user.ClientID)}
                                     className="px-4 py-2 bg-blue-500 text-white rounded-md"
                                 >
-                                    {visibleUser === user.ClientID ? 'Hide Details' : 'Show Details'}
+                                    {visibleUser === user.ClientID ? 'Masquer les détails' : 'Afficher les détails'}
                                 </button>
                             </div>
                             {visibleUser === user.ClientID && renderUserDetails(user)}
@@ -157,7 +157,7 @@ const Users = () => {
                 onClick={() => router.push('/dashboard/adminInterface')} 
                 className="mt-8 px-4 py-2 bg-purple-500 text-white rounded-md"
             >
-                Commands Page
+                Page des commandes
             </button>
         </div>
     );
