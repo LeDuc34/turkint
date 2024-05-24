@@ -1,10 +1,10 @@
 const Commande = require("../../models/Commande");
 const User = require("../../models/Client");
-const { Client } = require("pg");
+
 
 const takeOrder = async (req, res) => {
   try {
-    const { ClientID, DateHeureCommande, Statut, TotalCommande, Details, Attente } = req.body;
+    const { ClientID, DateHeureCommande, Statut, TotalCommande, Details, Attente,Payed } = req.body;
    console.log(req.body);
     // Create a new order
     const newCommande = await Commande.create({
@@ -13,7 +13,8 @@ const takeOrder = async (req, res) => {
       Statut,
       TotalCommande,
       Details,
-      Attente
+      Attente,
+      Payed
     });
     // Find the user by primary key (ClientID)
     const user = await User.findByPk(ClientID);

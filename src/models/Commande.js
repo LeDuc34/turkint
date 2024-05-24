@@ -30,6 +30,9 @@ Commande.init({
   },
   Attente:{
     type: DataTypes.FLOAT
+  },
+  Payed:{
+    type: DataTypes.BOOLEAN
   }
 }, {
   sequelize,

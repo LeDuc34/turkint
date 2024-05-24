@@ -2,10 +2,13 @@
 "use client"
 
 import axios from 'axios'
+import { useRouter } from 'next/navigation'
 
 const clearButton = () =>{
+    const router = useRouter();
     const HandleSubmit = () => {
         axios.get('/api/baskets/clear?ClientID='+localStorage.getItem('ClientID'))
+        router.push('/userInterface');
     }
     return(
         <div>
@@ -13,4 +16,4 @@ const clearButton = () =>{
         </div>
 )
 }
-export default clearButton
+export default clearButton;

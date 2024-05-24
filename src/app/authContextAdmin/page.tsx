@@ -27,7 +27,7 @@ const withAdminAuth = (WrappedComponent: React.ComponentType<any>) => {
       const checkAdmin = async () => {
         const isAdmin = await verifyAdmin();
         if (!isAdmin) {
-          router.push('/login');
+          router.push('/dashboard/adminInterface');
         } else {
           setIsAuthorized(true);
         }

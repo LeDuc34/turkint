@@ -40,7 +40,7 @@ const OrderTrackingPage = () => {
 
     useEffect(() => {
         fetchOrder();
-        const interval = setInterval(fetchOrder, 10000); // Fetch order details every 10 seconds
+        const interval = setInterval(fetchOrder, 5000); // Fetch order details every 10 seconds
 
         return () => clearInterval(interval); // Cleanup interval on component unmount
     }, [orderID]);

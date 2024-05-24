@@ -1,7 +1,7 @@
 "use client";
 import Logout from '../logout/page';
-import ClearBasket from '../basket/clearBasket';
-import DisplayBasket from '../basket/displayBasket';
+import ClearBasket from '../clearBaksetButton/page';
+import DisplayBasket from '../displayBasketButton/page';
 import { useState } from 'react';
 import StepOne from '../userInterface/StepOne';
 import StepTwo from '../userInterface/StepTwo';
@@ -52,7 +52,6 @@ function Form() {
 const Home = () => {
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold text-center mb-4">Welcome to the Kebab Shop</h1>
       <Form />
       <div className="mt-6 flex justify-around">
         <Logout />
