@@ -17,6 +17,7 @@ interface Order {
     TotalCommande: number;
     Details: Article[];
     Attente: number; // Change Attente to be a number representing remaining time in seconds
+    Payed: boolean;
 }
 
 const OrderTrackingPage = () => {
@@ -34,13 +35,13 @@ const OrderTrackingPage = () => {
             setOrder(response.data);
         } catch (err) {
             console.error('Failed to fetch order', err);
-            setError('Failed to fetch order');
+            setError('Échec de la récupération de la commande');
         }
     };
 
     useEffect(() => {
         fetchOrder();
-        const interval = setInterval(fetchOrder, 5000); // Fetch order details every 10 seconds
+        const interval = setInterval(fetchOrder, 5000); // Fetch order details every 5 seconds
 
         return () => clearInterval(interval); // Cleanup interval on component unmount
     }, [orderID]);
@@ -75,35 +76,38 @@ const OrderTrackingPage = () => {
     }
 
     if (!order) {
-        return <p>Loading...</p>;
+        return <p>Chargement...</p>;
     }
 
     const showRemainingTime = order.Attente <= 10000; // Show remaining time if it is less than or equal to 15 minutes
 
     return (
-        <div className="p-6">
-            <h1 className="text-2xl font-bold mb-4">Order Tracking</h1>
+        <div className="p-6 bg-white rounded">
+            <h1 className="text-2xl font-bold mb-4">Suivi de Commande</h1>
             <div className="mb-2">
-                <strong>Order ID:</strong> {order.CommandeID}
+                <strong>ID de Commande:</strong> {order.CommandeID}
             </div>
             <div className="mb-2">
-                <strong>Status:</strong> {order.Statut === 'ready' ? 'Order is ready' : order.Statut}
+                <strong>Statut:</strong> {order.Statut === 'ready' ? 'Commande prête' : order.Statut}
             </div>
             {showRemainingTime && (
                 <div className="mb-2">
-                    <strong>Remaining Time:</strong> {order.Attente > 0 ? formatTime(order.Attente) : 'Time is up!'}
+                    <strong>Temps Restant:</strong> {order.Attente > 0 ? formatTime(order.Attente) : 'Le temps est écoulé !'}
                 </div>
             )}
             <div className="mb-2">
-                <strong>Total Price:</strong> ${order.TotalCommande.toFixed(2)}
+                <strong>Prix Total:</strong> {order.TotalCommande.toFixed(2)}€
             </div>
             <div className="mb-2">
-                <strong>Ordered At:</strong> {new Date(order.DateHeureCommande).toLocaleString()}
+                <strong>Commandé à:</strong> {new Date(order.DateHeureCommande).toLocaleString()}
+            </div>
+            <div className="mb-2">
+                <strong>Payé:</strong> {order.Payed ? 'Oui' : 'Non'}
             </div>
             <ul className="list-disc pl-6">
                 {order.Details.map((article, index) => (
                     <li key={index}>
-                        <strong>{article.Article}:</strong> ${article.ArticlePrice.toFixed(2)}
+                        <strong>{article.Article}:</strong> {article.ArticlePrice.toFixed(2)}€
                         {article.Options && Object.keys(article.Options).length > 0 ? (
                             <ul className="list-disc pl-6">
                                 {Object.entries(article.Options).map(([key, value], idx) => (
@@ -113,7 +117,7 @@ const OrderTrackingPage = () => {
                                 ))}
                             </ul>
                         ) : (
-                            <div>No options available</div>
+                            <div>Aucune option disponible</div>
                         )}
                     </li>
                 ))}

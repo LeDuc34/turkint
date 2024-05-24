@@ -35,6 +35,7 @@ const BasketPage = () => {
     const [clientSecret, setClientSecret] = useState<string | null>(null);
     const [orderPlaced, setOrderPlaced] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
+    const [paymentMethod, setPaymentMethod] = useState<string>('online'); // New state for payment method
 
     useEffect(() => {
         const fetchBasket = async () => {
@@ -86,19 +87,23 @@ const BasketPage = () => {
             return;
         }
 
-        try {
-            const clientID = localStorage.getItem('ClientID');
-            if (!clientID) throw new Error("ID client non défini dans localStorage.");
-            
-            const response = await axios.post('/api/payments/paymentIntent', {
-                clientID: clientID,
-                amount: basket?.TotalPrice,
-            });
+        if (paymentMethod === 'online') {
+            try {
+                const clientID = localStorage.getItem('ClientID');
+                if (!clientID) throw new Error("ID client non défini dans localStorage.");
+                
+                const response = await axios.post('/api/payments/paymentIntent', {
+                    clientID: clientID,
+                    amount: basket?.TotalPrice,
+                });
 
-            setClientSecret(response.data.clientSecret);
-        } catch (err) {
-            console.error('Échec de l\'initiation du paiement', err);
-            setError('Échec de l\'initiation du paiement');
+                setClientSecret(response.data.clientSecret);
+            } catch (err) {
+                console.error('Échec de l\'initiation du paiement', err);
+                setError('Échec de l\'initiation du paiement');
+            }
+        } else {
+            await handleOrderPlaced();
         }
     };
 
@@ -119,7 +124,7 @@ const BasketPage = () => {
                 TotalCommande: basket?.TotalPrice,
                 Details: basket?.Articles,
                 Attente: 100000000,
-               
+                Payed: paymentMethod === 'online',
             });
     
             // Log response and update UI
@@ -189,14 +194,37 @@ const BasketPage = () => {
                 ))}
             </ul>
             <div className="mt-4">
-                {!clientSecret ? (
+                <div className="mb-4">
+                    <label className="mr-4">
+                        <input
+                            type="radio"
+                            name="paymentMethod"
+                            value="online"
+                            checked={paymentMethod === 'online'}
+                            onChange={() => setPaymentMethod('online')}
+                        />
+                        Payer en ligne
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="paymentMethod"
+                            value="restaurant"
+                            checked={paymentMethod === 'restaurant'}
+                            onChange={() => setPaymentMethod('restaurant')}
+                        />
+                        Payer au restaurant
+                    </label>
+                </div>
+                {!clientSecret && (
                     <button
                         className="bg-blue-500 text-white px-4 py-2 rounded"
                         onClick={handleSendOrder}
                     >
                         Envoyer la commande
                     </button>
-                ) : (
+                )}
+                {clientSecret && paymentMethod === 'online' && (
                     <Elements stripe={stripePromise}>
                         <CheckoutForm clientSecret={clientSecret} handleOrderPlaced={handleOrderPlaced} />
                     </Elements>
