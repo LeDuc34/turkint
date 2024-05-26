@@ -122,7 +122,7 @@ const Presentation = () => {
                                 <p className="text-gray-700">"Partager un kebab, c'est partager un moment de bonheur."</p>
                             </div>
                             <div className="text-center">
-                                <img src="/aloys.webp" alt="Membre 6" className="team-photo w-36 h-36 rounded-full mx-auto mb-4 object-cover" />
+                                <img src="/aloys.jpg" alt="Membre 6" className="team-photo w-36 h-36 rounded-full mx-auto mb-4 object-cover" />
                                 <h3 className="text-xl font-bold text-gray-900">Aloys Maitre Kebabier</h3>
                                 <p className="text-gray-700">"Rien ne vaut un bon kebab après une longue journée."</p>
                             </div>

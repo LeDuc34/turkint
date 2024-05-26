@@ -51,12 +51,25 @@ function Form() {
 
 const Home = () => {
   return (
-    <div className="container mx-auto p-4">
+    /*<div className="container mx-auto p-4 bg-white text-center rounded-lg shadow-lg mb-24" >
       <Form />
       <div className="mt-6 flex justify-around">
         <Logout />
         <ClearBasket />
         <DisplayBasket />
+      </div>
+    </div>*/
+
+    // juste pour y voir plus clair avec un backgroud blanc comme dans presentation
+
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="container mx-auto p-4 bg-white rounded-lg shadow-lg mb-24">
+        <Form />
+        <div className="mt-6 flex justify-around">
+          <Logout />
+          <ClearBasket />
+          <DisplayBasket />
+        </div>
       </div>
     </div>
   );
