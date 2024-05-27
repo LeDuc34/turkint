@@ -89,9 +89,9 @@ const OrderTrackingPage = () => {
     const showRemainingTime = order.Attente <= 10000; // Show remaining time if it is less than or equal to 15 minutes
 
     return (
-    <div className="flex items-center justify-center h-screen">
-    <div className="place-items-center flex h-screen flex-col items-center">
-        <div className="p-6 bg-white rounded bg-opacity-80 w-90 mx-auto flex flex-col justify-center h-1/2 place-items-center">
+    <div className="flex items-center justify-center mt-5">
+    <div className="flex flex-col items-center">
+        <div className="p-6 bg-white rounded bg-opacity-80 w-90 mx-auto flex flex-col justify-center">
             <h1 className="text-2xl font-bold mb-4 text-red-600">Suivi de Commande</h1>
             <div className="mb-2">
                 <strong>ID de Commande:</strong> {order.CommandeID}
@@ -133,7 +133,7 @@ const OrderTrackingPage = () => {
             </ul>
         </div>
         <div className="flex items-center justify-between">
-            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={handleSubmit}>Commander à nouveau</button>
+            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-2" onClick={handleSubmit}>Commander à nouveau</button>
       </div>
       </div>
             <footer className="fixed bottom-0 bg-red-600 shadow mt-2 w-full">
