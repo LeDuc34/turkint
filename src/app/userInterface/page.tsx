@@ -67,7 +67,7 @@ const Home = () => {
     // juste pour y voir plus clair avec un backgroud blanc comme dans presentation
 
     <div className="flex items-center justify-center min-h-screen">
-      <div className="w-1/2 container mx-auto p-4 bg-white bg-opacity-80 rounded-lg shadow-lg mb-24">
+      4<div className="h-1/5 w-3/4 container mx-auto p-4 bg-white bg-opacity-80 rounded-lg shadow-lg mb-24">
         <Form />
         <div className="mt-6 flex justify-around">
           <Logout />

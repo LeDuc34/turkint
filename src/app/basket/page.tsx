@@ -115,7 +115,7 @@ const BasketPage = () => {
             
             // Debugging output
             console.log('ID Client:', clientID);
-            
+        
             // Send order details to the backend
             const response = await axios.post('/api/orders/send', {
                 ClientID: clientID,  // Ensure the key matches what your backend expects
@@ -149,13 +149,21 @@ const BasketPage = () => {
 
     if (error) {
         return (
-            <div>
-            <p className="text-red-500">{error}</p>
+        <div className="flex justify-center items-center h-screen">
+            <div className="flex items-center flex-col jusify-center h-screen max-h-20 ">
+                <p className="text-black font-bold text-2xl bg-white rounded px-2 bg-opacity-50">{error}</p>
+                <button
+                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-4"
+                    onClick={handleReturnToOrderPage}
+                >
+                    Retour à la page de commande
+                </button>
+            </div>
             <footer className="fixed bottom-0 bg-red-600 shadow mt-2 w-full">
             <div className="container mx-auto py-4 px-4 text-center">
                 <p className="text-gray-100">&copy; 2024 Turkint. Tous droits réservés.</p>
             </div>
-        </footer>
+            </footer>
         </div>
         )
     }
@@ -175,7 +183,7 @@ const BasketPage = () => {
 
     return (
         <div>
-        <div className="container mx-auto p-4">
+        <div className="container mx-auto p-4 w-1/2">
             <h1 className="text-3xl font-bold mb-4">Votre Panier</h1>
             {orderPlaced && <p className="text-green-500">Commande passée avec succès</p>}
             <div className="mb-4 p-4 border rounded bg-white shadow-sm">
@@ -202,7 +210,7 @@ const BasketPage = () => {
                                 </ul>
                             </div>
                             <button
-                                className="bg-red-500 text-white px-4 py-2 rounded"
+                                className="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded"
                                 onClick={() => handleDeleteArticle(index)}
                             >
                                 Supprimer
@@ -213,9 +221,9 @@ const BasketPage = () => {
                 ))}
             </ul>
             <div className="mt-4">
-                <div className="mb-4">
-                    <label className="mr-4">
-                        <input
+                <div className="mb-4 flex justify-center">
+                    <label className="mr-4 font-bold items-center flex bg-white rounded bg-opacity-80">
+                        <input className="accent-red-500"
                             type="radio"
                             name="paymentMethod"
                             value="online"
@@ -224,8 +232,8 @@ const BasketPage = () => {
                         />
                         Payer en ligne
                     </label>
-                    <label>
-                        <input
+                    <label className="mr-4 font-bold items-center flex bg-white rounded bg-opacity-80">
+                        <input className="accent-red-500"
                             type="radio"
                             name="paymentMethod"
                             value="restaurant"
@@ -235,26 +243,32 @@ const BasketPage = () => {
                         Payer au restaurant
                     </label>
                 </div>
+                <div className="flex justify-center">
                 {!clientSecret && (
                     <button
-                        className="bg-blue-500 text-white px-4 py-2 rounded"
+                        className="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded"
                         onClick={handleSendOrder}
                     >
                         Envoyer la commande
                     </button>
                 )}
+                <div className="flex flex-col">
                 {clientSecret && paymentMethod === 'online' && (
                     <Elements stripe={stripePromise}>
                         <CheckoutForm clientSecret={clientSecret} handleOrderPlaced={handleOrderPlaced} />
                     </Elements>
                 )}
                 <button
-                    className="ml-4 bg-gray-500 text-white px-4 py-2 rounded"
+                    className="ml-4 bg-gray-500 hover:bg-gray-700 text-white px-4 py-2 rounded"
                     onClick={handleReturnToOrderPage}
                 >
                     Retour à la page de commande
                 </button>
+                </div>
+            </div>
+            <div className="flex justify-center">
                 <ClearButton/>
+            </div>
             </div>
             </div>
             <footer className="fixed bottom-0 bg-red-600 shadow mt-2 w-full">

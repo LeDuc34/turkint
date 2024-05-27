@@ -47,7 +47,7 @@ const CheckoutForm = ({ clientSecret, handleOrderPlaced }: CheckoutFormProps) =>
 
     return (
         <form onSubmit={handleSubmit} className="w-full max-w-lg p-8 bg-white rounded shadow-md mx-auto my-10">
-            <h2 className="text-2xl font-semibold mb-4">Checkout</h2>
+            <h2 className="text-2xl font-semibold mb-4">Paiement</h2>
             <div className="mb-4">
                 <CardElement
                     className="p-3 border border-gray-300 rounded"
@@ -69,7 +69,7 @@ const CheckoutForm = ({ clientSecret, handleOrderPlaced }: CheckoutFormProps) =>
             </div>
             {error && <div className="text-red-500 mb-4">{error}</div>}
             <button type="submit" disabled={!stripe || isProcessing} className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-300">
-                {isProcessing ? 'Processing...' : 'Pay'}
+                {isProcessing ? 'Processing...' : 'Payer'}
             </button>
         </form>
     );
