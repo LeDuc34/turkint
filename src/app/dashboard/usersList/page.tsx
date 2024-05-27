@@ -188,58 +188,58 @@ const Users = () => {
     };
 
     return (
-        <div>
-            <div className="p-6">
-                <h2 className="text-2xl font-bold mb-4">Utilisateurs:</h2>
-                <div className="flex space-x-4 mb-4">
-                    <button 
-                        onClick={sortByMostOrders} 
-                        className="px-4 py-2 bg-blue-500 text-white rounded-md"
-                    >
-                        Trier par nombre de commandes
-                    </button>
-                    <button 
-                        onClick={sortByMostMoneySpent} 
-                        className="px-4 py-2 bg-blue-500 text-white rounded-md"
-                    >
-                        Trier par montant dépensé
-                    </button>
-                    <button 
-                        onClick={sortByLastOrder} 
-                        className="px-4 py-2 bg-blue-500 text-white rounded-md"
-                    >
-                        Trier par date de la dernière commande
-                    </button>
-                </div>
-                <ul className="space-y-4">
-                    {users.map((user) => (
-                        <li key={user.ClientID} className="bg-white p-4 rounded-md shadow-md text-black">
-                            <div className="flex justify-between items-center">
-                                <span>{`Utilisateur #${user.ClientID}`}</span>
-                                <button 
-                                    onClick={() => toggleUserDetails(user.ClientID)}
-                                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
-                                >
-                                    {visibleUser === user.ClientID ? 'Masquer les détails' : 'Afficher les détails'}
-                                </button>
-                            </div>
-                            {visibleUser === user.ClientID && renderUserDetails(user)}
-                        </li>
-                    ))}
-                </ul>
-            
-            <button 
-                onClick={() => router.push('/dashboard/adminInterface')} 
-                className="mt-8 px-4 py-2 bg-purple-500 text-white rounded-md"
-            >
-                Page des commandes
-            </button>
-            <button 
-                onClick={() => router.push('/dashboard/analytics')} 
-                className="mt-8 px-4 py-2 bg-purple-500 text-white rounded-md"
-            >
-                Analyses des données
-            </button>
+        <div className="p-6">
+            <h2 className="text-2xl font-bold mb-4">Utilisateurs:</h2>
+            <div className="flex space-x-4 mb-4">
+                <button 
+                    onClick={sortByMostOrders} 
+                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                >
+                    Trier par nombre de commandes
+                </button>
+                <button 
+                    onClick={sortByMostMoneySpent} 
+                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                >
+                    Trier par montant dépensé
+                </button>
+                <button 
+                    onClick={sortByLastOrder} 
+                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                >
+                    Trier par date de la dernière commande
+                </button>
+            </div>
+            <ul className="space-y-4">
+                {users.map((user) => (
+                    <li key={user.ClientID} className="bg-white p-4 rounded-md shadow-md text-black">
+                        <div className="flex justify-between items-center">
+                            <span>{`Utilisateur #${user.ClientID}`}</span>
+                            <button 
+                                onClick={() => toggleUserDetails(user.ClientID)}
+                                className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                            >
+                                {visibleUser === user.ClientID ? 'Masquer les détails' : 'Afficher les détails'}
+                            </button>
+                        </div>
+                        {visibleUser === user.ClientID && renderUserDetails(user)}
+                    </li>
+                ))}
+            </ul>
+            <div className="mt-8 flex space-x-4">
+                <button 
+                    onClick={() => router.push('/dashboard/adminInterface')} 
+                    className="px-4 py-2 bg-purple-500 text-white rounded-md"
+                >
+                    Page des commandes
+                </button>
+                <button 
+                    onClick={() => router.push('/dashboard/analytics')} 
+                    className="px-4 py-2 bg-purple-500 text-white rounded-md"
+                >
+                    Analyses des données
+                </button>
+            </div>
         </div>
     );
 };
