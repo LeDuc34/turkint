@@ -35,10 +35,12 @@ nextApp.prepare().then(async () => {
   const basketsRoutes = require('./api/routes/basketsRoutes');
   const ordersRoutes = require('./api/routes/ordersRoutes');
   const paymentRoutes = require('./api/routes/paymentRoutes');
+  const analyticsRoutes = require('./api/routes/analyticsRoutes');
   server.use('/api/users', usersRoutes);
   server.use('/api/baskets', basketsRoutes);
   server.use('/api/orders', ordersRoutes);
   server.use('/api/payments',paymentRoutes);
+  server.use('/api/analytics', analyticsRoutes);
 
   // Handling all other requests with Next.js
   server.get('*', (req, res) => {

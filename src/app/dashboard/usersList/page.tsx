@@ -112,13 +112,13 @@ const Users = () => {
 
         return (
             <div className="p-4 bg-gray-200 rounded-md shadow-md mt-2">
-                <h3 className="font-bold mb-2">Previous Commands:</h3>
+                <h3 className="font-bold mb-2">Commandes précédentes:</h3>
                 <ul>
                     {userCommands.map((command) => (
                         <li key={command.CommandeID} className="mb-2">
-                            <p><strong>Order ID:</strong> {command.CommandeID}</p>
+                            <p><strong>ID Commande:</strong> {command.CommandeID}</p>
                             <p><strong>Date:</strong> {new Date(command.DateHeureCommande).toLocaleString()}</p>
-                            <p><strong>Total Amount:</strong> {command.TotalCommande ? command.TotalCommande.toFixed(2) : '0.00'}€</p>
+                            <p><strong>Total prix:</strong> {command.TotalCommande ? command.TotalCommande.toFixed(2) : '0.00'}€</p>
                             <p><strong>Status:</strong> {command.Statut}</p>
                             <p><strong>Details:</strong></p>
                             <ul>
@@ -130,7 +130,7 @@ const Users = () => {
                                                 <li key={key}>{`${key}: ${value}`}</li>
                                             ))}
                                         </ul>
-                                        <p><strong>Article Price:</strong> {detail.ArticlePrice.toFixed(2)}€</p>
+                                        <p><strong>Prix article:</strong> {detail.ArticlePrice.toFixed(2)}€</p>
                                     </li>
                                 ))}
                             </ul>
@@ -234,7 +234,12 @@ const Users = () => {
             >
                 Page des commandes
             </button>
-            </div>
+            <button 
+                onClick={() => router.push('/dashboard/analytics')} 
+                className="mt-8 px-4 py-2 bg-purple-500 text-white rounded-md"
+            >
+                Analyses des données
+            </button>
         </div>
     );
 };

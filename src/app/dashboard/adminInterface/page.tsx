@@ -298,6 +298,13 @@ const Home = () => {
             >
                 Page de la liste des utilisateurs
             </button>
+            <button 
+                onClick={() => router.push('/dashboard/analytics')} 
+                className="mt-8 px-4 py-2 bg-purple-500 text-white rounded-md"
+            >
+                Analyse des données
+            </button>
+            
         </div>
     );
 };
