@@ -18,10 +18,23 @@ interface User {
     lastOrderDate: string; // ISO string format
 }
 
+interface Command {
+    CommandeID: number;
+    ClientID: number;
+    DateHeureCommande: string; // ISO string format
+    Statut: string;
+    TotalCommande: number;
+    Details: { [key: string]: any }[];
+    Attente: number;
+    Payed: boolean;
+}
+
 const Users = () => {
     const router = useRouter();
     const [users, setUsers] = useState<User[]>([]);
     const [visibleUser, setVisibleUser] = useState<number | null>(null);
+    const [visibleCommands, setVisibleCommands] = useState<number | null>(null);
+    const [commands, setCommands] = useState<{ [key: number]: Command[] }>({});
 
     const fetchUsers = async () => {
         try {
@@ -32,12 +45,33 @@ const Users = () => {
         }
     };
 
+    const fetchUserCommands = async (userId: number) => {
+        try {
+            const response = await axios.get<Command[]>(`/api/orders/displayArchived?ClientID=${userId}`);
+            setCommands((prev) => ({ ...prev, [userId]: response.data }));
+        } catch (error: any) {
+            console.error('Échec de la récupération des commandes:', error);
+        }
+    };
+
     useEffect(() => {
         fetchUsers();
     }, []);
 
     const toggleUserDetails = (userId: number) => {
         setVisibleUser(visibleUser === userId ? null : userId);
+        if (visibleCommands === userId) {
+            setVisibleCommands(null);
+        }
+    };
+
+    const toggleUserCommands = (userId: number) => {
+        if (visibleCommands === userId) {
+            setVisibleCommands(null);
+        } else {
+            fetchUserCommands(userId);
+            setVisibleCommands(userId);
+        }
     };
 
     const handleRoleChange = async (userId: number, newRole: string) => {
@@ -71,6 +105,40 @@ const Users = () => {
     const sortByLastOrder = () => {
         const sortedUsers = [...users].sort((a, b) => new Date(b.lastOrderDate).getTime() - new Date(a.lastOrderDate).getTime());
         setUsers(sortedUsers);
+    };
+
+    const renderUserCommands = (userId: number) => {
+        const userCommands = commands[userId] || [];
+
+        return (
+            <div className="p-4 bg-gray-200 rounded-md shadow-md mt-2">
+                <h3 className="font-bold mb-2">Previous Commands:</h3>
+                <ul>
+                    {userCommands.map((command) => (
+                        <li key={command.CommandeID} className="mb-2">
+                            <p><strong>Order ID:</strong> {command.CommandeID}</p>
+                            <p><strong>Date:</strong> {new Date(command.DateHeureCommande).toLocaleString()}</p>
+                            <p><strong>Total Amount:</strong> {command.TotalCommande ? command.TotalCommande.toFixed(2) : '0.00'}€</p>
+                            <p><strong>Status:</strong> {command.Statut}</p>
+                            <p><strong>Details:</strong></p>
+                            <ul>
+                                {command.Details.map((detail, index) => (
+                                    <li key={index} className="ml-4">
+                                        <p><strong>Article:</strong> {detail.Article}</p>
+                                        <ul>
+                                            {Object.entries(detail.Options).map(([key, value]) => (
+                                                <li key={key}>{`${key}: ${value}`}</li>
+                                            ))}
+                                        </ul>
+                                        <p><strong>Article Price:</strong> {detail.ArticlePrice.toFixed(2)}€</p>
+                                    </li>
+                                ))}
+                            </ul>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        );
     };
 
     const renderUserDetails = (user: User) => {
@@ -107,7 +175,14 @@ const Users = () => {
                     >
                         Supprimer l'utilisateur
                     </button>
+                    <button 
+                        onClick={() => toggleUserCommands(user.ClientID)}
+                        className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                    >
+                        {visibleCommands === user.ClientID ? 'Masquer les commandes' : 'Afficher les commandes'}
+                    </button>
                 </div>
+                {visibleCommands === user.ClientID && renderUserCommands(user.ClientID)}
             </div>
         );
     };

@@ -142,4 +142,22 @@ const deleteOrder = async (req, res) => {
     }
 }
 
-module.exports = {deleteOrder,updateTimer,getOrderInfos,takeOrder,displayOrdersWaiting,displayOrdersProcessing,updateStatus,displayOrdersReady };
+const displayArchivedOrders = async (req, res) => {
+    const { ClientID } = req.query;
+    try {
+        const commandes = await Commande.findAll({
+            where: { 
+                ClientID,
+                Statut: 'archived' 
+            }
+        });
+        res.status(200).send(commandes);
+    } catch (error) {
+        console.error('Failed to fetch archived orders:', error);
+        res.status(500).send([]); // Send an empty array on error
+    }
+};
+
+
+
+module.exports = {displayArchivedOrders,deleteOrder,updateTimer,getOrderInfos,takeOrder,displayOrdersWaiting,displayOrdersProcessing,updateStatus,displayOrdersReady };

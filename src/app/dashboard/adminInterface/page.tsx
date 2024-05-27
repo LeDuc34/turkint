@@ -122,12 +122,12 @@ const Home = () => {
         }
     };
 
-    const handleDeleteOrder = async (orderId: number) => {
+    const handleArchiveOrder = async (orderId: number) => {
         try {
-            await axios.post('/api/orders/delete', { CommandeID: orderId });
+            await axios.post('/api/orders/update', { CommandeID: orderId , Statut: 'archived'});
             setReadyOrders(readyOrders.filter(order => order.CommandeID !== orderId));
         } catch (error: any) {
-            console.error('Échec de la suppression de la commande:', error);
+            console.error('Échec archivage commande:', error);
         }
     };
 
@@ -279,10 +279,10 @@ const Home = () => {
                                         Marquer comme en cours
                                     </button>
                                     <button 
-                                        onClick={() => handleDeleteOrder(order.CommandeID)}
+                                        onClick={() => handleArchiveOrder(order.CommandeID)}
                                         className="px-4 py-2 bg-red-500 text-white rounded-md"
-                                    >
-                                        Supprimer
+                                    >   
+                                        Archiver
                                     </button>
                                 </div>
                             </div>

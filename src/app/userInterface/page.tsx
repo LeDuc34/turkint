@@ -9,6 +9,8 @@ import StepThree from '../userInterface/StepThree';
 import axios from 'axios';
 import { withAuth } from '../authContext/page';
 
+
+
 function Form() {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -57,6 +59,7 @@ const Home = () => {
         <Logout />
         <ClearBasket />
         <DisplayBasket />
+        
       </div>
     </div>*/
 
