@@ -227,13 +227,14 @@ const Users = () => {
                         </li>
                     ))}
                 </ul>
-            </div>
+            
             <button 
                 onClick={() => router.push('/dashboard/adminInterface')} 
                 className="mt-8 px-4 py-2 bg-purple-500 text-white rounded-md"
             >
                 Page des commandes
             </button>
+            </div>
         </div>
     );
 };
