@@ -6,6 +6,7 @@ import { useState } from 'react';
 import StepOne from '../userInterface/StepOne';
 import StepTwo from '../userInterface/StepTwo';
 import StepThree from '../userInterface/StepThree';
+import OnGoing from "../onGoing/page";
 import axios from 'axios';
 import { withAuth } from '../authContext/page';
 
@@ -66,14 +67,20 @@ const Home = () => {
     // juste pour y voir plus clair avec un backgroud blanc comme dans presentation
 
     <div className="flex items-center justify-center min-h-screen">
-      <div className="container mx-auto p-4 bg-white rounded-lg shadow-lg mb-24">
+      <div className="w-1/2 container mx-auto p-4 bg-white bg-opacity-80 rounded-lg shadow-lg mb-24">
         <Form />
         <div className="mt-6 flex justify-around">
           <Logout />
           <ClearBasket />
           <DisplayBasket />
+          <OnGoing />
         </div>
       </div>
+      <footer className="fixed bottom-0 bg-red-600 shadow mt-2 w-full">
+        <div className="container mx-auto py-4 px-4 text-center">
+            <p className="text-gray-100">&copy; 2024 Turkint. Tous droits réservés.</p>
+        </div>
+    </footer>
     </div>
   );
 }

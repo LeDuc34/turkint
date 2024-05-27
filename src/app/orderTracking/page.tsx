@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { withAuth } from '../authContext/page';
+import { useRouter } from "next/navigation";
 
 interface Article {
     Article: string;
@@ -65,6 +66,12 @@ const OrderTrackingPage = () => {
         }
     }, [order]);
 
+    const router = useRouter();
+
+    const handleSubmit = async() => {
+        router.push("/userInterface")
+    };
+
     const formatTime = (seconds: number) => {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
@@ -82,8 +89,10 @@ const OrderTrackingPage = () => {
     const showRemainingTime = order.Attente <= 10000; // Show remaining time if it is less than or equal to 15 minutes
 
     return (
-        <div className="p-6 bg-white rounded">
-            <h1 className="text-2xl font-bold mb-4">Suivi de Commande</h1>
+    <div className="flex items-center justify-center h-screen">
+    <div className="place-items-center flex h-screen flex-col items-center">
+        <div className="p-6 bg-white rounded bg-opacity-80 w-90 mx-auto flex flex-col justify-center h-1/2 place-items-center">
+            <h1 className="text-2xl font-bold mb-4 text-red-600">Suivi de Commande</h1>
             <div className="mb-2">
                 <strong>ID de Commande:</strong> {order.CommandeID}
             </div>
@@ -122,6 +131,17 @@ const OrderTrackingPage = () => {
                     </li>
                 ))}
             </ul>
+        </div>
+        <div className="flex items-center justify-between">
+            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={handleSubmit}>Commander à nouveau</button>
+      </div>
+      </div>
+            <footer className="fixed bottom-0 bg-red-600 shadow mt-2 w-full">
+        <div className="container mx-auto py-4 px-4 text-center">
+            <p className="text-gray-100">&copy; 2024 Turkint. Tous droits réservés.</p>
+        </div>
+
+    </footer>
         </div>
     );
 };

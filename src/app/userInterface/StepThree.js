@@ -37,7 +37,7 @@ export default function StepThree({ formData, setFormData, prevStep, addToBasket
   
     return (
       <div className="p-4">
-        <h2 className="text-xl font-bold mb-4">Step 3</h2>
+        <h2 className="text-xl font-bold mb-4">Étape 3</h2>
         <div className="mb-4">
           <input
             type="checkbox"
@@ -76,13 +76,13 @@ export default function StepThree({ formData, setFormData, prevStep, addToBasket
             onClick={prevStep}
             className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
           >
-            Prev
+            Précédent
           </button>
           <button
             onClick={addToBasket}
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
           >
-            Add to Basket
+            Ajouter au panier
           </button>
         </div>
       </div>
