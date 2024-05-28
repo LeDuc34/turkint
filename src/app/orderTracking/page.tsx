@@ -100,7 +100,7 @@ const OrderTrackingPage = () => {
                 <strong>ID de Commande:</strong> {order.CommandeID}
             </div>
             <div className="mb-2">
-                <strong>Statut:</strong> {order.Statut === 'ready' ? 'Commande prête' : "En attente"}
+                <strong>Statut:</strong> {order.Statut === 'ready' ? 'Commande prête' : order.Statut}
             </div>
             {showRemainingTime && (
                 <div className="mb-2">
