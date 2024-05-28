@@ -131,6 +131,15 @@ const Home = () => {
         }
     };
 
+    const handleDeleteOrder = async (orderId: number) => {
+        try {
+            await axios.post('/api/orders/update',{CommandeID: orderId,Statut: 'canceled'});
+            setWaitingOrders(waitingOrders.filter(order => order.CommandeID !== orderId));
+        } catch (error: any) {
+            console.error('Échec de la suppression de la commande:', error);
+        }
+    };
+
     const getRemainingTime = (duration: number) => {
         const minutes = Math.floor(duration / 60);
         const seconds = duration % 60;
@@ -193,6 +202,12 @@ const Home = () => {
                                         className="px-4 py-2 bg-green-500 text-white rounded-md"
                                     >
                                         Marquer comme en cours
+                                    </button>
+                                    <button 
+                                        onClick={() => handleDeleteOrder(order.CommandeID)}
+                                        className="px-4 py-2 bg-red-500 text-white rounded-md"
+                                    >
+                                        Supprimer
                                     </button>
                                 </div>
                             </div>

@@ -47,7 +47,7 @@ const Users = () => {
 
     const fetchUserCommands = async (userId: number) => {
         try {
-            const response = await axios.get<Command[]>(`/api/orders/displayArchived?ClientID=${userId}`);
+            const response = await axios.get<Command[]>(`/api/orders/displayArchivedCanceled?ClientID=${userId}`);
             setCommands((prev) => ({ ...prev, [userId]: response.data }));
         } catch (error: any) {
             console.error('Échec de la récupération des commandes:', error);
@@ -228,7 +228,7 @@ const Users = () => {
             </ul>
             <div className="mt-8 flex space-x-4">
                 <button 
-                    onClick={() => router.push('/dashboard/adminInterface')} 
+                    onClick={() => router.push('/dashboard/ordersInterface')} 
                     className="px-4 py-2 bg-purple-500 text-white rounded-md"
                 >
                     Page des commandes

@@ -337,7 +337,7 @@ const Analytics = () => {
                 </div>
             </div>
             <button 
-                onClick={() => router.push('/dashboard/adminInterface')} 
+                onClick={() => router.push('/dashboard/ordersInterface')} 
                 className="mt-8 px-4 py-2 bg-purple-500 text-white rounded-md"
             >
                 Page des commandes

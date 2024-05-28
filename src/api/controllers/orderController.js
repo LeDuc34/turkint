@@ -1,6 +1,6 @@
 const Commande = require("../../models/Commande");
 const User = require("../../models/Client");
-
+const { Op } = require('sequelize');
 
 const takeOrder = async (req, res) => {
   try {
@@ -142,13 +142,13 @@ const deleteOrder = async (req, res) => {
     }
 }
 
-const displayArchivedOrders = async (req, res) => {
+const displayArchivedandCanceledOrders = async (req, res) => {
     const { ClientID } = req.query;
     try {
         const commandes = await Commande.findAll({
             where: { 
                 ClientID,
-                Statut: 'archived' 
+                Statut: { [Op.or]: ['archived', 'canceled'] }
             }
         });
         res.status(200).send(commandes);
@@ -160,4 +160,4 @@ const displayArchivedOrders = async (req, res) => {
 
 
 
-module.exports = {displayArchivedOrders,deleteOrder,updateTimer,getOrderInfos,takeOrder,displayOrdersWaiting,displayOrdersProcessing,updateStatus,displayOrdersReady };
+module.exports = {displayArchivedandCanceledOrders,deleteOrder,updateTimer,getOrderInfos,takeOrder,displayOrdersWaiting,displayOrdersProcessing,updateStatus,displayOrdersReady };

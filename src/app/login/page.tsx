@@ -21,7 +21,7 @@ const LoginForm = () => {
     if(response.data.Role !== "admin"){
       router.push('/userInterface');
     }else{
-      router.push('/dashboard/adminInterface');
+      router.push('/dashboard/ordersInterface');
     }
     console.log(response.data);
     
