@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Bar, Doughnut, Line } from 'react-chartjs-2';
 import { useRouter } from 'next/navigation';
+import Logout from '../../logout/page';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -14,7 +15,8 @@ import {
     Title,
     Tooltip,
     Legend,
-    TimeScale
+    TimeScale,
+    Filler,
 } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import '../../../../styles/globals.css';
@@ -30,7 +32,8 @@ ChartJS.register(
     Title,
     Tooltip,
     Legend,
-    TimeScale
+    TimeScale,
+    Filler
 );
 
 interface SauceCount {
@@ -139,9 +142,12 @@ const Analytics = () => {
             {
                 label: 'Sauces les plus choisies',
                 data: Object.values(sauceCount),
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                backgroundColor: 'rgba(75, 192, 192, 0.8)',
                 borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1,
+                borderWidth: 2,
+                borderRadius: 5,
+                hoverBackgroundColor: 'rgba(75, 192, 192, 1)',
+                hoverBorderColor: 'rgba(75, 192, 192, 1)',
             },
         ],
     };
@@ -152,9 +158,39 @@ const Analytics = () => {
             {
                 label: 'Types de pain les plus choisis',
                 data: Object.values(breadCount),
-                backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'],
-                borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
-                borderWidth: 1,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.8)',
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(255, 206, 86, 0.8)',
+                    'rgba(75, 192, 192, 0.8)',
+                    'rgba(153, 102, 255, 0.8)',
+                    'rgba(255, 159, 64, 0.8)',
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                ],
+                borderWidth: 2,
+                hoverBackgroundColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                ],
+                hoverBorderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                ],
             },
         ],
     };
@@ -165,9 +201,12 @@ const Analytics = () => {
             {
                 label: 'Légumes les plus choisis',
                 data: [vegetableCount.salade, vegetableCount.tomate, vegetableCount.oignon],
-                backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)'],
+                backgroundColor: ['rgba(75, 192, 192, 0.8)', 'rgba(54, 162, 235, 0.8)', 'rgba(255, 206, 86, 0.8)'],
                 borderColor: ['rgba(75, 192, 192, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
-                borderWidth: 1,
+                borderWidth: 2,
+                borderRadius: 5,
+                hoverBackgroundColor: ['rgba(75, 192, 192, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
+                hoverBorderColor: ['rgba(75, 192, 192, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
             },
         ],
     };
@@ -178,11 +217,11 @@ const Analytics = () => {
             {
                 label: 'Nombre de commandes par jour',
                 data: commandCount,
-                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                backgroundColor: 'rgba(153, 102, 255, 0.8)',
                 borderColor: 'rgba(153, 102, 255, 1)',
-                borderWidth: 1,
-                fill: false,
-                tension: 0.1,
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4,
             },
         ],
     };
@@ -193,11 +232,11 @@ const Analytics = () => {
             {
                 label: 'Nombre de commandes par mois',
                 data: commandCountByMonth,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                backgroundColor: 'rgba(75, 192, 192, 0.8)',
                 borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1,
-                fill: false,
-                tension: 0.1,
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4,
             },
         ],
     };
@@ -207,10 +246,41 @@ const Analytics = () => {
         plugins: {
             legend: {
                 position: 'top' as const,
+                labels: {
+                    font: {
+                        size: 14,
+                        family: 'Arial, sans-serif',
+                    },
+                    color: '#333',
+                },
             },
             title: {
                 display: true,
                 text: 'Sauces les plus choisies',
+                font: {
+                    size: 18,
+                    family: 'Arial, sans-serif',
+                    weight: 'bold',
+                },
+                color: '#333',
+            },
+        },
+        scales: {
+            x: {
+                ticks: {
+                    color: '#333',
+                    font: {
+                        size: 12,
+                    },
+                },
+            },
+            y: {
+                ticks: {
+                    color: '#333',
+                    font: {
+                        size: 12,
+                    },
+                },
             },
         },
     };
@@ -221,10 +291,23 @@ const Analytics = () => {
         plugins: {
             legend: {
                 position: 'top' as const,
+                labels: {
+                    font: {
+                        size: 14,
+                        family: 'Arial, sans-serif',
+                    },
+                    color: '#333',
+                },
             },
             title: {
                 display: true,
                 text: 'Types de pain les plus choisis',
+                font: {
+                    size: 18,
+                    family: 'Arial, sans-serif',
+                    weight: 'bold',
+                },
+                color: '#333',
             },
         },
     };
@@ -234,10 +317,41 @@ const Analytics = () => {
         plugins: {
             legend: {
                 position: 'top' as const,
+                labels: {
+                    font: {
+                        size: 14,
+                        family: 'Arial, sans-serif',
+                    },
+                    color: '#333',
+                },
             },
             title: {
                 display: true,
                 text: 'Légumes les plus choisis',
+                font: {
+                    size: 18,
+                    family: 'Arial, sans-serif',
+                    weight: 'bold',
+                },
+                color: '#333',
+            },
+        },
+        scales: {
+            x: {
+                ticks: {
+                    color: '#333',
+                    font: {
+                        size: 12,
+                    },
+                },
+            },
+            y: {
+                ticks: {
+                    color: '#333',
+                    font: {
+                        size: 12,
+                    },
+                },
             },
         },
     };
@@ -247,10 +361,41 @@ const Analytics = () => {
         plugins: {
             legend: {
                 position: 'top' as const,
+                labels: {
+                    font: {
+                        size: 14,
+                        family: 'Arial, sans-serif',
+                    },
+                    color: '#333',
+                },
             },
             title: {
                 display: true,
                 text: 'Nombre de commandes par jour',
+                font: {
+                    size: 18,
+                    family: 'Arial, sans-serif',
+                    weight: 'bold',
+                },
+                color: '#333',
+            },
+        },
+        scales: {
+            x: {
+                ticks: {
+                    color: '#333',
+                    font: {
+                        size: 12,
+                    },
+                },
+            },
+            y: {
+                ticks: {
+                    color: '#333',
+                    font: {
+                        size: 12,
+                    },
+                },
             },
         },
     };
@@ -260,19 +405,50 @@ const Analytics = () => {
         plugins: {
             legend: {
                 position: 'top' as const,
+                labels: {
+                    font: {
+                        size: 14,
+                        family: 'Arial, sans-serif',
+                    },
+                    color: '#333',
+                },
             },
             title: {
                 display: true,
                 text: 'Nombre de commandes par mois',
+                font: {
+                    size: 18,
+                    family: 'Arial, sans-serif',
+                    weight: 'bold',
+                },
+                color: '#333',
+            },
+        },
+        scales: {
+            x: {
+                ticks: {
+                    color: '#333',
+                    font: {
+                        size: 12,
+                    },
+                },
+            },
+            y: {
+                ticks: {
+                    color: '#333',
+                    font: {
+                        size: 12,
+                    },
+                },
             },
         },
     };
 
     return (
         <div className="p-6 min-h-screen flex flex-col items-center">
-            <h2 className="text-3xl font-bold mb-6 text-center">Analytique</h2>
+            <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Analytique</h2>
             <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-3xl mb-8">
-                <h3 className="text-xl font-semibold mb-4 text-center">Sauces les plus choisies</h3>
+                <h3 className="text-xl font-semibold mb-4 text-center text-gray-800">Sauces les plus choisies</h3>
                 <div className="flex justify-center items-center h-96">
                     <div className="w-full">
                         <Bar data={sauceData} options={options} />
@@ -280,7 +456,7 @@ const Analytics = () => {
                 </div>
             </div>
             <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-3xl mb-8">
-                <h3 className="text-xl font-semibold mb-4 text-center">Types de pain les plus choisis</h3>
+                <h3 className="text-xl font-semibold mb-4 text-center text-gray-800">Types de pain les plus choisis</h3>
                 <div className="flex justify-center items-center h-96">
                     <div className="w-full h-full">
                         <Doughnut data={breadData} options={breadOptions} />
@@ -288,7 +464,7 @@ const Analytics = () => {
                 </div>
             </div>
             <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-3xl mb-8">
-                <h3 className="text-xl font-semibold mb-4 text-center">Légumes les plus choisis</h3>
+                <h3 className="text-xl font-semibold mb-4 text-center text-gray-800">Légumes les plus choisis</h3>
                 <div className="flex justify-center items-center h-96">
                     <div className="w-full">
                         <Bar data={vegetableData} options={vegetableOptions} />
@@ -296,7 +472,7 @@ const Analytics = () => {
                 </div>
             </div>
             <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-3xl mb-8">
-                <h3 className="text-xl font-semibold mb-4 text-center">Nombre de commandes par jour</h3>
+                <h3 className="text-xl font-semibold mb-4 text-center text-gray-800">Nombre de commandes par jour</h3>
                 <div className="flex justify-center items-center h-96 flex-col">
                     <div className="flex mb-4">
                         <select value={selectedMonth} onChange={handleMonthChange} className="mr-4 p-2 border border-gray-300 rounded">
@@ -320,7 +496,7 @@ const Analytics = () => {
                 </div>
             </div>
             <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-3xl mb-8">
-                <h3 className="text-xl font-semibold mb-4 text-center">Nombre de commandes par mois</h3>
+                <h3 className="text-xl font-semibold mb-4 text-center text-gray-800">Nombre de commandes par mois</h3>
                 <div className="flex justify-center items-center h-96 flex-col">
                     <div className="flex mb-4">
                         <select value={selectedYearForMonth} onChange={handleYearChangeForMonth} className="p-2 border border-gray-300 rounded">
@@ -348,6 +524,7 @@ const Analytics = () => {
             >
                 Page liste utilisateurs
             </button>
+            <Logout/>
         </div>
     );
 };

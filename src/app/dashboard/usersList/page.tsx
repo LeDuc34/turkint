@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import '../../../../styles/globals.css'; 
 import { withAdminAuth } from '../../authContextAdmin/page';
+import Logout from '../../logout/page';
+
 
 interface User {
     ClientID: number;
@@ -106,8 +108,19 @@ const Users = () => {
         const sortedUsers = [...users].sort((a, b) => new Date(b.lastOrderDate).getTime() - new Date(a.lastOrderDate).getTime());
         setUsers(sortedUsers);
     };
-
+ 
+    const translateStatus = (status: string) => {
+        switch (status) {
+            case 'canceled':
+                return 'annulée';
+            case 'archived':
+                return 'archivée';
+            default:
+                return status;
+        }
+    };
     const renderUserCommands = (userId: number) => {
+       
         const userCommands = commands[userId] || [];
 
         return (
@@ -119,7 +132,7 @@ const Users = () => {
                             <p><strong>ID Commande:</strong> {command.CommandeID}</p>
                             <p><strong>Date:</strong> {new Date(command.DateHeureCommande).toLocaleString()}</p>
                             <p><strong>Total prix:</strong> {command.TotalCommande ? command.TotalCommande.toFixed(2) : '0.00'}€</p>
-                            <p><strong>Status:</strong> {command.Statut}</p>
+                            <p><strong>Status:</strong> {translateStatus(command.Statut)}</p>
                             <p><strong>Details:</strong></p>
                             <ul>
                                 {command.Details.map((detail, index) => (
@@ -239,6 +252,7 @@ const Users = () => {
                 >
                     Analyses des données
                 </button>
+                <Logout/>
             </div>
         </div>
     );

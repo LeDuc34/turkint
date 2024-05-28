@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import '../../../../styles/globals.css';
 import { withAdminAuth } from '../../authContextAdmin/page';
+import Logout from '../../logout/page';
+
 
 interface Article {
     Article: string;
@@ -155,12 +157,26 @@ const Home = () => {
             .join(', ');
     };
 
+    const translateStatus = (status: string) => {
+        switch (status) {
+            case 'waiting':
+                return 'en attente';
+            case 'processing':
+                return 'en cours';
+            case 'ready':
+                return 'prêt';
+            default:
+                return status;
+        }
+    };
+    
+
     const renderOrderDetails = (order: Order) => {
         return (
             <div className="p-4 bg-gray-100 rounded-md shadow-md text-black">
                 <p><strong>ID Client:</strong> {order.ClientID}</p>
                 <p><strong>Date/Heure:</strong> {order.DateHeureCommande}</p>
-                <p><strong>Statut:</strong> {order.Statut}</p>
+                <p><strong>Statut:</strong> {translateStatus(order.Statut)}</p>
                 <p><strong>Total:</strong> {order.TotalCommande.toFixed(2)}€</p>
                 <p><strong>Payé:</strong> {order.Payed ? 'Oui' : 'Non'}</p> 
                 <div>
@@ -207,7 +223,7 @@ const Home = () => {
                                         onClick={() => handleDeleteOrder(order.CommandeID)}
                                         className="px-4 py-2 bg-red-500 text-white rounded-md"
                                     >
-                                        Supprimer
+                                        Annuler
                                     </button>
                                 </div>
                             </div>
@@ -319,7 +335,7 @@ const Home = () => {
             >
                 Analyse des données
             </button>
-            
+            <Logout/>
         </div>
     );
 };
