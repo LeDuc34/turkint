@@ -233,7 +233,10 @@ const BasketPage = () => {
                             name="paymentMethod"
                             value="online"
                             checked={paymentMethod === 'online'}
-                            onChange={() => setPaymentMethod('online')}
+                            onChange={() => {
+                                setPaymentMethod('online');
+                                setClientSecret(null); // Reset clientSecret when switching payment method
+                            }}
                         />
                         Payer en ligne
                     </label>
@@ -243,38 +246,42 @@ const BasketPage = () => {
                             name="paymentMethod"
                             value="restaurant"
                             checked={paymentMethod === 'restaurant'}
-                            onChange={() => setPaymentMethod('restaurant')}
+                            onChange={() => {
+                                setPaymentMethod('restaurant');
+                                setClientSecret(null); // Reset clientSecret when switching payment method
+                            }}
                         />
                         Payer au restaurant
                     </label>
                 </div>
                 <div className="flex justify-center">
-                <div className="flex flex-col">
-                {clientSecret && paymentMethod === 'online' && (
-                    <Elements stripe={stripePromise}>
-                        <CheckoutForm clientSecret={clientSecret} handleOrderPlaced={handleOrderPlaced} />
-                    </Elements>
-                )}
-                <button
-                    className="ml-4 bg-gray-500 hover:bg-gray-700 text-white px-4 py-2 rounded"
-                    onClick={handleReturnToOrderPage}
-                >
-                    Retour à la page de commande
-                </button>
+                    <div className="flex flex-col">
+                        {clientSecret && paymentMethod === 'online' && (
+                            <Elements stripe={stripePromise}>
+                                <CheckoutForm clientSecret={clientSecret} handleOrderPlaced={handleOrderPlaced} />
+                            </Elements>
+                        )}
+                        <button
+                            className="ml-4 bg-gray-500 hover:bg-gray-700 text-white px-4 py-2 rounded"
+                            onClick={handleReturnToOrderPage}
+                        >
+                            Retour à la page de commande
+                        </button>
+                    </div>
                 </div>
-                {!clientSecret && (
-                    <button
-                        className="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded ml-5"
-                        onClick={handleSendOrder}
-                    >
-                        Envoyer la commande
-                    </button>
-                )}
-
+                <div className="flex justify-center mt-4">
+                    {!clientSecret && (
+                        <button
+                            className="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded"
+                            onClick={handleSendOrder}
+                        >
+                            Envoyer la commande
+                        </button>
+                    )}
+                </div>
             </div>
-            <div className="flex justify-center">
+            <div className="flex justify-center mt-4">
                 <ClearButton/>
-            </div>
             </div>
             </div>
             <footer className="fixed bottom-0 bg-red-600 shadow mt-2 w-full">
