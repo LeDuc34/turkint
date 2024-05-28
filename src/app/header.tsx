@@ -20,7 +20,7 @@ const Header = () => {
     return (
         <header className='fixed top-0 shadow-md py-4 px-4 sm:px-10 bg-red-600 font-[sans-serif] min-h-[70px] tracking-wide z-50 w-screen'>
   <div className='flex flex-wrap items-center justify-between gap-5 w-full'>
-    <a href="javascript:void(0)"><img src="logo.png" alt="logo" className='w-20
+    <a href="/"><img src="logo.png" alt="logo" className='w-20
 
     ' />
     </a>
@@ -46,16 +46,16 @@ const Header = () => {
         </li>
         <li className='max-lg:border-b border-gray-300 max-lg:py-3 px-3'>
           <a href="/userInterface"
-            className='hover:text-red-800 text-black block font-semibold text-[15px]'>Commander</a>
+            className='hover:text-red-800 text-white block font-semibold text-[15px]'>Commander</a>
         </li>
         <li className='max-lg:border-b border-gray-300 max-lg:py-3 px-3'><a href='/myProfile'
-            className='hover:text-red-800 text-black block font-semibold text-[15px]'>Mon profil</a>
+            className='hover:text-red-800 text-white block font-semibold text-[15px]'>Mon profil</a>
         </li>
         <li className='max-lg:border-b border-gray-300 max-lg:py-3 px-3'><a href='/basket'
-            className='hover:text-red-800 text-black block font-semibold text-[15px]'>Mon panier</a>
+            className='hover:text-red-800 text-white block font-semibold text-[15px]'>Mon panier</a>
         </li>
         <li className='max-lg:border-b border-gray-300 max-lg:py-3 px-3'><a href='/presentation'
-            className='hover:text-red-800 text-black block font-semibold text-[15px]'>Turk'int</a>
+            className='hover:text-red-800 text-white block font-semibold text-[15px]'>Turk'int</a>
         </li>
       </ul>
     </div>
