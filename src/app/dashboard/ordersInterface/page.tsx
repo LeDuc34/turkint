@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import '../../../../styles/globals.css';
 import { withAdminAuth } from '../../authContextAdmin/page';
 import Logout from '../../logout/page';
+import Header from "../../headerAdmin";
 
 interface Article {
     Article: string;
@@ -211,7 +212,9 @@ const Home = () => {
     };
 
     return (
-        <div className="p-6">
+        <div>
+            <Header/>
+        <div className="p-6 my-24">
             <div className="mb-8">
                 <h2 className="text-2xl font-bold mb-4">Commandes en attente :</h2>
                 <ul className="space-y-4">
@@ -344,7 +347,7 @@ const Home = () => {
                     ))}
                 </ul>
             </div>
-            <Logout />
+        </div>
         </div>
     );
 };

@@ -21,6 +21,7 @@ import {
 import 'chartjs-adapter-date-fns';
 import '../../../../styles/globals.css';
 import { withAdminAuth } from '../../authContextAdmin/page';
+import Header from "../../headerAdmin";
 
 ChartJS.register(
     CategoryScale,
@@ -201,7 +202,7 @@ const Analytics = () => {
             {
                 label: 'Légumes les plus choisis',
                 data: [vegetableCount.salade, vegetableCount.tomate, vegetableCount.oignon],
-                backgroundColor: ['rgba(75, 192, 192, 0.8)', 'rgba(54, 162, 235, 0.8)', 'rgba(255, 206, 86, 0.8)'],
+                backgroundColor: ['rgba(75, 192, 192, 0.8)', 'rgba(75, 192, 192, 0.8)', 'rgba(255, 206, 86, 0.8)'],
                 borderColor: ['rgba(75, 192, 192, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
                 borderWidth: 2,
                 borderRadius: 5,
@@ -445,10 +446,10 @@ const Analytics = () => {
     };
 
     return (
-        <div className="p-6 min-h-screen flex flex-col items-center ">
-            <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Analytique</h2>
+        <div>
+        <Header/>
+        <div className="p-6 min-h-screen flex flex-col items-center my-28">
             <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-3xl mb-8">
-                <h3 className="text-xl font-semibold mb-4 text-center text-gray-800">Sauces les plus choisies</h3>
                 <div className="flex justify-center items-center h-96">
                     <div className="w-full">
                         <Bar data={sauceData} options={options} />
@@ -456,7 +457,6 @@ const Analytics = () => {
                 </div>
             </div>
             <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-3xl mb-8">
-                <h3 className="text-xl font-semibold mb-4 text-center text-gray-800">Types de pain les plus choisis</h3>
                 <div className="flex justify-center items-center h-96">
                     <div className="w-full h-full">
                         <Doughnut data={breadData} options={breadOptions} />
@@ -464,7 +464,6 @@ const Analytics = () => {
                 </div>
             </div>
             <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-3xl mb-8">
-                <h3 className="text-xl font-semibold mb-4 text-center text-gray-800">Légumes les plus choisis</h3>
                 <div className="flex justify-center items-center h-96">
                     <div className="w-full">
                         <Bar data={vegetableData} options={vegetableOptions} />
@@ -472,7 +471,6 @@ const Analytics = () => {
                 </div>
             </div>
             <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-3xl mb-8">
-                <h3 className="text-xl font-semibold mb-4 text-center text-gray-800">Nombre de commandes par jour</h3>
                 <div className="flex justify-center items-center h-96 flex-col">
                     <div className="flex mb-4">
                         <select value={selectedMonth} onChange={handleMonthChange} className="mr-4 p-2 border border-gray-300 rounded">
@@ -496,7 +494,6 @@ const Analytics = () => {
                 </div>
             </div>
             <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-3xl mb-8">
-                <h3 className="text-xl font-semibold mb-4 text-center text-gray-800">Nombre de commandes par mois</h3>
                 <div className="flex justify-center items-center h-96 flex-col">
                     <div className="flex mb-4">
                         <select value={selectedYearForMonth} onChange={handleYearChangeForMonth} className="p-2 border border-gray-300 rounded">
@@ -512,19 +509,7 @@ const Analytics = () => {
                     </div>
                 </div>
             </div>
-            <button 
-                onClick={() => router.push('/dashboard/ordersInterface')} 
-                className="mt-8 px-4 py-2 bg-purple-500 text-white rounded-md"
-            >
-                Page des commandes
-            </button>
-            <button 
-                onClick={() => router.push('/dashboard/usersList')} 
-                className="mt-8 px-4 py-2 bg-purple-500 text-white rounded-md"
-            >
-                Page liste utilisateurs
-            </button>
-            <Logout/>
+        </div>
         </div>
     );
 };
