@@ -4,7 +4,7 @@ export default function StepThree({ formData, setFormData, prevStep, addToBasket
       setFormData((prevFormData) => {
         const updatedFormData = {
           ...prevFormData,
-          salade: checked,
+          salade: checked ? "oui" : "non",
         };
         console.log(updatedFormData);
         return updatedFormData;
@@ -16,7 +16,7 @@ export default function StepThree({ formData, setFormData, prevStep, addToBasket
       setFormData((prevFormData) => {
         const updatedFormData = {
           ...prevFormData,
-          tomate: checked,
+          tomate: checked ? "oui" : "non",
         };
         console.log(updatedFormData);
         return updatedFormData;
@@ -28,7 +28,7 @@ export default function StepThree({ formData, setFormData, prevStep, addToBasket
       setFormData((prevFormData) => {
         const updatedFormData = {
           ...prevFormData,
-          oignon: checked,
+          oignon: checked ? "oui" : "non",
         };
         console.log(updatedFormData);
         return updatedFormData;
@@ -68,7 +68,7 @@ export default function StepThree({ formData, setFormData, prevStep, addToBasket
             className="mr-2 w-4 h-4 text-red-500 accent-red-500"
           />
           <label htmlFor="oignon" className="text-sm font-medium text-gray-700">
-            Onion
+            Oignon
           </label>
         </div>
         <div className="flex justify-between">
