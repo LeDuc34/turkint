@@ -31,7 +31,7 @@ const LoginForm = () => {
     console.log(response.data);
     
     }catch (error: any) {
-      setError(error.response.data.message || 'Something went wrong');
+      setError(error.response.data.message || 'Erreur');
     }
   };
 
