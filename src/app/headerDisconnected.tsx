@@ -54,6 +54,9 @@ const Header = () => {
         <li className='max-lg:border-b border-gray-300 max-lg:py-3 px-3'><a href='/presentationDisconnected'
             className='hover:text-red-800 text-black block font-semibold text-[15px]'>Turk'int</a>
         </li>
+        <li className='max-lg:border-b border-gray-300 max-lg:py-3 px-3'><a href='/quarto'
+            className='hover:text-red-800 text-black block font-semibold text-[15px]'>Quarto</a>
+        </li>
       </ul>
     </div>
 
