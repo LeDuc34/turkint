@@ -115,7 +115,7 @@ const Page: React.FC = () => {
             <div className="flex mb-4">
                 <button onClick={resetGame} className="bg-red-600 text-white py-2 px-4 rounded mr-2">Recommencer la Partie</button>
                 <button className="bg-red-600 text-white py-2 px-4 rounded">
-                    <a href="http://localhost:3000/" className="text-white">Retourner Commander</a>
+                    <a href="/userInterface" className="text-white">Retourner commander</a>
                 </button>
             </div>
             <div className="flex">
