@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import '../../../../styles/globals.css'; 
 import { withAdminAuth } from '../../authContextAdmin/page';
 import Logout from '../../logout/page';
+import Header from "../../headerAdmin";
 
 
 interface User {
@@ -201,7 +202,9 @@ const Users = () => {
     };
 
     return (
-        <div className="p-6">
+        <div>
+            <Header />
+        <div className="p-6 my-24">
             <h2 className="text-2xl font-bold mb-4">Utilisateurs:</h2>
             <div className="flex space-x-4 mb-4">
                 <button 
@@ -239,21 +242,7 @@ const Users = () => {
                     </li>
                 ))}
             </ul>
-            <div className="mt-8 flex space-x-4">
-                <button 
-                    onClick={() => router.push('/dashboard/ordersInterface')} 
-                    className="px-4 py-2 bg-purple-500 text-white rounded-md"
-                >
-                    Page des commandes
-                </button>
-                <button 
-                    onClick={() => router.push('/dashboard/analytics')} 
-                    className="px-4 py-2 bg-purple-500 text-white rounded-md"
-                >
-                    Analyses des données
-                </button>
-                <Logout/>
-            </div>
+        </div>
         </div>
     );
 };

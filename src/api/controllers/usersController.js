@@ -34,14 +34,14 @@ const updateRole = async (req, res) => {
     const { ClientID, Role } = req.body;
     const user = await User.findByPk(ClientID);
     if (!user) {
-      return res.status(404).send({ message: 'User not found' });
+      return res.status(404).send({ message: 'Utilisateur non trouvé' });
     }
     user.Role = Role;
     await user.save();
     res.status(200).send({ Client: user });
   }catch (error) {
-    console.error('Failed to update user role:', error);
-    res.status(500).send({ message: 'An unexpected error occurred' });
+    console.error('Impossible de mettre à jour le rôle:', error);
+    res.status(500).send({ message: 'Erreur' });
   }
 };
 
@@ -51,9 +51,8 @@ const deleteUser = async (req, res) => {
     console.log(ClientID);
     const user = await User.findByPk(ClientID);
     if (!user) {
-      return res.status(404).send({ message: 'User not found' });
+      return res.status(404).send({ message: 'Utilisateur non trouvé' });
     }
-    await user.destroy();
     res.status(200).send({ message: 'User deleted successfully' });
   }
   catch (error) {

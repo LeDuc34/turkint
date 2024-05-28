@@ -7,12 +7,12 @@ const loginUser = async (req, res) => {
     try {
         const user = await Client.findOne({ where: { Email: email } });
         if (!user) {
-            return res.status(401).send({ message: 'User not found!' });
+            return res.status(401).send({ message: 'Utilisateur non trouvé' });
         }
 
         const isMatch = await bcrypt.compare(password, user.Password);
         if (!isMatch) {
-            return res.status(401).send({ message: 'Invalid password' });
+            return res.status(401).send({ message: 'Mot de passe erroné' });
         }
 
         // Generate JWT token with user role

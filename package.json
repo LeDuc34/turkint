@@ -20,6 +20,7 @@
     "crisp-sdk-web": "^1.0.25",
     "express": "^4.19.2",
     "expressjs": "^1.0.1",
+    "framer-motion": "^11.2.6",
     "jsonwebtoken": "^9.0.2",
     "next": "14.1.4",
     "pg": "^8.11.3",

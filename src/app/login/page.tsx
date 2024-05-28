@@ -11,6 +11,11 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const router = useRouter();
   const [error, setError] = useState('');
+  const [effect, setEffect] = useState(false);
+  const toggleEffect = () => {
+    setEffect(prevEffect => !prevEffect);
+  };
+
   const handleSubmit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault(); // Prevent the default form submission behavior
     try{
@@ -26,7 +31,7 @@ const LoginForm = () => {
     console.log(response.data);
     
     }catch (error: any) {
-      setError(error.response.data.message || 'Something went wrong');
+      setError(error.response.data.message || 'Erreur');
     }
   };
 
@@ -35,7 +40,12 @@ const LoginForm = () => {
     <Header/>
     <div className="flex flex-col items-center justify-center h-screen">
         <div className="w-80">
-      <img src="logo.png"></img>
+        <img
+        onClick={toggleEffect}
+        className={`${effect ? 'animate-bounce' : ''}`}
+        src="logo.png"
+        alt="Logo"
+      />
     </div>
     <form className="bg-opacity-80 bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
       <div className="mb-4">

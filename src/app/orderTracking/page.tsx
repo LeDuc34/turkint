@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { withAuth } from '../authContext/page';
 import { useRouter } from "next/navigation";
 import Header from "../header";
+import { motion } from 'framer-motion';
 
 interface Article {
     Article: string;
@@ -87,6 +88,18 @@ const OrderTrackingPage = () => {
         return <p>Chargement...</p>;
     }
 
+     
+    const translateStatus = (status: string) => {
+        switch (status) {
+            case 'processing':
+                return 'En cours';
+            case 'waiting':
+                return 'En attente';
+            default:
+                return status;
+        }
+    };
+
     const showRemainingTime = order.Attente <= 10000; // Show remaining time if it is less than or equal to 15 minutes
 
     return (
@@ -100,7 +113,7 @@ const OrderTrackingPage = () => {
                 <strong>ID de Commande:</strong> {order.CommandeID}
             </div>
             <div className="mb-2">
-                <strong>Statut:</strong> {order.Statut === 'ready' ? 'Commande prête' : "En attente"}
+                <strong>Statut:</strong> {order.Statut === 'ready' ? 'Commande prête' : translateStatus(order.Statut)}
             </div>
             {showRemainingTime && (
                 <div className="mb-2">
