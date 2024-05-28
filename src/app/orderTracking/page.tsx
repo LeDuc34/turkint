@@ -149,7 +149,7 @@ const OrderTrackingPage = () => {
             </ul>
         </div>
         <div className="flex items-center justify-between">
-            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-2" onClick={handleSubmit}>Commander à nouveau</button>
+            <button className="bg-red-500 mb-24 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-2" onClick={handleSubmit}>Commander à nouveau</button>
       </div>
       </div>
       </div>

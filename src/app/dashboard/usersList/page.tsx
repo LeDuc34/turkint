@@ -191,7 +191,7 @@ const Users = () => {
                     </button>
                     <button 
                         onClick={() => toggleUserCommands(user.ClientID)}
-                        className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                        className="px-4 py-2 bg-red-700 text-white rounded-md"
                     >
                         {visibleCommands === user.ClientID ? 'Masquer les commandes' : 'Afficher les commandes'}
                     </button>
@@ -204,24 +204,23 @@ const Users = () => {
     return (
         <div>
             <Header />
-        <div className="p-6 my-24">
-            <h2 className="text-2xl font-bold mb-4">Utilisateurs:</h2>
+        <div className="p-6 my-28">
             <div className="flex space-x-4 mb-4">
                 <button 
                     onClick={sortByMostOrders} 
-                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                    className="px-4 py-2 bg-red-700 text-white rounded-md"
                 >
                     Trier par nombre de commandes
                 </button>
                 <button 
                     onClick={sortByMostMoneySpent} 
-                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                    className="px-4 py-2 bg-red-700 text-white rounded-md"
                 >
                     Trier par montant dépensé
                 </button>
                 <button 
                     onClick={sortByLastOrder} 
-                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                    className="px-4 py-2 bg-red-700 text-white rounded-md"
                 >
                     Trier par date de la dernière commande
                 </button>
@@ -233,7 +232,7 @@ const Users = () => {
                             <span>{`Utilisateur #${user.ClientID}`}</span>
                             <button 
                                 onClick={() => toggleUserDetails(user.ClientID)}
-                                className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                                className="px-4 py-2 bg-red-700 text-white rounded-md"
                             >
                                 {visibleUser === user.ClientID ? 'Masquer les détails' : 'Afficher les détails'}
                             </button>

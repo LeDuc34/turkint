@@ -212,11 +212,11 @@ const Home = () => {
     };
 
     return (
-        <div>
+        <div className="flex justify-center">
             <Header/>
-        <div className="p-6 my-24">
-            <div className="mb-8">
-                <h2 className="text-2xl font-bold mb-4">Commandes en attente :</h2>
+        <div className="p-6 my-28">
+            <div className="mb-8  ">
+                <h2 className="text-3xl font-bold mb-4 text-bold text-white bg-black inline-block rounded px-2 bg-opacity-70">Commandes en attente :</h2>
                 <ul className="space-y-4">
                     {waitingOrders.map((order) => (
                         <li key={order.CommandeID} className="bg-white p-4 rounded-md shadow-md text-black">
@@ -251,7 +251,7 @@ const Home = () => {
             </div>
 
             <div className="mb-8">
-                <h2 className="text-2xl font-bold mb-4">Commandes en cours :</h2>
+                <h2 className="text-3xl font-bold mb-4 text-bold text-white bg-black inline-block rounded px-2 bg-opacity-70">Commandes en cours :</h2>
                 <ul className="space-y-4">
                     {currentOrders.map((order) => (
                         <li key={order.CommandeID} className="bg-white p-4 rounded-md shadow-md text-black">
@@ -315,7 +315,7 @@ const Home = () => {
             </div>
 
             <div className="mb-8">
-                <h2 className="text-2xl font-bold mb-4">Commandes prêtes :</h2>
+                <h2 className="text-3xl font-bold mb-4 text-bold text-white bg-black inline-block rounded px-2 bg-opacity-70">Commandes prêtes :</h2>
                 <ul className="space-y-4">
                     {readyOrders.map((order) => (
                         <li key={order.CommandeID} className="bg-white p-4 rounded-md shadow-md text-black">
