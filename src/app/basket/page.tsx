@@ -114,7 +114,7 @@ const BasketPage = () => {
             const clientID = localStorage.getItem('ClientID');
             if (!clientID) throw new Error("ID client non défini dans localStorage.");
             
-            // Debugging output
+            // Debugging outputs
             console.log('ID Client:', clientID);
         
             // Send order details to the backend
@@ -295,3 +295,4 @@ const BasketPage = () => {
 };
 
 export default withAuth(BasketPage);
+
