@@ -90,7 +90,7 @@ const Presentation = () => {
                             <div className="text-center mb-12">
                                 <img src="/Eliot.webp" alt="Eliot" className="team-photo w-36 h-36 rounded-full mx-auto mb-4 object-cover" />
                                 <h3 className="text-xl font-bold text-gray-900">Eliot Maitre Kebabier</h3>
-                                <p className="text-gray-700">"Les kebabs sont plus qu'un repas, c'est une expérience."</p>
+                                <p className="text-gray-700">"Les kebabs sont plus qu'un repas, c'est une expérience. J'ai de la sauce blanche au coin de la bouche"</p>
                             </div>
                             <div className="text-center mb-12">
                                 <img src="/florian.webp" alt="Membre 3" className="team-photo w-36 h-36 rounded-full mx-auto mb-4 object-cover" />
