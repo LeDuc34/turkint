@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import Header from "../header";
 
 
 
@@ -30,6 +31,8 @@ const LoginForm = () => {
   };
 
   return (
+    <div>
+    <Header/>
     <div className="flex flex-col items-center justify-center h-screen">
         <div className="w-80">
       <img src="logo.png"></img>
@@ -72,6 +75,7 @@ const LoginForm = () => {
         </div>
     </footer>
     </div> 
+    </div>
   );
 };
 export default LoginForm;

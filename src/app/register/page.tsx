@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import Header from "../header"
 
 
 const SignupForm = () => {
@@ -24,6 +25,8 @@ const SignupForm = () => {
   };
 
 return (
+  <div>
+  <Header />
   <div className="flex flex-col items-center justify-center h-screen">
       <div className="w-80">
     <img src="logo.png"></img>
@@ -76,6 +79,7 @@ return (
             <p className="text-gray-100">&copy; 2024 Turkint. Tous droits réservés.</p>
         </div>
     </footer>
+  </div>
   </div>
 );
 };

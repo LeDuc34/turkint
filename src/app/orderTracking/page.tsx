@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { withAuth } from '../authContext/page';
 import { useRouter } from "next/navigation";
+import Header from "../header";
 
 interface Article {
     Article: string;
@@ -89,6 +90,8 @@ const OrderTrackingPage = () => {
     const showRemainingTime = order.Attente <= 10000; // Show remaining time if it is less than or equal to 15 minutes
 
     return (
+    <div className="my-32">
+    <Header/>
     <div className="flex items-center justify-center mt-5">
     <div className="flex flex-col items-center">
         <div className="p-6 bg-white rounded bg-opacity-80 w-90 mx-auto flex flex-col justify-center">
@@ -142,6 +145,7 @@ const OrderTrackingPage = () => {
         </div>
 
     </footer>
+        </div>
         </div>
     );
 };

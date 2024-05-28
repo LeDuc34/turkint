@@ -15,6 +15,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "chart.js": "^4.4.3",
+    "chartjs": "^0.3.24",
     "chartjs-adapter-date-fns": "^3.0.0",
     "crisp-sdk-web": "^1.0.25",
     "express": "^4.19.2",

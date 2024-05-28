@@ -8,6 +8,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import CheckoutForm from '../stripeElement/page';
 import ClearButton from '../clearBaksetButton/page';
 import '../../../styles/globals.css';
+import Header from "../header";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "");
 
@@ -149,6 +150,8 @@ const BasketPage = () => {
 
     if (error) {
         return (
+        <div>
+        <Header />
         <div className="flex justify-center items-center h-screen">
             <div className="flex items-center flex-col jusify-center h-screen max-h-20 ">
                 <p className="text-black font-bold text-2xl bg-white rounded px-2 bg-opacity-50">{error}</p>
@@ -164,6 +167,7 @@ const BasketPage = () => {
                 <p className="text-gray-100">&copy; 2024 Turkint. Tous droits réservés.</p>
             </div>
             </footer>
+        </div>
         </div>
         )
     }
@@ -183,6 +187,8 @@ const BasketPage = () => {
 
     return (
         <div>
+        <Header />
+        <div className="flex my-28">
         <div className="container mx-auto p-4 w-1/2">
             <h1 className="text-3xl font-bold mb-4">Votre Panier</h1>
             {orderPlaced && <p className="text-green-500">Commande passée avec succès</p>}
@@ -276,6 +282,7 @@ const BasketPage = () => {
                     <p className="text-gray-100">&copy; 2024 Turkint. Tous droits réservés.</p>
                 </div>
             </footer>
+        </div>
         </div>
     );
 };

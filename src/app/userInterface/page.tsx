@@ -9,7 +9,7 @@ import StepThree from '../userInterface/StepThree';
 import OnGoing from "../onGoing/page";
 import axios from 'axios';
 import { withAuth } from '../authContext/page';
-
+import Header from "../header";
 
 
 function Form() {
@@ -65,14 +65,13 @@ const Home = () => {
     </div>*/
 
     // juste pour y voir plus clair avec un backgroud blanc comme dans presentation
-
+    <div>
+    <Header />
     <div className="flex items-center justify-center min-h-screen">
       4<div className="h-1/5 w-3/4 container mx-auto p-4 bg-white bg-opacity-80 rounded-lg shadow-lg mb-24">
         <Form />
-        <div className="mt-6 flex justify-around">
-          <Logout />
+        <div className="mt-6 flex justify-center">
           <ClearBasket />
-          <DisplayBasket />
           <OnGoing />
         </div>
       </div>
@@ -81,6 +80,7 @@ const Home = () => {
             <p className="text-gray-100">&copy; 2024 Turkint. Tous droits réservés.</p>
         </div>
     </footer>
+    </div>
     </div>
   );
 }

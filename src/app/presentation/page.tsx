@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Header from "../header"
 
 const Presentation = () => {
     return (
@@ -65,27 +66,9 @@ const Presentation = () => {
             </Head>
             
             <div className="background-image">
-                <header className="bg-red-600 shadow w-full mb-4 md:mb-8 pt-4">
-                    <div className="container mx-auto py-3 px-4 flex flex-col md:flex-row justify-between items-center h-auto md:h-28">
-                        <div className="flex justify-start mb-4 md:mb-0">
-                            <img src="/logo.png" alt="Logo" className="rotating w-36 h-36" />
-                        </div>
-                        <a href="http://localhost:3000/login" className="bg-white text-red-600 text-center py-4 px-6 rounded-lg font-bold transform transition-transform duration-300 hover:scale-110 text-2xl mb-4 md:mb-0 mt-4 md:mt-0">
-                            Commander un<br />Kebab
-                        </a>
-                        <div className="flex justify-end">
-                            <img src="/logo.png" alt="Logo" className="rotating w-36 h-36" />
-                        </div>
-                    </div>
-                    <nav className="container mx-auto py-2 flex flex-wrap justify-center space-x-4 md:space-x-8">
-                        <a href="#projet" className="nav-link text-lg text-black text-center transform transition-transform duration-200 hover:text-white">Pourquoi ce projet?</a>
-                        <a href="#equipe" className="nav-link text-lg text-black text-center transform transition-transform duration-200 hover:text-white">Les Membres</a>
-                        <a href="#objectifs" className="nav-link text-lg text-black text-center transform transition-transform duration-200 hover:text-white">Nos Objectifs</a>
-                        <a href="#contact" className="nav-link text-lg text-black text-center transform transition-transform duration-200 hover:text-white">Contactez-nous</a>
-                    </nav>
-                </header>
+                <Header />
 
-                <main className="container mx-auto py-16 px-4 flex-grow">
+                <main className="container mx-auto py-16 px-4 flex-grow my-20">
                     <section id="projet" className="bg-white rounded-lg p-8 shadow-lg mb-24">
                         <h2 className="text-3xl font-bold text-red-600 mb-6 text-center">Pourquoi ce projet?</h2>
                         <p className="text-gray-700 leading-relaxed text-lg mt-10 text-center">
