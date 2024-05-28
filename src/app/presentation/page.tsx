@@ -72,7 +72,7 @@ const Presentation = () => {
                     <section id="projet" className="bg-white rounded-lg p-8 shadow-lg mb-24">
                         <h2 className="text-3xl font-bold text-red-600 mb-6 text-center">Pourquoi ce projet?</h2>
                         <p className="text-gray-700 leading-relaxed text-lg mt-10 text-center">
-                            Le projet Turkint est né de notre passion pour la cuisine surtout les kebabs et notre désir de rendre la commande de kebabs aussi simple et agréable que possible, et peu chère pour les étudiants de l'INT. Avec la popularité croissante des services de livraison de repas, nous avons vu une opportunité de créer une plateforme dédiée exclusivement aux kebabs, offrant une expérience utilisateur unique et conviviale qui permettrait au plus grand nombre d'en profiter.
+                            Le projet Turkint est né de notre passion pour la cuisine, en particulier pour les kebabs, et de notre désir de rendre la commande de kebabs aussi simple et agréable que leur dégustation, et peu chère pour les étudiants de l'INT. Avec la popularité croissante des services de livraison de repas, nous avons vu une opportunité de créer une plateforme dédiée exclusivement aux kebabs, offrant une expérience utilisateur unique et conviviale qui permettra au plus grand nombre d'en profiter.
                         </p>
                     </section>
 
