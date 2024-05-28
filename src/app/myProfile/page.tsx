@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import Header from "../header";
 
 function myProfile() {
-        
+    
 
 
     return(
@@ -50,4 +50,4 @@ function myProfile() {
     );
 };
 
-export default myProfile;
+export default withAuth(myProfile);
