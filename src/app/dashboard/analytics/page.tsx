@@ -260,7 +260,7 @@ const Analytics = () => {
                 font: {
                     size: 18,
                     family: 'Arial, sans-serif',
-                    weight: 'bold',
+                    weight: 'bold' as const,
                 },
                 color: '#333',
             },
@@ -305,7 +305,7 @@ const Analytics = () => {
                 font: {
                     size: 18,
                     family: 'Arial, sans-serif',
-                    weight: 'bold',
+                    weight: 'bold' as const,
                 },
                 color: '#333',
             },
@@ -331,7 +331,7 @@ const Analytics = () => {
                 font: {
                     size: 18,
                     family: 'Arial, sans-serif',
-                    weight: 'bold',
+                    weight: 'bold' as const,
                 },
                 color: '#333',
             },
@@ -375,7 +375,7 @@ const Analytics = () => {
                 font: {
                     size: 18,
                     family: 'Arial, sans-serif',
-                    weight: 'bold',
+                    weight: 'bold' as const,
                 },
                 color: '#333',
             },
@@ -419,7 +419,7 @@ const Analytics = () => {
                 font: {
                     size: 18,
                     family: 'Arial, sans-serif',
-                    weight: 'bold',
+                    weight: 'bold' as const,
                 },
                 color: '#333',
             },
@@ -445,7 +445,7 @@ const Analytics = () => {
     };
 
     return (
-        <div className="p-6 min-h-screen flex flex-col items-center">
+        <div className="p-6 min-h-screen flex flex-col items-center ">
             <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Analytique</h2>
             <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-3xl mb-8">
                 <h3 className="text-xl font-semibold mb-4 text-center text-gray-800">Sauces les plus choisies</h3>
