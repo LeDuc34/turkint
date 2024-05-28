@@ -90,7 +90,7 @@ const OrderTrackingPage = () => {
     const showRemainingTime = order.Attente <= 10000; // Show remaining time if it is less than or equal to 15 minutes
 
     return (
-    <div className="my-32">
+    <div className="my-40">
     <Header/>
     <div className="flex items-center justify-center mt-5">
     <div className="flex flex-col items-center">
@@ -100,7 +100,7 @@ const OrderTrackingPage = () => {
                 <strong>ID de Commande:</strong> {order.CommandeID}
             </div>
             <div className="mb-2">
-                <strong>Statut:</strong> {order.Statut === 'ready' ? 'Commande prête' : order.Statut}
+                <strong>Statut:</strong> {order.Statut === 'ready' ? 'Commande prête' : "En attente"}
             </div>
             {showRemainingTime && (
                 <div className="mb-2">
@@ -139,13 +139,13 @@ const OrderTrackingPage = () => {
             <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-2" onClick={handleSubmit}>Commander à nouveau</button>
       </div>
       </div>
+      </div>
             <footer className="fixed bottom-0 bg-red-600 shadow mt-2 w-full">
         <div className="container mx-auto py-4 px-4 text-center">
             <p className="text-gray-100">&copy; 2024 Turkint. Tous droits réservés.</p>
         </div>
 
     </footer>
-        </div>
         </div>
     );
 };

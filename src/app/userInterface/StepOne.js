@@ -16,13 +16,12 @@ export default function StepOne({ formData = {}, setFormData, nextStep }) {
           name="pain"
           value={formData.pain || ''} // Ensures the select reflects the current state
           onChange={handleSelectionChange}
-          className="block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          className="block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 appearance-none"
         >
           <option value="Pain Maison">Pain Maison</option>
           <option value="Galette">Galette</option>
         </select>
-        <br /><br />
-        <div className="mt-4 flex justify-between">
+        <div className="flex justify-between">
         <button
           className="mt-4 px-4 py-2 bg-gray-500 text-white rounded-md"
         >

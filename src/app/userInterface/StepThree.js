@@ -43,7 +43,7 @@ export default function StepThree({ formData, setFormData, prevStep, addToBasket
             type="checkbox"
             onChange={handleChangeSalade}
             id="salade"
-            className="mr-2"
+            className="mr-2 w-4 h-4 accent-red-500"
           />
           <label htmlFor="salade" className="text-sm font-medium text-gray-700">
             Salade
@@ -54,7 +54,7 @@ export default function StepThree({ formData, setFormData, prevStep, addToBasket
             type="checkbox"
             onChange={handleChangeTomate}
             id="tomate"
-            className="mr-2"
+            className="mr-2 w-4 h-4 accent-red-500"
           />
           <label htmlFor="tomate" className="text-sm font-medium text-gray-700">
             Tomate
@@ -65,7 +65,7 @@ export default function StepThree({ formData, setFormData, prevStep, addToBasket
             type="checkbox"
             onChange={handleChangeOnion}
             id="oignon"
-            className="mr-2"
+            className="mr-2 w-4 h-4 text-red-500 accent-red-500"
           />
           <label htmlFor="oignon" className="text-sm font-medium text-gray-700">
             Onion

@@ -16,14 +16,13 @@ export default function StepTwo({ formData = {}, setFormData, nextStep, prevStep
           name="choices"
           value={formData.sauce || ''}
           onChange={handleSelectionChange}
-          className="block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          className="block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 appearance-none"
         >
           <option value="Algerienne">Algerienne</option>
           <option value="Blanche">Blanche</option>
           <option value="Biggy">Biggy</option>
           <option value="Samourai">Samourai</option>
         </select>
-        <br />
         <div className="mt-4 flex justify-between">
           <button
             onClick={prevStep}

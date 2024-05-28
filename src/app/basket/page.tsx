@@ -190,7 +190,6 @@ const BasketPage = () => {
         <Header />
         <div className="flex my-28">
         <div className="container mx-auto p-4 w-1/2">
-            <h1 className="text-3xl font-bold mb-4">Votre Panier</h1>
             {orderPlaced && <p className="text-green-500">Commande passée avec succès</p>}
             <div className="mb-4 p-4 border rounded bg-white shadow-sm">
                 <strong>Prix Total:</strong> {basket?.TotalPrice.toFixed(2)}€
@@ -228,8 +227,8 @@ const BasketPage = () => {
             </ul>
             <div className="mt-4">
                 <div className="mb-4 flex justify-center">
-                    <label className="mr-4 font-bold items-center flex bg-white rounded bg-opacity-80">
-                        <input className="accent-red-500"
+                    <label className="mr-4 font-bold items-center flex bg-white rounded px-1">
+                        <input className="accent-red-500 mx-1"
                             type="radio"
                             name="paymentMethod"
                             value="online"
@@ -238,8 +237,8 @@ const BasketPage = () => {
                         />
                         Payer en ligne
                     </label>
-                    <label className="mr-4 font-bold items-center flex bg-white rounded bg-opacity-80">
-                        <input className="accent-red-500"
+                    <label className="mr-4 font-bold items-center flex bg-white rounded px-1">
+                        <input className="accent-red-500 mx-1"
                             type="radio"
                             name="paymentMethod"
                             value="restaurant"
@@ -250,14 +249,6 @@ const BasketPage = () => {
                     </label>
                 </div>
                 <div className="flex justify-center">
-                {!clientSecret && (
-                    <button
-                        className="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded"
-                        onClick={handleSendOrder}
-                    >
-                        Envoyer la commande
-                    </button>
-                )}
                 <div className="flex flex-col">
                 {clientSecret && paymentMethod === 'online' && (
                     <Elements stripe={stripePromise}>
@@ -271,6 +262,15 @@ const BasketPage = () => {
                     Retour à la page de commande
                 </button>
                 </div>
+                {!clientSecret && (
+                    <button
+                        className="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded ml-5"
+                        onClick={handleSendOrder}
+                    >
+                        Envoyer la commande
+                    </button>
+                )}
+
             </div>
             <div className="flex justify-center">
                 <ClearButton/>
