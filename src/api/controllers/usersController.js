@@ -1,6 +1,7 @@
 // src/api/controllers/usersController.js
 const User = require('../../models/Client'); // Adjust the path as necessary
 const bcrypt = require('bcryptjs');
+const Client = require('../../models/Client');
 
 const registerUser = async (req, res) => {
   try {
@@ -78,16 +79,17 @@ const getRole = async (req, res) => {
 const getUser = async (req, res) => {
   try {
     const { ClientID } = req.body;
-    const user = await User.findByPk(ClientID);
+    const user = await Client.findByPk(ClientID);
     if (!user) {
       return res.status(404).send({ message: 'User not found' });
     }
-    res.status(200).send({ Client: user });
+    res.status(200).send(user);
   } catch (error) {
     console.error('Failed to fetch user:', error);
     res.status(500).send({ message: 'An unexpected error occurred' });
   }
-}
+};
+
 
 module.exports = {
   registerUser,

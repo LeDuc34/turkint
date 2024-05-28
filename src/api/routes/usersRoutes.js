@@ -13,7 +13,7 @@ router.get('/display',displayUsers)
 router.post('/updateRole',updateRole)
 router.post('/delete',deleteUser)
 router.post('/getRole',getRole)
-router.get('/getUser',getUser)
+router.post('/getUser',getUser)
 
 
 module.exports  = router;
