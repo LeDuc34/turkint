@@ -60,13 +60,13 @@ const getVegetableCount = async (req, res) => {
         commands.forEach(command => {
             command.Details.forEach(detail => {
                 if (detail.Options) {
-                    if (detail.Options.salade === true) {
+                    if (detail.Options.salade === "oui") {
                         vegetableCount.salade++;
                     }
-                    if (detail.Options.tomate === true) {
+                    if (detail.Options.tomate === "oui") {
                         vegetableCount.tomate++;
                     }
-                    if (detail.Options.oignon === true) {
+                    if (detail.Options.oignon === "oui") {
                         vegetableCount.oignon++;
                     }
                 }
