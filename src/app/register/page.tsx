@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import Header from "../header"
+import Header from "../headerDisconnected"
 
 
 const SignupForm = () => {

@@ -15,12 +15,9 @@ const Header = () => {
 
         
     };
-    const handleLogout = () => {
-      localStorage.clear();
+    const handleLogin = () => {
       router.push('/login');
-  };
-
-
+    };
     return (
         <header className='fixed top-0 shadow-md py-4 px-4 sm:px-10 bg-red-600 font-[sans-serif] min-h-[70px] tracking-wide z-50 w-screen'>
   <div className='flex flex-wrap items-center justify-between gap-5 w-full'>
@@ -52,13 +49,7 @@ const Header = () => {
           <a href="/userInterface"
             className='hover:text-red-800 text-black block font-semibold text-[15px]'>Commander</a>
         </li>
-        <li className='max-lg:border-b border-gray-300 max-lg:py-3 px-3'><a href='/myProfile'
-            className='hover:text-red-800 text-black block font-semibold text-[15px]'>Mon profil</a>
-        </li>
-        <li className='max-lg:border-b border-gray-300 max-lg:py-3 px-3'><a href='/basket'
-            className='hover:text-red-800 text-black block font-semibold text-[15px]'>Mon panier</a>
-        </li>
-        <li className='max-lg:border-b border-gray-300 max-lg:py-3 px-3'><a href='/presentation'
+        <li className='max-lg:border-b border-gray-300 max-lg:py-3 px-3'><a href='/presentationDisconnected'
             className='hover:text-red-800 text-black block font-semibold text-[15px]'>Turk'int</a>
         </li>
       </ul>
@@ -66,7 +57,7 @@ const Header = () => {
 
     <div className='flex max-lg:ml-auto space-x-3'>
       <button
-        className='px-4 py-2 text-sm rounded-full font-bold text-white border-2 border-black bg-red-800 transition-all ease-in-out duration-300 hover:bg-transparent hover:text-black' onClick={handleLogout}>Se déconnecter</button>
+        className='px-4 py-2 text-sm rounded-full font-bold text-white border-2 border-black bg-red-800 transition-all ease-in-out duration-300 hover:bg-transparent hover:text-black' onClick={handleLogin}>Se connecter</button>
       <button id="toggleOpen" className='lg:hidden' onClick={btnSubmit}>
         <svg className="w-7 h-7" fill="#000" viewBox="0 0 20 20" xmlns="logo.png">
           <path fill-rule="evenodd"

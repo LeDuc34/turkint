@@ -1,6 +1,6 @@
 "use client"
 import Head from 'next/head';
-import Header from "../header"
+import Header from "../headerDisconnected"
 import { withAuth } from '../authContext/page';
 import React from 'react';
 
@@ -143,4 +143,4 @@ const Presentation = () => {
     );
 };
 
-export default withAuth(Presentation);
+export default (Presentation);
