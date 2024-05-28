@@ -1,6 +1,7 @@
 "use client"
 import React, { Component } from "react";
 import { useRouter } from "next/navigation";
+import CrispChat from "./crisp/page";
 
 
 const Header = () => {
@@ -20,6 +21,7 @@ const Header = () => {
     };
     return (
         <header className='fixed top-0 shadow-md py-4 px-4 sm:px-10 bg-red-600 font-[sans-serif] min-h-[70px] tracking-wide z-50 w-screen'>
+          <CrispChat/>
   <div className='flex flex-wrap items-center justify-between gap-5 w-full'>
     <a href="/"><img src="logo.png" alt="logo" className='w-20
 

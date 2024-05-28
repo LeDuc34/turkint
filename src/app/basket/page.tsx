@@ -190,7 +190,6 @@ const BasketPage = () => {
         <Header />
         <div className="flex my-28">
         <div className="container mx-auto p-4 w-1/2">
-            <h1 className="text-3xl font-bold flex justify-center mb-4 text-red-600">Votre panier</h1>
             {orderPlaced && <p className="text-green-500">Commande passée avec succès</p>}
             <div className="mb-4 p-4 border rounded bg-white shadow-sm">
                 <strong>Prix Total:</strong> {basket?.TotalPrice.toFixed(2)}€
