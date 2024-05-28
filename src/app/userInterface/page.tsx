@@ -2,7 +2,7 @@
 import Logout from '../logout/page';
 import ClearBasket from '../clearBaksetButton/page';
 import DisplayBasket from '../displayBasketButton/page';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import StepOne from '../userInterface/StepOne';
 import StepTwo from '../userInterface/StepTwo';
 import StepThree from '../userInterface/StepThree';
@@ -106,8 +106,36 @@ function Form() {
 
 const Home = () => {
   const router = useRouter();
+  const [hasOngoingOrder, setHasOngoingOrder] = useState(false);
+
+  useEffect(() => {
+    const checkOngoingOrder = async () => {
+      const clientID = localStorage.getItem('ClientID');
+      if (!clientID) return;
+
+      try {
+        const response = await axios.get(`/api/orders/current?ClientID=${clientID}`);
+        if (response.data && response.data.status) {
+          const status = response.data.status;
+          if (['waiting', 'processing', 'ready'].includes(status)) {
+            setHasOngoingOrder(true);
+          }
+        }
+      } catch (error) {
+        console.error('Error checking ongoing order:', error);
+      }
+    };
+
+    checkOngoingOrder();
+  }, []);
+
   const handleClick = () => {
     router.push('/basket');
+  };
+
+  const handleOngoingOrderClick =  async () => {
+    const response = await axios.get('api/orders/getOrderID?ClientID='+localStorage.getItem('ClientID'))
+    router.push('/orderTracking?orderID='+ response.data.CommandeID); // Change this to the correct route if necessary
   };
 
   return (
@@ -120,6 +148,9 @@ const Home = () => {
             <ClearBasket />
             <div>
               <button className="mt-4 px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600" onClick={handleClick}>Mon panier</button>
+              {hasOngoingOrder && (
+                <button className="mt-4 ml-4 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600" onClick={handleOngoingOrderClick}>Commande en cours</button>
+              )}
             </div>
           </div>
         </div>

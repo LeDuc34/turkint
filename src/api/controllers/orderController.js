@@ -2,47 +2,111 @@ const Commande = require("../../models/Commande");
 const User = require("../../models/Client");
 const { Op } = require('sequelize');
 
+
+const getOrderId = async (req, res) => {
+    try {
+        const { ClientID } = req.query;
+        const order = await Commande.findOne({
+            where: {
+                ClientID,
+                Statut: ['waiting', 'processing', 'ready']
+            }
+        });
+        if (!order) {
+            return res.status(404).send({ message: 'Order not found' });
+        }
+        res.status(200).send({ CommandeID: order.CommandeID });
+    } catch (error) {
+        console.error('Failed to fetch order ID:', error);
+        res.status(500).send({ message: 'An unexpected error occurred' });
+    }
+}
+
+const checkOngoingOrder = async (req, res) => {
+    try {
+      const { ClientID } = req.query;
+  
+      // Validate ClientID
+      if (!ClientID) {
+        return res.status(400).send({ message: 'ClientID is required' });
+      }
+  
+      // Find an ongoing order for the given ClientID
+      const ongoingOrder = await Commande.findOne({
+        where: {
+          ClientID,
+          Statut: ['waiting', 'processing', 'ready'],
+        },
+      });
+  
+      if (ongoingOrder) {
+        return res.status(200).send({ status: ongoingOrder.Statut });
+      }
+  
+      return res.status(200).send({ status: 'no ongoing order' });
+    } catch (error) {
+      console.error('Error checking ongoing order:', error);
+      return res.status(500).send({ message: 'An unexpected error occurred' });
+    }
+  };
+  
 const takeOrder = async (req, res) => {
-  try {
-    const { ClientID, DateHeureCommande, Statut, TotalCommande, Details, Attente,Payed } = req.body;
-   console.log(req.body);
-    // Create a new order
-    const newCommande = await Commande.create({
-      ClientID,
-      DateHeureCommande,
-      Statut,
-      TotalCommande,
-      Details,
-      Attente,
-      Payed
-    });
-    // Find the user by primary key (ClientID)
-    const user = await User.findByPk(ClientID);
-
-    // Check if the user exists
-    if (!user) {
-      return res.status(404).send({ message: 'User not found' });
+    try {
+      const { ClientID, DateHeureCommande, Statut, TotalCommande, Details, Attente, Payed } = req.body;
+      console.log(req.body);
+  
+      // Check for existing orders with status "waiting", "processing", or "ready"
+      const existingOrder = await Commande.findOne({
+        where: {
+          ClientID,
+          Statut: ['waiting', 'processing', 'ready']
+        }
+      });
+  
+      // If an existing order is found, prevent placing a new order
+      if (existingOrder) {
+        return res.status(400).send({ message: 'Une commande est déjà en cours.' });
+      }
+  
+      // Create a new order
+      const newCommande = await Commande.create({
+        ClientID,
+        DateHeureCommande,
+        Statut,
+        TotalCommande,
+        Details,
+        Attente,
+        Payed
+      });
+  
+      // Find the user by primary key (ClientID)
+      const user = await User.findByPk(ClientID);
+  
+      // Check if the user exists
+      if (!user) {
+        return res.status(404).send({ message: 'User not found' });
+      }
+  
+      // Update user details
+      user.totalOrders += 1;
+      user.totalAmountSpent += TotalCommande;
+      user.lastOrderDate = DateHeureCommande;
+      console.log(user.totalOrders, user.totalAmountSpent, user.lastOrderDate);
+  
+      // Save the updated user details
+      await user.save();
+  
+      // Send a response with the new order ID
+      res.status(201).send({ CommandeID: newCommande.CommandeID });
+    } catch (error) {
+      console.error(error); // Log the full error for server-side debugging
+      if (error.name === 'SequelizeValidationError') {
+        return res.status(400).send({ message: 'Validation error', errors: error.errors });
+      }
+      res.status(500).send({ message: 'An unexpected error occurred' });
     }
-
-    // Update user details
-    user.totalOrders += 1;
-    user.totalAmountSpent += TotalCommande;
-    user.lastOrderDate = DateHeureCommande;
-    console.log(user.totalOrders, user.totalAmountSpent, user.lastOrderDate);
-
-    // Save the updated user details
-    await user.save();
-
-    // Send a response with the new order ID
-    res.status(201).send({ CommandeID: newCommande.CommandeID });
-  } catch (error) {
-    console.error(error); // Log the full error for server-side debugging
-    if (error.name === 'SequelizeValidationError') {
-      return res.status(400).send({ message: 'Validation error', errors: error.errors });
-    }
-    res.status(500).send({ message: 'An unexpected error occurred' });
-  }
-};
+  };
+  
 
 
 const displayOrdersWaiting = async (req, res) => {
@@ -160,4 +224,4 @@ const displayArchivedandCanceledOrders = async (req, res) => {
 
 
 
-module.exports = {displayArchivedandCanceledOrders,deleteOrder,updateTimer,getOrderInfos,takeOrder,displayOrdersWaiting,displayOrdersProcessing,updateStatus,displayOrdersReady };
+module.exports = {getOrderId,checkOngoingOrder,displayArchivedandCanceledOrders,deleteOrder,updateTimer,getOrderInfos,takeOrder,displayOrdersWaiting,displayOrdersProcessing,updateStatus,displayOrdersReady };

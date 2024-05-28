@@ -134,14 +134,17 @@ const BasketPage = () => {
             
             // Clear the basket
             await axios.get(`/api/baskets/clear?ClientID=${clientID}`);
-            
+            // Store locally the orderID
+                localStorage.setItem('OrderID', response.data.CommandeID);
             // Redirect to order tracking page
             console.log('ID de commande:', response.data.CommandeID);
             router.push(`/orderTracking?orderID=${response.data.CommandeID}`);
-        } catch (err) {
-            console.error('Échec de l\'envoi de la commande', err);
-            setError('Échec de l\'envoi de la commande');
-        }
+        
+        } catch (err:any) {
+                console.error('Une commande est déjà en cours', err);
+                setError('Une commande est déjà en cours');
+        }   
+        
     };
 
     const handleReturnToOrderPage = () => {
